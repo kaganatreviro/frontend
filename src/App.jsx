@@ -6,6 +6,7 @@ import routing from "./routing";
 function App() {
     const location = useLocation();
     const navigate = useNavigate();
+
     // useEffect(() => {
     //     const authNotRequired = authNotRequiredPathes.some((path) => location.pathname.startsWith(path.replace(/\/:\w+\*?$/, "")));
     //     if (!authNotRequired && !authStore.token) {
