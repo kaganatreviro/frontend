@@ -1,7 +1,8 @@
 import React from "react";
 import MenuNav from "../../components/menu-nav";
+import "./style.scss";
 
-function Main() {
+function Menu() {
   return (
     <div>
       <MenuNav />
@@ -9,4 +10,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Menu;

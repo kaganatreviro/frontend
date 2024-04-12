@@ -1,0 +1,92 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "tsx": true
+    },
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "unused-imports",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": false}],
+    "react/jsx-uses-vars": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "unused-imports/no-unused-imports": "off",
+    "unused-imports/no-unused-vars": [
+      "off",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ],
+    "quotes": ["warn", "double"],
+    "jsx-a11y/media-has-caption": [ "error", {
+      "audio": [ "Audio" ],
+      "video": [ "Video" ],
+      "track": [ "Track" ]
+    }],
+    "react/display-name": "warn",
+    "no-alert": "off",
+    "no-duplicate-imports": "warn",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "max-len": "off",
+    "no-shadow": "off",
+    "react/prop-types": "off",
+    "no-unused-expressions": "off",
+    "no-use-before-define": "off",
+    "no-param-reassign": "off",
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-return-assign": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "import/prefer-default-export": "off",
+    "no-multiple-empty-lines": "warn",
+    "no-nested-ternary": "warn",
+    "no-trailing-spaces": "off",
+    "lines-between-class-members": "off",
+    "object-curly-newline": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off"
+  }
+}
