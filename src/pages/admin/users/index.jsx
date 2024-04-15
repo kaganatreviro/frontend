@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton } from "antd";
+import { Table, Skeleton, Divider } from "antd";
 import MenuNav from "../../../components/menu-nav";
 import "./style.scss";
 
 function Users() {
-  const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки данных
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -19,19 +19,24 @@ function Users() {
   }, []);
 
   const columns = [
-    { title: "Имя", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
+    { title: "User", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
     { title: "Email", dataIndex: "email", key: "email", filters: [{ text: "gmail.com", value: "gmail.com" }, { text: "yahoo.com", value: "yahoo.com" }], onFilter: (value, record) => record.email.includes(value) },
-    { title: "Дата рождения", dataIndex: "birthdate", key: "birthdate", sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate) },
+    { title: "Date of Birth", dataIndex: "birthdate", key: "birthdate", sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate) },
   ];
 
   return (
     <div className="admin_users back">
       <MenuNav />
-      {loading ? (
-        <Skeleton active />
-      ) : (
-        <Table columns={columns} dataSource={users} />
-      )}
+      <div className="content">
+        <div>User Management</div>
+        <Divider />
+        {loading ? (
+          <Skeleton active />
+        ) : (
+          <Table columns={columns} dataSource={users} />
+        )}
+      </div>
+
     </div>
   );
 }

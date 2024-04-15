@@ -1,4 +1,11 @@
 .admin_users {
   display: flex;
   gap: 20px;
+
+  .content {
+    padding: 48px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

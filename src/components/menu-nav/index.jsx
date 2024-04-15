@@ -21,7 +21,7 @@ function MenuNav() {
         <Divider />
         <Logo />
       </div>
-      <div className="content">
+      <div className="menu_content">
         {menuItems.map((item, index) => (
           <NavLink
               /* eslint-disable-next-line react/no-array-index-key */
