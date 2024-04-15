@@ -1,5 +1,6 @@
 import Profile from "../pages/profile";
 import Main from "../pages/main";
+import Users from "../pages/admin/users";
 
 export default {
   Main: {
@@ -18,6 +19,35 @@ export default {
 
   Profile: {
     path: "/profile",
+    element: <Profile />, //
+    protected: false,
+    role: "all",
+  },
+
+  // ADMIN PANEL
+  Users: {
+    path: "/users",
+    element: <Users />, //
+    protected: false,
+    role: "all",
+  },
+
+  Partners: {
+    path: "/partners",
+    element: <Profile />, //
+    protected: false,
+    role: "all",
+  },
+
+  Categories: {
+    path: "/categories",
+    element: <Profile />, //
+    protected: false,
+    role: "all",
+  },
+
+  Feedback: {
+    path: "/feedback",
     element: <Profile />, //
     protected: false,
     role: "all",
