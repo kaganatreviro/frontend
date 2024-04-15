@@ -1,6 +1,8 @@
 import Profile from "../pages/profile";
 import Main from "../pages/main";
 import Users from "../pages/admin/users";
+import Partners from "../pages/admin/partners";
+import Feedback from "../pages/admin/feedback";
 
 export default {
   Main: {
@@ -34,7 +36,7 @@ export default {
 
   Partners: {
     path: "/partners",
-    element: <Profile />, //
+    element: <Partners />, //
     protected: false,
     role: "all",
   },
@@ -48,7 +50,7 @@ export default {
 
   Feedback: {
     path: "/feedback",
-    element: <Profile />, //
+    element: <Feedback />, //
     protected: false,
     role: "all",
   },
