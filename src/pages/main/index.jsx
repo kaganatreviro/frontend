@@ -1,5 +1,5 @@
 import React from "react";
-import MenuNav from "../../components/menu-nav";
+import MenuNav from "../../components/Navigation";
 
 function Main() {
   return (

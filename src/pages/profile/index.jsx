@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
 import { Card } from "antd";
-import MenuNav from "../../components/menu-nav";
+import MenuNav from "../../components/Navigation";
 
 function Profile() {
   return (

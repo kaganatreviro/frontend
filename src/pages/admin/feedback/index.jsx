@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, Button, Modal, Form, Input, Select } from "antd";
-import MenuNav from "../../../components/menu-nav";
+import MenuNav from "../../../components/Navigation";
 import "./style.scss";
 
 const { Option } = Select;

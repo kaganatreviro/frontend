@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton } from "antd";
-import MenuNav from "../../../components/menu-nav";
+import MenuNav from "../../../components/Navigation";
 import "./style.scss";
 
 function Partners() {
