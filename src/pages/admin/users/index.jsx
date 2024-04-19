@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Divider } from "antd";
 import MenuNav from "../../../components/Navigation";
-import "./style.scss";
 
 function Users() {
   const [loading, setLoading] = useState(true);
@@ -25,9 +24,9 @@ function Users() {
   ];
 
   return (
-    <div className="admin_users back">
+    <div className="flex gap-5">
       <MenuNav />
-      <div className="content">
+      <div className="content flex flex-col items-start p-12 w-full bg-gray-100">
         <div>User Management</div>
         <Divider />
         {loading ? (
@@ -36,7 +35,6 @@ function Users() {
           <Table columns={columns} dataSource={users} />
         )}
       </div>
-
     </div>
   );
 }
