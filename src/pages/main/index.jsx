@@ -1,10 +1,10 @@
 import React from "react";
-import MenuNav from "../../components/Navigation";
+import Navigation from "../../components/common/Navigation";
 
 function Main() {
   return (
     <div>
-      <MenuNav />
+      <Navigation />
     </div>
   );
 }

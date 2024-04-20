@@ -1,15 +1,16 @@
 import React from "react";
-import "./style.scss";
 import { Card } from "antd";
-import MenuNav from "../../components/Navigation";
+import MenuNav from "../../components/common/Navigation";
 
 function Profile() {
   return (
-    <div className="container profile">
+    <div className="">
       <MenuNav />
-      <div className="main_content back">
+      <div className="">
         <Card title="Menu Management" bordered={false}>
-          <p>Interface for updating beverage menus, prices, and descriptions.</p>
+          <p>
+            Interface for updating beverage menus, prices, and descriptions.
+          </p>
         </Card>
       </div>
     </div>

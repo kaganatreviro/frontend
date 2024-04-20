@@ -1,10 +1,10 @@
 import React from "react";
 import { Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import Logo from "../assets/icons/Happy_Hours_Logo.png";
-import NavigationIcons from "../utils/NavigationIcons";
+import Logo from "../../assets/icons/Happy_Hours_Logo.png";
+import NavigationIcons from "../../utils/NavigationIcons";
 
-function MenuNav() {
+function Navigation() {
   const menuItems = [
     { name: "Users", path: "/users" },
     { name: "Partners", path: "/partners" },
@@ -44,7 +44,7 @@ function MenuNav() {
               <NavLink
                 /* eslint-disable-next-line react/no-array-index-key */
                 to={item.path}
-                className={`block  text-2xl  `}
+                className="block  text-2xl "
               >
                 {item.name}
               </NavLink>
@@ -59,4 +59,4 @@ function MenuNav() {
   );
 }
 
-export default MenuNav;
+export default Navigation;
