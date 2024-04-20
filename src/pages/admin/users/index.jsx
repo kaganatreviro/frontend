@@ -61,13 +61,14 @@ function Users() {
     <div className="flex gap-5">
       <Navigation />
       <div className="content flex flex-col items-start p-12 bg-gray-100">
-        <div>User Management</div>
+        <div className="font-medium text-xl40">User Management</div>
         <Divider />
         {loading ? (
           <Skeleton active />
         ) : (
           <Table columns={columns} dataSource={users} />
         )}
+        {/* <CustomPagination /> */}
       </div>
     </div>
   );
