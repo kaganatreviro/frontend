@@ -3,6 +3,7 @@ import Main from "../pages/main";
 import Users from "../pages/admin/users";
 import Partners from "../pages/admin/partners";
 import Feedback from "../pages/admin/feedback";
+import Login from "../pages/login";
 
 export default {
   Main: {
@@ -11,7 +12,12 @@ export default {
     protected: false,
     role: "all",
   },
-
+  AdminLogin: {
+    path: "/login",
+    element: <Login />, //
+    protected: true,
+    role: "all",
+  },
   Menu: {
     path: "/profile",
     element: <Profile />, //
@@ -33,7 +39,12 @@ export default {
     protected: false,
     role: "all",
   },
-
+  PartnerLogin: {
+    path: "/admin/login",
+    element: <Login />, //
+    protected: false,
+    role: "all",
+  },
   Partners: {
     path: "/partners",
     element: <Partners />, //
