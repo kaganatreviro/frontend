@@ -1,7 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import NavigationIcons from "../../utils/NavigationIcons";
@@ -15,6 +14,10 @@ function Navigation() {
   ];
 
   const location = useLocation();
+  const handleLogout = (e) => {
+    e.preventDefault();
+    window.location.href = "/admin/login";
+  };
 
   return (
     <div className="flex flex-col items-center w-[280px] py-8 h-screen">
@@ -55,10 +58,13 @@ function Navigation() {
           ))}
         </div>
       </div>
-      <Button className="text-[#F34749] flex items-center gap-2 border-none text-xl pb-8">
-        <FontAwesomeIcon icon={faArrowRightFromBracket} /> 
+      <button
+        onClick={handleLogout}
+        className="text-[#F34749] flex items-center gap-2 border-none text-xl pb-8 hover:"
+      >
+        <FontAwesomeIcon icon={faArrowRightFromBracket} />
         <div>Log Out</div>
-      </Button>
+      </button>
     </div>
   );
 }
