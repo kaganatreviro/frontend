@@ -58,9 +58,9 @@ function Users() {
   ];
 
   return (
-    <div className="flex gap-5">
+    <div className="flex">
       <Navigation />
-      <div className="content flex flex-col items-start p-12 bg-gray-100">
+      <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-xl40">User Management</div>
         <Divider />
         {loading ? (
