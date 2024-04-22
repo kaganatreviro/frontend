@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Card, Button, Modal, Form, Input, Select } from "antd";
 import Navigation from "../../../components/common/Navigation";
-
 const { Option } = Select;
 
 const initialQuestions = [

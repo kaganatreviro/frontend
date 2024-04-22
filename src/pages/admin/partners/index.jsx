@@ -1,71 +1,74 @@
-import React, { useState, useEffect } from "react";
-import { Table, Skeleton } from "antd";
-import Navigation from "../../../components/common/Navigation";
-import "./style.scss";
+import React from "react";
+import { Form, Input, Button } from "antd";
+import Logo from "../../../assets/icons/Happy_Hours_Logo.png";
 
 function Partners() {
-  const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки данных
-  const [users, setUsers] = useState([]);
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setUsers([
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+      checkCredentials(values.username, values.password);
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
+    }
+  };
+
+  const checkCredentials = (username, password) => {
+    const credentials = {
+      email: "admin@gmail.com",
+      password: "password12345",
+    };
+
+    if (username !== credentials.email || password !== credentials.password) {
+      form.setFields([
         {
-          key: 1,
-          name: "Иван Иванов",
-          email: "ivanov@gmail.com",
-          birthdate: "1990-01-01",
+          name: "username",
+          errors: ["Invalid email or password."],
         },
         {
-          key: 2,
-          name: "Петр Петров",
-          email: "petrov@yahoo.com",
-          birthdate: "1985-05-15",
-        },
-        {
-          key: 3,
-          name: "Мария Маринина",
-          email: "marina@mail.ru",
-          birthdate: "1992-07-23",
+          name: "password",
+          errors: ["Invalid email or password."],
         },
       ]);
-      setLoading(false);
-    }, 2000);
-  }, []);
-
-  const columns = [
-    {
-      title: "Имя",
-      dataIndex: "name",
-      key: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      filters: [
-        { text: "gmail.com", value: "gmail.com" },
-        { text: "yahoo.com", value: "yahoo.com" },
-      ],
-      onFilter: (value, record) => record.email.includes(value),
-    },
-    {
-      title: "Дата рождения",
-      dataIndex: "birthdate",
-      key: "birthdate",
-      sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate),
-    },
-  ];
+    } else {
+      window.location.href = "/profile";
+    }
+  };
 
   return (
-    <div className="admin_users back">
-      <Navigation />
-      {loading ? (
-        <Skeleton active />
-      ) : (
-        <Table columns={columns} dataSource={users} />
-      )}
+    <div className="bg-[#F3F3F3] h-screen flex flex-col items-center justify-center">
+      <img src={Logo} alt="Happy Hours Logo" className="mb-8" />
+      <Form
+        form={form}
+        name="login_form"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={handleSubmit}
+        layout="vertical"
+      >
+        <Form.Item
+          name="username"
+          rules={[{ required: true, message: "Please input your Email Address!" }]}
+          label="Email Address"
+        >
+          <Input placeholder="Enter your email" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[{ required: true, message: "Please input your Password!" }]}
+        >
+          <Input.Password
+            placeholder="Enter your password"
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            Log in
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
