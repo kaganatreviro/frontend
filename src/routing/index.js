@@ -2,7 +2,7 @@ import Profile from "../pages/profile";
 import Main from "../pages/main";
 import Users from "../pages/admin/users";
 import Partners from "../pages/admin/partners";
-import Feedback from "../pages/admin/feedback";
+import Feedback from "../pages/admin/feedback/feedback";
 import Login from "../pages/login";
 
 export default {
