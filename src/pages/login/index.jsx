@@ -52,7 +52,7 @@ function Login() {
     ) {
       setErrors({ invalidCredentials: "Invalid email or password" });
     } else {
-      window.location.href = "/profile";
+      window.location.href = "/users";
     }
   };
 

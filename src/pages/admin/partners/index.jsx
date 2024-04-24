@@ -5,7 +5,8 @@ import Logo from "../../../assets/icons/Happy_Hours_Logo.png";
 function Partners() {
   const [form] = Form.useForm();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (value) => {
+    console.log(value);
     try {
       const values = await form.validateFields();
       checkCredentials(values.username, values.password);
@@ -49,7 +50,9 @@ function Partners() {
       >
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your Email Address!" }]}
+          rules={[
+            { required: true, message: "Please input your Email Address!" },
+          ]}
           label="Email Address"
         >
           <Input placeholder="Enter your email" />
@@ -59,9 +62,7 @@ function Partners() {
           label="Password"
           rules={[{ required: true, message: "Please input your Password!" }]}
         >
-          <Input.Password
-            placeholder="Enter your password"
-          />
+          <Input.Password placeholder="Enter your password" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
