@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss/plugin";
+
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: {
-          1000: "#0c4a6e", // пример цвета, замените на свой
+          1000: "#0c4a6e",
           900: "#0d5a7e",
           800: "#0e6a8e",
         },
@@ -35,5 +37,28 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addComponents }) => {
+      const newComponents = {
+        ".custom-container": {
+          maxWidth: "1536px",
+          width: "100%",
+          height: "100%",
+          minHeight: "100vh",
+          margin: "0 auto",
+          padding: "0 3.75rem",
+          "@screen sm": {
+            padding: "0 2.5rem",
+          },
+          "@screen md": {
+            padding: "0 4rem",
+          },
+          "@screen lg": {
+            padding: "0 5rem",
+          },
+        },
+      };
+      addComponents(newComponents);
+    }),
+  ],
 };

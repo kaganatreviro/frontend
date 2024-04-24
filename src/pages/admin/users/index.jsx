@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton, Divider, Card, Avatar } from "antd";
+import { Table, Skeleton, Card, Avatar } from "antd";
 import moment from "moment";
 import japarom from "../../../assets/icons/japarov.svg";
 import Navigation from "../../../components/common/Navigation";
@@ -65,7 +65,7 @@ function Users() {
   };
 
   return (
-    <div className="flex admin_users flex-1">
+    <div className="flex admin_users custom-container flex-1">
       <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-4xl mb-8">User Management</div>
