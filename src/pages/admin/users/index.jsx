@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Divider, Card, Avatar } from "antd";
+import moment from "moment";
+import japarom from "../../../assets/icons/japarov.svg";
 import Navigation from "../../../components/common/Navigation";
 import "./style.scss";
 
@@ -10,7 +12,7 @@ function Users() {
   useEffect(() => {
     setTimeout(() => {
       setUsers([
-        { key: 1, name: "Иван Иванов", email: "ivanov@gmail.com", birthdate: "1990-01-01", avatar: "https://i.pravatar.cc/150?img=1" },
+        { key: 1, name: "Садыр Жапаров", email: "prisident@gmail.com", birthdate: "1968-01-01", avatar: japarom },
         { key: 2, name: "Петр Петров", email: "petrov@yahoo.com", birthdate: "1985-05-15" },
         { key: 3, name: "Мария Маринина", email: "marina@mail.ru", birthdate: "1992-07-23" },
         { key: 4, name: "Алексей Алексеев", email: "alekseev@outlook.com", birthdate: "1989-09-10" },
@@ -32,7 +34,7 @@ function Users() {
       render: (text, record) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar src={record.avatar} style={{ marginRight: 8 }} />
-          {text}
+          <span className="text-grey-1000">{text}</span>
         </div>
       ),
       // sorter: (a, b) => a.name.localeCompare(b.name)
@@ -40,23 +42,25 @@ function Users() {
     { title: "Email",
       dataIndex: "email",
       key: "email",
-      filters: [
-        { text: "gmail.com", value: "gmail.com" },
-        { text: "yahoo.com", value: "yahoo.com" },
-      ],
-      onFilter: (value, record) => record.email.includes(value),
+      render: (email) => <span className="text-gray-600">{email}</span>,
+      // filters: [
+      //   { text: "gmail.com", value: "gmail.com" },
+      //   { text: "yahoo.com", value: "yahoo.com" },
+      // ],
+      // onFilter: (value, record) => record.email.includes(value),
     },
     { title: "Date of Birth",
       dataIndex: "birthdate",
       key: "birthdate",
+      render: (date) => <span className="text-gray-600">{moment(date).format("DD.MM.YYYY")}</span>,
       // sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate)
     },
   ];
 
   const paginationConfig = {
     pageSize: 6,
-    showSizeChanger: true,
-    pageSizeOptions: ["6", "12", "18", "24"],
+    // showSizeChanger: true,
+    // pageSizeOptions: ["6", "12", "18", "24"],
     showTotal: (total, range) => `Results ${range[0]}-${range[1]} of ${total}`,
   };
 
@@ -64,8 +68,7 @@ function Users() {
     <div className="flex admin_users flex-1">
       <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
-        <div className="font-medium text-xl">User Management</div>
-        <Divider />
+        <div className="font-medium text-4xl mb-8">User Management</div>
         {loading ? (
           <Card bordered={false} className="w-full">
             <Skeleton active paragraph={{ rows: 4 }} />
