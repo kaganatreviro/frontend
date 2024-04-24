@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton, Divider, Card } from "antd";
+import { Table, Skeleton, Divider, Card, Avatar } from "antd";
 import Navigation from "../../../components/common/Navigation";
 import "./style.scss";
 
