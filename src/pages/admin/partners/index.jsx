@@ -5,7 +5,8 @@ import Logo from "../../../assets/icons/Happy_Hours_Logo.png";
 function Partners() {
   const [form] = Form.useForm();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
+    console.log("values", values);
     try {
       const values = await form.validateFields();
       checkCredentials(values.username, values.password);

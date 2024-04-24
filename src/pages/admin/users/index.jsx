@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton, Divider, Card } from "antd";
+import { Table, Skeleton, Divider, Card, Avatar } from "antd";
 import Navigation from "../../../components/common/Navigation";
 import "./style.scss";
 
@@ -10,7 +10,7 @@ function Users() {
   useEffect(() => {
     setTimeout(() => {
       setUsers([
-        { key: 1, name: "Иван Иванов", email: "ivanov@gmail.com", birthdate: "1990-01-01" },
+        { key: 1, name: "Иван Иванов", email: "ivanov@gmail.com", birthdate: "1990-01-01", avatar: "https://i.pravatar.cc/150?img=1" },
         { key: 2, name: "Петр Петров", email: "petrov@yahoo.com", birthdate: "1985-05-15" },
         { key: 3, name: "Мария Маринина", email: "marina@mail.ru", birthdate: "1992-07-23" },
         { key: 4, name: "Алексей Алексеев", email: "alekseev@outlook.com", birthdate: "1989-09-10" },
@@ -26,7 +26,17 @@ function Users() {
   }, []);
 
   const columns = [
-    { title: "User", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
+    { title: "User",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Avatar src={record.avatar} style={{ marginRight: 8 }} />
+          {text}
+        </div>
+      ),
+      // sorter: (a, b) => a.name.localeCompare(b.name)
+    },
     { title: "Email",
       dataIndex: "email",
       key: "email",
@@ -36,7 +46,11 @@ function Users() {
       ],
       onFilter: (value, record) => record.email.includes(value),
     },
-    { title: "Date of Birth", dataIndex: "birthdate", key: "birthdate", sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate) },
+    { title: "Date of Birth",
+      dataIndex: "birthdate",
+      key: "birthdate",
+      // sorter: (a, b) => new Date(a.birthdate) - new Date(b.birthdate)
+    },
   ];
 
   const paginationConfig = {
