@@ -1,4 +1,16 @@
  .admin_users {
+
+   .ant-table-thead {
+     th {
+       background: #E8E8E8 !important;
+       color: #7D7D7D !important;
+     }
+   }
+
+   .ant-pagination-total-text {
+     color: #7D7D7D !important;
+   }
+
    .ant-table-wrapper {
      height: 100%;
    }
