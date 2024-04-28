@@ -25,7 +25,7 @@ function Navigation() {
       <hr className="border-1 border-[#ADADAD] mt-2 w-full" />
       <div className="pt-6 flex flex-col h-full w-full">
         <div className="flex items-center pl-8">
-          <img src={Logo} alt="Happy Hours Logotip" />
+          <img src={Logo} className="w-9" alt="Happy Hours Logotip" />
           <div className="ml-2 text-2xl font-medium">HAPPY HOURS</div>
         </div>
         <div className="pt-10">

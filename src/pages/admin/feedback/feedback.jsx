@@ -123,8 +123,12 @@ function Feedback() {
       <Navigation />
       <div className="bg-[#f4f4f4] flex-1 p-12">
         <div className="font-medium text-4xl mb-8 ml-6">Feedback</div>
-        <Skeleton active paragraph={{ rows: 4 }} title={true} loading={loading}>
-          {questions.map((question, index) => (
+        {loading ? (
+          <Card bordered={false} className="w-full">
+            <Skeleton active paragraph={{ rows: 4 }} />
+          </Card>
+        ) : (
+          questions.map((question, index) => (
             <div key={question.id} className="mb-4">
               <Card style={{ border: "none" }}>
                 <div className="flex flex-col">
@@ -235,8 +239,8 @@ function Feedback() {
                 </Card>
               )}
             </div>
-          ))}
-        </Skeleton>
+          ))
+        )}
       </div>
     </div>
   );

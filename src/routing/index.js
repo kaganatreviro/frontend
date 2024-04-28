@@ -8,7 +8,7 @@ import Login from "../pages/login";
 export default {
   Main: {
     path: "/",
-    element: <Main />, //
+    element: <Users />, //
     protected: false,
     role: "all",
   },

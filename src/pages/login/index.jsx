@@ -1,137 +1,129 @@
 /* eslint-disable */
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
+import { Form, Input, Button } from "antd";
+import { useNavigate } from "react-router-dom";
+import login from "../../assets/Logo/Login.png";
+import "./style.scss";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-
-    const trimmedUsername = username.trim();
-    const trimmedPassword = password.trim();
-
-    const errors = {};
-
-    if (!trimmedUsername) {
-      errors.username = "Email is required";
-    } else if (!isValidEmail(trimmedUsername)) {
-      errors.username = "Invalid email format";
-    }
-
-    if (!trimmedPassword) {
-      errors.password = "Password is required";
-    } else if (trimmedPassword.length < 8) {
-      errors.password = "Password must be at least 8 characters";
-    }
-
-    if (Object.keys(errors).length > 0) {
-      setErrors(errors);
-    } else {
-      checkCredentials(trimmedUsername, trimmedPassword);
+  const handleSubmit = async (value) => {
+    console.log(value);
+    try {
+      const values = await form.validateFields();
+      checkCredentials(values.username, values.password);
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
     }
   };
 
-  const checkCredentials = (trimmedUsername, trimmedPassword) => {
+  const checkCredentials = (username, password) => {
     const credentials = {
-      //temporary
       email: "admin@gmail.com",
       password: "password12345",
     };
 
-    if (
-      trimmedUsername !== credentials.email ||
-      trimmedPassword !== credentials.password
-    ) {
-      setErrors({ invalidCredentials: "Invalid email or password" });
+    if (username !== credentials.email || password !== credentials.password) {
+      form.setFields([
+        {
+          name: "username",
+          errors: ["Invalid email or password"],
+        },
+        {
+          name: "password",
+          errors: ["Invalid email or password"],
+        },
+      ]);
     } else {
-      window.location.href = "/users";
+      navigate("/users");
     }
   };
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
   return (
-    <div className="bg-[#F3F3F3] h-screen py-8 px-12 flex flex-col items-center justify-center">
-      <div className="flex items-center justify-center">
-        <div className="bg-white w-[400px] pt-12 pb-20 px-12 rounded-lg flex items-center flex-col">
+    <div className=" bg-white h-screen flex items-center justify-center">
+      <div className="w-1/2 flex items-center flex-col">
+        <div className=" border-[#FFE4C3] border-4 w-[400px] pt-20 pb-20 px-12 rounded-lg flex flex-col items-center">
           <div className="flex">
-            <img src={Logo} className="self-start" alt="" />
+            <img src={Logo} alt="Happy Hours Logo" className="mb-8 w-9" />
             <div className="ml-2 text-3xl font-medium mb-6">HAPPY HOURS</div>
           </div>
-          <div className="text-center text-3xl mb-10 text-medium">Log In</div>
-          <form onSubmit={handleSubmit} className="flex flex-col items-center">
-            <div className="w-[250px] mb-12">
-              <div className="font-semibold text-sm">Email Address:</div>
-              <div className="relative">
-                <input
-                  className="border-2 border-[#B3C2C1] w-full py-2 px-3 rounded-md outline-none focus:border-[#F34749]"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter your email"
-                />
-              </div>
-              {errors.username && (
-                <div className="relative">
-                  <div className="text-red-500 text-xs mt-1 absolute">
-                    {errors.username}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="w-[250px] mb-12">
-              <div className="font-semibold text-sm">Password:</div>
-              <div className="relative">
-                <input
-                  className="border-2 border-[#B3C2C1] w-full py-2 px-3 rounded-md outline-none focus:border-[#F34749]"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                />
-                <div
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <FontAwesomeIcon
-                    icon={showPassword ? faEyeSlash : faEye}
-                    className="text-[#B3C2C1]"
-                  />
-                </div>
-              </div>
-              {errors.password && (
-                <div className="relative">
-                  <div className="text-red-500 text-xs mt-1 absolute">
-                    {errors.password}
-                  </div>
-                </div>
-              )}
-            </div>
-            {errors.invalidCredentials && (
-              <div className="relative">
-                <div className="text-red-500 text-md mt-2 absolute top-[-50px] w-[250px] left-[-125px]">
-                  {errors.invalidCredentials}
-                </div>
-              </div>
-            )}
-            <button
-              type="submit"
-              className="bg-[#F34749] w-[250px] text-white rounded-md py-3 text-xl mt-4"
+          <Form
+            form={form}
+            name="login_form"
+            className="login-form"
+            initialValues={{ remember: true }}
+            onFinish={handleSubmit}
+            layout="vertical"
+          >
+            <Form.Item
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email",
+                },
+                {
+                  type: "email",
+                  message: "Please enter a valid email",
+                },
+              ]}
+              label="Email Address:"
             >
-              Continue
-            </button>
-          </form>
+              <Input
+                placeholder="Enter your email"
+                style={{
+                  height: "40px",
+                  width: "250px",
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password:"
+              style={{ width: "250px", height: "80px" }}
+              rules={[
+                { required: true, message: "Please enter your password" },
+                {
+                  min: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              ]}
+            >
+              <Input.Password
+                placeholder="Enter your password"
+                style={{
+                  height: "40px",
+                }}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                style={{
+                  backgroundColor: "#FB7E00",
+                  height: "40px",
+                  width: "250px",
+                  marginTop: "20px",
+                }}
+              >
+                <div>Log in</div>
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+
+      <div className="bg-[#FFC68E] h-full flex items-center justify-center w-1/2">
+        <div className="rounded-3xl  items-center flex flex-col py-10">
+          <img src={login} alt="" />
+          <div className="text-[#B25900] text-[64px] font-light text-center">
+            Welcome Back!
+          </div>
         </div>
       </div>
     </div>
