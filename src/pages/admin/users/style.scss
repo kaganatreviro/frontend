@@ -1,47 +1,54 @@
- .admin_users {
+.admin_users {
+  .ant-table-thead {
+    th {
+      background: #e8e8e8 !important;
+      color: #7d7d7d !important;
+    }
+  }
 
-   .ant-table-thead {
-     th {
-       background: #E8E8E8 !important;
-       color: #7D7D7D !important;
-     }
-   }
+  .ant-pagination-total-text {
+    color: #7d7d7d !important;
+  }
 
-   .ant-pagination-total-text {
-     color: #7D7D7D !important;
-   }
+  .ant-table-wrapper {
+    height: 100%;
+  }
+  .ant-spin-nested-loading {
+    height: 100%;
+  }
 
-   .ant-table-wrapper {
-     height: 100%;
-   }
-   .ant-spin-nested-loading {
-     height: 100%;
-   }
+  .ant-spin-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
 
-   .ant-spin-container {
-     display: flex;
-     flex-direction: column;
-     justify-content: space-between;
-     height: 100%;
-   }
+  $primary-color: #fb7e00;
 
-   $primary-color: #2A6445;
+  .ant-pagination {
+    .ant-pagination-item-active {
+      background-color: $primary-color;
+      border-color: transparent;
 
-   .ant-pagination {
-     .ant-pagination-item-active {
-       background-color: $primary-color;
-       border-color: transparent;
+      a {
+        color: white;
+      }
+    }
+  }
 
-       a {
-         color: white;
-       }
-
-     }
-   }
-
-   .ant-table-wrapper .ant-table-thead > tr > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before,
-   .ant-table-wrapper .ant-table-thead > tr > td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
-     display: none !important;
-   }
-
- }
+  .ant-table-wrapper
+    .ant-table-thead
+    > tr
+    > th:not(:last-child):not(.ant-table-selection-column):not(
+      .ant-table-row-expand-icon-cell
+    ):not([colspan])::before,
+  .ant-table-wrapper
+    .ant-table-thead
+    > tr
+    > td:not(:last-child):not(.ant-table-selection-column):not(
+      .ant-table-row-expand-icon-cell
+    ):not([colspan])::before {
+    display: none !important;
+  }
+}

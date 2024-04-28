@@ -118,10 +118,10 @@ function Login() {
         </div>
       </div>
 
-      <div className="bg-[#FFC68E] h-full flex items-center justify-center w-1/2">
+      <div className="bg-[#FF9328] h-full flex items-center justify-center w-1/2">
         <div className="rounded-3xl  items-center flex flex-col py-10">
           <img src={login} alt="" />
-          <div className="text-[#B25900] text-[64px] font-light text-center">
+          <div className="text-[#321A01] text-[64px] font-light text-center">
             Welcome Back!
           </div>
         </div>

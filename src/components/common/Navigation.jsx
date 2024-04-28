@@ -20,7 +20,7 @@ function Navigation() {
   };
 
   return (
-    <div className="sticky top-0 flex flex-col items-center w-[280px] py-8 h-screen bg-white z-10">
+    <div className="sticky top-0 flex flex-col items-center w-[280px] py-8 h-screen min-h-[1080px] bg-white z-10">
       <div className="text-[#B2C1C0] text-2xl">Admin Dashboard</div>
       <hr className="border-1 border-[#ADADAD] mt-2 w-full" />
       <div className="pt-6 flex flex-col h-full w-full">
@@ -40,7 +40,7 @@ function Navigation() {
                 className={` pl-8 flex text-[#B2C1C0] my-6 py-4
               ${
                 location.pathname === item.path
-                  ? "bg-[#FFE8E8] text-[#F34749] border-r-4 border-[#F5484A]"
+                  ? "bg-[#FFE4C3] text-[#FB7E00] border-r-4 border-[#FB7E00]"
                   : ""
               }
               `}
@@ -48,7 +48,7 @@ function Navigation() {
                 <FontAwesomeIcon
                   icon={NavigationIcons[item.name].icon}
                   className={`self-center mr-3
-                  ${location.pathname === item.path ? "text-[#F34749]" : ""}
+                  ${location.pathname === item.path ? "text-[#FB7E00]" : ""}
                 `}
                 />
                 <div>{item.name}</div>
@@ -59,7 +59,7 @@ function Navigation() {
       </div>
       <button
         onClick={handleLogout}
-        className="text-[#F34749] flex items-center gap-2 border-none text-xl pb-8 hover:"
+        className="text-[#FB7E00] flex items-center gap-2 border-none text-xl pb-8 hover:"
         type="button"
       >
         <FontAwesomeIcon icon={faArrowRightFromBracket} />

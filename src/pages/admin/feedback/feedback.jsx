@@ -141,7 +141,7 @@ function Feedback() {
                     {question.answer && (
                       <button
                         onClick={() => toggleAnswer(question.id)}
-                        className="mr-2 bg-[#F34749] text-white py-1 px-4 rounded-full hover:bg-[#e24649] flex self-end mt-2 pr-3"
+                        className="mr-2 bg-[#FB7E00] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex self-end mt-2 pr-3"
                       >
                         <FontAwesomeIcon
                           icon={faComments}
@@ -152,7 +152,7 @@ function Feedback() {
                     )}
                     {!question.answer && (
                       <button
-                        className="mr-2 bg-[#F34749] text-white py-1 px-4 rounded-full hover:bg-[#e24649] flex  self-end mt-2 pr-3"
+                        className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex  self-end mt-2 pr-3"
                         onClick={() => handleReplyButtonClick(question.id)}
                       >
                         <FontAwesomeIcon
@@ -198,7 +198,7 @@ function Feedback() {
                     </Form.Item>
                     <Form.Item>
                       <button
-                        className="bg-[#F34749] px-4 py-1 text-[16px] text-white rounded-full hover:bg-[#e24649]"
+                        className="bg-[#FB7E00] px-4 py-1 text-[16px] text-white rounded-full hover:bg-[#D56A00]"
                         htmlType="submit"
                       >
                         Send
