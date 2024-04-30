@@ -1,0 +1,41 @@
+.modal-disable {
+  width: 400px !important;
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+  }
+
+    // Style for the cancel button
+    .modal-cancel-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #949AA8; // This is a typical grey color, adjust as needed
+      color: white; // Black text color
+      border: none; // Removes the border
+      border-radius: 8px; // Adjust for rounded corners if needed
+      padding: 8px 32px;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+    // Style for the confirm button
+    .modal-confirm-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #FB7E00; // Red background color
+      color: #fff; // White text color
+      border: none; // Removes the border
+      border-radius: 8px; // Adjust for rounded corners if needed
+      padding: 8px 32px;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+}

@@ -20,7 +20,7 @@ function Navigation() {
   };
 
   return (
-    <div className="sticky top-0 flex flex-col items-center w-[280px] py-8 h-screen min-h-[1080px] bg-white z-10">
+    <div className="sticky top-0 flex flex-col items-center w-[280px] py-8 h-screen bg-white z-10">
       <div className="text-[#B2C1C0] text-2xl">Admin Dashboard</div>
       <hr className="border-1 border-[#ADADAD] mt-2 w-full" />
       <div className="pt-6 flex flex-col h-full w-full">

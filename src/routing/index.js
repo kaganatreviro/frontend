@@ -1,9 +1,9 @@
 import Profile from "../pages/profile";
-import Main from "../pages/main";
 import Users from "../pages/admin/users";
-import Partners from "../pages/admin/partners";
+import Partners from "../pages/admin/partners/Partners";
 import Feedback from "../pages/admin/feedback/feedback";
 import Login from "../pages/login";
+import Categories from "../pages/admin/categories/categories";
 
 export default {
   Main: {
@@ -54,7 +54,7 @@ export default {
 
   Categories: {
     path: "/categories",
-    element: <Profile />, //
+    element: <Categories />, //
     protected: false,
     role: "all",
   },

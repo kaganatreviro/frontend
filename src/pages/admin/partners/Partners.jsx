@@ -6,10 +6,14 @@ import Navigation from "../../../components/common/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
+import ModalCreate from "../../../components/modal/create/ModalCreate.tsx";
+import ModalDisable from "../../../components/modal/disable/ModalDisable.tsx";
 
 function Partners() {
   const [loading, setLoading] = useState(true);
   const [partners, setPartners] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -145,14 +149,14 @@ function Partners() {
     },
     {
       title: "Action",
-      dataIndex: "name",
+      dataIndex: "action",
       key: "action",
       render: (text, record) => (
         <Dropdown
           overlay={
             <Menu onClick={(e) => handleMenuClick(e, record)}>
               <Menu.Item key="view">View Details</Menu.Item>
-              <Menu.Item key="block">
+              <Menu.Item key="block" onClick={handleBlockPartner} >
                 {record.blocked ? "Unblock" : "Block"}
               </Menu.Item>
             </Menu>
@@ -175,7 +179,29 @@ function Partners() {
     showTotal: (total, range) => `Results ${range[0]}-${range[1]} of ${total}`,
   };
   const handleAddPartner = () => {
-    console.log("Create Partner modal opened");
+    setIsModalVisible(true);
+  };
+
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleBlockPartner = () => {
+    setIsModalVisibleBlock(true);
+  };
+
+
+  const handleOkBlock = () => {
+    setIsModalVisibleBlock(false);
+  };
+
+  const handleCancelBlock = () => {
+    setIsModalVisibleBlock(false);
   };
 
   return (
@@ -209,6 +235,9 @@ function Partners() {
           </div>
         )}
       </div>
+      <ModalDisable title={"Are you sure you want \n" +
+        "to block this partner?"} onOk={handleOkBlock} onCancel={handleCancelBlock} visible={isModalVisibleBlock} />
+      <ModalCreate onCancel={handleCancel} visible={isModalVisible} onOk={handleOk}/>
     </div>
   );
 }

@@ -26,6 +26,9 @@
     "sourceType": "module"
   },
   "settings": {
+    "import/resolver": {
+      "typescript": {}
+    },
     "react": {
       "version": "detect"
     }
