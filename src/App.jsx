@@ -1,6 +1,10 @@
 import { useContext, useEffect } from "react";
 import {
-  Route, Routes, useLocation, Navigate, useNavigate,
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+  useNavigate,
 } from "react-router-dom";
 import routing from "./routing";
 

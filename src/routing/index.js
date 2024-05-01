@@ -1,4 +1,3 @@
-import Profile from "../pages/profile";
 import Users from "../pages/admin/users";
 import Partners from "../pages/admin/partners/Partners";
 import Feedback from "../pages/admin/feedback/feedback";
@@ -16,19 +15,6 @@ export default {
     path: "/login",
     element: <Login />, //
     protected: true,
-    role: "all",
-  },
-  Menu: {
-    path: "/profile",
-    element: <Profile />, //
-    protected: false,
-    role: "all",
-  },
-
-  Profile: {
-    path: "/profile",
-    element: <Profile />, //
-    protected: false,
     role: "all",
   },
 

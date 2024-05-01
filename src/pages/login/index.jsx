@@ -1,22 +1,54 @@
 /* eslint-disable */
+
+// tmp_admin@example.com
+// stringst
+
 import React, { useState } from "react";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import { Form, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import login from "../../assets/Logo/Login.png";
 import "./style.scss";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setRefreshToken } from "../../actions/authActions";
 
 function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (value) => {
-    console.log(value);
+  const handleSubmit = async (values) => {
+    console.log(values);
     try {
-      const values = await form.validateFields();
-      checkCredentials(values.username, values.password);
-    } catch (errorInfo) {
-      console.log("Failed:", errorInfo);
+      await form.validateFields();
+      const response = await axios.post(
+        "http://16.170.203.161/api/v1/user/token/admin/",
+        {
+          email: values.username,
+          password: values.password,
+        }
+      );
+      console.log("Logged in successfully!", response.data);
+      dispatch(setAccessToken(response.data.accessToken));
+      dispatch(setRefreshToken(response.data.refreshToken));
+      navigate("/users");
+    } catch (error) {
+      console.log("Failed:", error);
+      if (error.response && error.response.status === 401) {
+        form.setFields([
+          {
+            name: "username",
+            errors: ["Invalid email or password"],
+          },
+          {
+            name: "password",
+            errors: ["Invalid email or password"],
+          },
+        ]);
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
     }
   };
 

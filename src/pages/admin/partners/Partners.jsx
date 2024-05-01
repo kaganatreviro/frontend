@@ -145,7 +145,7 @@ function Partners() {
           <span className="text-red-400 ml-2">Blocked</span>
         ) : (
           <span className="text-green-500 ml-2">Active</span>
-        ), // Отображение статуса
+        ),
     },
     {
       title: "Action",
@@ -156,7 +156,7 @@ function Partners() {
           overlay={
             <Menu onClick={(e) => handleMenuClick(e, record)}>
               <Menu.Item key="view">View Details</Menu.Item>
-              <Menu.Item key="block" onClick={handleBlockPartner} >
+              <Menu.Item key="block" onClick={handleBlockPartner}>
                 {record.blocked ? "Unblock" : "Block"}
               </Menu.Item>
             </Menu>
@@ -182,7 +182,6 @@ function Partners() {
     setIsModalVisible(true);
   };
 
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -194,7 +193,6 @@ function Partners() {
   const handleBlockPartner = () => {
     setIsModalVisibleBlock(true);
   };
-
 
   const handleOkBlock = () => {
     setIsModalVisibleBlock(false);
@@ -235,9 +233,17 @@ function Partners() {
           </div>
         )}
       </div>
-      <ModalDisable title={"Are you sure you want \n" +
-        "to block this partner?"} onOk={handleOkBlock} onCancel={handleCancelBlock} visible={isModalVisibleBlock} />
-      <ModalCreate onCancel={handleCancel} visible={isModalVisible} onOk={handleOk}/>
+      <ModalDisable
+        title={"Are you sure you want \n" + "to block this partner?"}
+        onOk={handleOkBlock}
+        onCancel={handleCancelBlock}
+        visible={isModalVisibleBlock}
+      />
+      <ModalCreate
+        onCancel={handleCancel}
+        visible={isModalVisible}
+        onOk={handleOk}
+      />
     </div>
   );
 }

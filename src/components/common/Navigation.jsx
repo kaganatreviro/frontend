@@ -2,6 +2,8 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../actions/authActions";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import NavigationIcons from "../../utils/NavigationIcons";
 
@@ -12,10 +14,11 @@ function Navigation() {
     { name: "Categories", path: "/categories" },
     { name: "Feedback", path: "/feedback" },
   ];
-
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogout = () => {
+    dispatch(logout());
     navigate("/admin/login");
   };
 
