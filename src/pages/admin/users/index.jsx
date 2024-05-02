@@ -128,7 +128,7 @@ function Users() {
   };
 
   return (
-    <div className="flex admin_users ">
+    <div className="flex admin_users custom-container">
       <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-4xl mb-8">User Management</div>

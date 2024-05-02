@@ -1,0 +1,29 @@
+.qr-frames {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border: 3px solid #FB7E00; /* Цвет рамки */
+  }
+
+  &::before {
+    bottom: -20px;
+    left: -20px;
+    width: 120px;
+    height: 120px;
+    border-right: none;
+    border-top: none;
+  }
+
+  &::after {
+    top: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    border-left: none;
+    border-bottom: none;
+  }
+
+}

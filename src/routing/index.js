@@ -3,51 +3,59 @@ import Partners from "../pages/admin/partners/Partners";
 import Feedback from "../pages/admin/feedback/feedback";
 import Login from "../pages/login";
 import Categories from "../pages/admin/categories/categories";
+import QRCode from "../pages/partners/qrcode/qrcode";
 
 export default {
   Main: {
     path: "/",
-    element: <Users />, //
+    element: <Users />,
     protected: false,
     role: "all",
   },
   AdminLogin: {
     path: "/login",
-    element: <Login />, //
+    element: <Login />,
     protected: true,
+    role: "all",
+  },
+
+  QRCode: {
+    path: "/qrcode",
+    element: <QRCode />,
+    protected: false,
     role: "all",
   },
 
   // ADMIN PANEL
   Users: {
     path: "/users",
-    element: <Users />, //
+    element: <Users />,
     protected: false,
     role: "all",
   },
   PartnerLogin: {
     path: "/admin/login",
-    element: <Login />, //
+    element: <Login />,
     protected: false,
     role: "all",
   },
   Partners: {
     path: "/partners",
-    element: <Partners />, //
+    element: <Partners />,
     protected: false,
     role: "all",
   },
 
   Categories: {
     path: "/categories",
-    element: <Categories />, //
+    element: <Categories />,
     protected: false,
     role: "all",
   },
 
   Feedback: {
     path: "/feedback",
-    element: <Feedback />, //
+    element: <Feedback />,
     protected: false,
     role: "all",
   },
