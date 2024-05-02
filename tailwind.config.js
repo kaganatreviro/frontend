@@ -40,7 +40,7 @@ module.exports = {
   plugins: [
     plugin(({ addComponents }) => {
       const newComponents = {
-        ".custom-container": {
+        ".container": {
           maxWidth: "1536px",
           width: "100%",
           height: "100%",

@@ -7,11 +7,9 @@ export const request = async (
   method,
   payload,
   formData,
-  params,
-  token
+  params
 ) => {
-  // const token = useSelector((state) => state.auth.accessToken);
-  // const token = sessionStorage.getItem("authToken");
+  const token = sessionStorage.getItem("authToken");
   const api = BASE_API_URL;
   try {
     const res = await axios({
@@ -52,6 +50,20 @@ export async function Test(data, token) {
   );
 }
 
+
+// ADMIN
+
+export async function loginAdmin(data) {
+  return request("/api/v1/user/token/admin/", "POST", data);
+}
+
+export async function createPartner(data) {
+  return request("/api/v1/user/create_partner/", "POST", data);
+}
+
+export async function getPartner(data) {
+  return request("/api/v1/user/partner_list", "GET", null, null, data);
+}
 export async function createAppointments(data) {
   return request("/api/coaches/appointments", "GET", null, null, data);
 }

@@ -4,14 +4,14 @@
 // stringst
 
 import React, { useState } from "react";
-import Logo from "../../assets/icons/Happy_Hours_Logo.png";
+import { useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import login from "../../assets/Logo/Login.png";
-import "./style.scss";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import { setAccessToken, setRefreshToken } from "../../store/actions/authActions";
+import { loginAdmin } from "../../components/api/api";
+import "./style.scss";
 
 function Login() {
   const [form] = Form.useForm();
@@ -19,26 +19,22 @@ function Login() {
   const dispatch = useDispatch();
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
-      await form.validateFields();
-      const response = await axios.post(
-        "http://16.170.203.161/api/v1/user/token/admin/",
-        {
-          email: values.username,
-          password: values.password,
-        }
-      );
-      console.log("Logged in successfully!", response.data);
-      dispatch(setAccessToken(response.data.access));
-      dispatch(setRefreshToken(response.data.refresh));
+      await form.validateFields(values);
+      const response = await loginAdmin(values);
+      if ( response ) {
+        sessionStorage.setItem("authToken", response.access);
+        dispatch(setAccessToken(response.access));
+        dispatch(setRefreshToken(response.refresh));
+      }
+      console.log("Logged in successfully!", response);
       navigate("/users");
     } catch (error) {
       console.log("Failed:", error);
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status) {
         form.setFields([
           {
-            name: "username",
+            name: "email",
             errors: ["Invalid email or password"],
           },
           {
@@ -52,30 +48,10 @@ function Login() {
     }
   };
 
-  const checkCredentials = (username, password) => {
-    const credentials = {
-      email: "admin@gmail.com",
-      password: "password12345",
-    };
-
-    if (username !== credentials.email || password !== credentials.password) {
-      form.setFields([
-        {
-          name: "username",
-          errors: ["Invalid email or password"],
-        },
-        {
-          name: "password",
-          errors: ["Invalid email or password"],
-        },
-      ]);
-    } else {
-      navigate("/users");
-    }
-  };
-
+  // email: "admin@gmail.com",
+  //   password: "password12345",
   return (
-    <div className=" bg-white h-screen flex items-center justify-center">
+    <div className=" bg-white h-screen flex items-center justify-center gap-5 container">
       <div className="w-1/2 flex items-center flex-col">
         <div className=" border-[#FFE4C3] border-4 w-[400px] pt-20 pb-20 px-12 rounded-lg flex flex-col items-center">
           <div className="flex">
@@ -91,7 +67,7 @@ function Login() {
             layout="vertical"
           >
             <Form.Item
-              name="username"
+              name="email"
               rules={[
                 {
                   required: true,

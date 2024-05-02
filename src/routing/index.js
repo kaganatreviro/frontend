@@ -12,7 +12,7 @@ export default {
     protected: false,
     role: "all",
   },
-  AdminLogin: {
+  PartnerLogin: {
     path: "/login",
     element: <Login />,
     protected: true,
@@ -33,7 +33,7 @@ export default {
     protected: false,
     role: "all",
   },
-  PartnerLogin: {
+  AdminLogin: {
     path: "/admin/login",
     element: <Login />,
     protected: false,
