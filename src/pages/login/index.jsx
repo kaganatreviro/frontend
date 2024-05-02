@@ -11,7 +11,7 @@ import login from "../../assets/Logo/Login.png";
 import "./style.scss";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setAccessToken, setRefreshToken } from "../../actions/authActions";
+import { setAccessToken, setRefreshToken } from "../../store/actions/authActions";
 
 function Login() {
   const [form] = Form.useForm();
@@ -30,8 +30,8 @@ function Login() {
         }
       );
       console.log("Logged in successfully!", response.data);
-      dispatch(setAccessToken(response.data.accessToken));
-      dispatch(setRefreshToken(response.data.refreshToken));
+      dispatch(setAccessToken(response.data.access));
+      dispatch(setRefreshToken(response.data.refresh));
       navigate("/users");
     } catch (error) {
       console.log("Failed:", error);

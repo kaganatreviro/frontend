@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Card, Avatar } from "antd";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import japarom from "../../../assets/icons/japarov.svg";
 import Navigation from "../../../components/common/Navigation";
 import "./style.scss";
@@ -8,8 +8,6 @@ import "./style.scss";
 function Users() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
-  const dispatch = useDispatch();
-  console.log(dispatch);
 
   useEffect(() => {
     setTimeout(() => {

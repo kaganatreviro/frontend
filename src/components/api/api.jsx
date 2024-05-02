@@ -1,8 +1,17 @@
+/* eslint-disable */
 import axios from "axios";
 import { BASE_API_URL } from "../../helpers/constants/Constants";
 
-export const request = async (url, method, payload, formData, params) => {
-  const token = sessionStorage.getItem("authToken");
+export const request = async (
+  url,
+  method,
+  payload,
+  formData,
+  params,
+  token
+) => {
+  // const token = useSelector((state) => state.auth.accessToken);
+  // const token = sessionStorage.getItem("authToken");
   const api = BASE_API_URL;
   try {
     const res = await axios({
@@ -21,9 +30,9 @@ export const request = async (url, method, payload, formData, params) => {
     if (error?.response?.status === 401) {
       localStorage.removeItem("authToken");
       localStorage.removeItem("userID");
-      if (!href.includes("/login") && !href.includes("/auth")) {
-        document.location.href = "/dashboard";
-      }
+      // if (!href.includes("/login") && !href.includes("/auth")) {
+      //   document.location.href = "/dashboard";
+      // }
     }
 
     throw error;
@@ -32,8 +41,15 @@ export const request = async (url, method, payload, formData, params) => {
 
 // EXAMPLE TO USE
 
-export async function signUp(data, role) {
-  return request(`/auth/${role}/create`, "POST", data);
+export async function Test(data, token) {
+  return request(
+    "/api/v1/user/create_partner/",
+    "POST",
+    data,
+    null,
+    null,
+    token
+  );
 }
 
 export async function createAppointments(data) {
