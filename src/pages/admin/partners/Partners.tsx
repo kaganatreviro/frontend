@@ -1,109 +1,35 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Card, Avatar, Dropdown, Menu } from "antd";
-import starbucks from "../../../assets/icons/starbucks.png";
+import { useAppDispatch } from '../../../helpers/hooks/hook';
 import Navigation from "../../../components/common/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import ModalCreate from "../../../components/modal/create/ModalCreate";
+import ModalDisable from "../../../components/modal/disable/ModalDisable";
+import { fetchPartner } from "../../../store/actions/admin/partner/partnerActions";
 import "./style.scss";
-import ModalCreate from "../../../components/modal/create/ModalCreate.tsx";
-import ModalDisable from "../../../components/modal/disable/ModalDisable.tsx";
+
+interface Partner {
+  name: string;
+  email: string;
+  phone: string;
+  blocked: boolean;
+  avatar?: string;
+}
 
 function Partners() {
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const [partners, setPartners] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setPartners([
-        {
-          key: 1,
-          name: "StarBucks",
-          email: "starbucks@gmail.com",
-          phone: "+996555555555",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 2,
-          name: "McDonald's",
-          email: "mcdonalds@gmail.com",
-          phone: "+996555555556",
-          avatar: starbucks,
-          blocked: true,
-        },
-        {
-          key: 3,
-          name: "Burger King",
-          email: "burgerking@gmail.com",
-          phone: "+996555555557",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 4,
-          name: "KFC",
-          email: "kfc@gmail.com",
-          phone: "+996555555558",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 5,
-          name: "Pizza Hut",
-          email: "pizzahut@gmail.com",
-          phone: "+996555555559",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 6,
-          name: "Subway",
-          email: "subway@gmail.com",
-          phone: "+996555555560",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 7,
-          name: "Domino's Pizza",
-          email: "dominos@gmail.com",
-          phone: "+996555555561",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 8,
-          name: "Wendy's",
-          email: "wendys@gmail.com",
-          phone: "+996555555562",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 9,
-          name: "Taco Bell",
-          email: "tacobell@gmail.com",
-          phone: "+996555555563",
-          avatar: starbucks,
-          blocked: false,
-        },
-        {
-          key: 10,
-          name: "Dunkin'",
-          email: "dunkin@gmail.com",
-          phone: "+996555555564",
-          avatar: starbucks,
-          blocked: false,
-        },
-      ]);
-      setLoading(false);
-    }, 2000);
-  }, []);
+    dispatch(fetchPartner());
+  }, [dispatch]);
 
-  const handleMenuClick = (e, record) => {
+  const handleMenuClick = (e: any, record: Partner) => {
     if (e.key === "view") {
       console.log("View details for partner:", record);
     } else if (e.key === "block") {
@@ -112,12 +38,12 @@ function Partners() {
     }
   };
 
-  const columns = [
+  const columns: any = [
     {
       title: "Partner",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => (
+      render: (text: any, record: any) => (
         <div className="flex items-center ">
           <Avatar src={record.avatar} style={{ marginRight: 8 }} />
           <span className="text-grey-1000">{text}</span>
@@ -128,19 +54,19 @@ function Partners() {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      render: (email) => <span className="text-gray-600">{email}</span>,
+      render: (email: any) => <span className="text-gray-600">{email}</span>,
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
-      render: (phone) => <span className="text-gray-600">{phone}</span>,
+      render: (phone: any) => <span className="text-gray-600">{phone}</span>,
     },
     {
       title: "Status",
       dataIndex: "blocked",
       key: "blocked",
-      render: (blocked) =>
+      render: (blocked: any) =>
         blocked ? (
           <span className="text-red-400 ml-2">Blocked</span>
         ) : (
@@ -151,7 +77,7 @@ function Partners() {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (text, record) => (
+      render: (text: any, record: any) => (
         <Dropdown
           overlay={
             <Menu onClick={(e) => handleMenuClick(e, record)}>
@@ -176,14 +102,10 @@ function Partners() {
 
   const paginationConfig = {
     pageSize: 10,
-    showTotal: (total, range) => `Results ${range[0]}-${range[1]} of ${total}`,
+    showTotal: (total: any, range: any) => `Results ${range[0]}-${range[1]} of ${total}`,
   };
   const handleAddPartner = () => {
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
@@ -203,7 +125,7 @@ function Partners() {
   };
 
   return (
-    <div className="flex admin_partners">
+    <div className="flex admin_partners container">
       <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-4xl mb-8">Partner Management</div>
@@ -242,7 +164,6 @@ function Partners() {
       <ModalCreate
         onCancel={handleCancel}
         visible={isModalVisible}
-        onOk={handleOk}
       />
     </div>
   );

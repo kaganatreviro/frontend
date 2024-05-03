@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "antd";
-import ModalAdd from "../../../components/modal/add/ModalAdd.tsx";
-import ModalDisable from "../../../components/modal/disable/ModalDisable.tsx";
+import ModalAdd from "../../../components/modal/add/ModalAdd";
+import ModalDisable from "../../../components/modal/disable/ModalDisable";
 import Navigation from "../../../components/common/Navigation";
 
 function Categories() {

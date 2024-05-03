@@ -40,6 +40,17 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+
     "import/no-extraneous-dependencies": ["error", {"devDependencies": false}],
     "react/jsx-uses-vars": "error",
     "import/no-import-module-exports": "off",
@@ -54,6 +65,13 @@
           ".ts",
           ".tsx"
         ]
+      }
+    ],
+    "react/require-default-props": [
+      "error",
+      {
+        "forbidDefaultForRequired": true,
+        "functions": "defaultArguments" //Here
       }
     ],
     "react/jsx-props-no-spreading": "off",

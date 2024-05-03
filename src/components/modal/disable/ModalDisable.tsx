@@ -2,14 +2,20 @@ import { Modal, Button } from "antd";
 import "./style.scss";
 
 interface ModalDisableProps {
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
   onOk: () => void;
   onCancel: () => void;
   visible: boolean;
 }
 
-function ModalDisable({ title, onOk, onCancel, visible, text }: ModalDisableProps) {
+function ModalDisable({
+  title = "Default Title",
+  text = "Default text",
+  onOk,
+  onCancel,
+  visible,
+}: ModalDisableProps) {
   return (
     <Modal
       open={visible}
