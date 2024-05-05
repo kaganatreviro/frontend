@@ -12,7 +12,7 @@ function TokenRefresher() {
       const refreshToken = async () => {
         try {
           const response = await axios.post(
-            "http://16.170.203.161/api/v1/user/token/refresh/"
+            "http://16.170.203.161/api/v1/user/token/refresh/",
           );
 
           dispatch(setAccessToken(response.data.accessToken));
