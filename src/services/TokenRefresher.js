@@ -7,6 +7,7 @@ function TokenRefresher() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessToken);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (accessToken) {
       const refreshToken = async () => {
@@ -14,7 +15,6 @@ function TokenRefresher() {
           const response = await axios.post(
             "http://16.170.203.161/api/v1/user/token/refresh/",
           );
-
           dispatch(setAccessToken(response.data.accessToken));
           dispatch(setRefreshToken(response.data.refreshToken));
 

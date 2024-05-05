@@ -1,8 +1,7 @@
-import { Modal, Button, Form, Input } from "antd";
+import { Modal, Button, Form, Input, notification } from "antd";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { createPartner } from "../../api/api";
 import "./style.scss";
-import createModerator from "./createModerator";
 
 interface ModalCreateProps {
   onCancel: () => void;
@@ -12,27 +11,23 @@ interface ModalCreateProps {
 function ModalCreate({ onCancel, visible }: ModalCreateProps) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const accessToken = useSelector((state) => state.auth.accessToken);
-  console.log(accessToken);
 
-  const handleOk = () => {
-    form
-      .validateFields()
-      .then(async (values) => {
-        setLoading(true);
-        try {
-          await createModerator(values.email, values.password, accessToken);
-          form.resetFields();
-          onCancel();
-        } catch (error) {
-          console.error("Failed to create moderator:", error);
-        } finally {
-          setLoading(false);
-        }
-      })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
+  const handleOk = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      console.log("Form Values:", values);
+      const response = await createPartner(values);
+      console.log("Response:", response);
+      form.resetFields();
+      setLoading(false);
+      onCancel();
+      notification.success({ message: "Partner created successfully!" });
+    } catch (error: any) {
+      console.error("Failed to create partner:", error);
+      setLoading(false);
+      notification.error({ message: "Failed to create partner", description: error.message || "Unexpected error" });
+    }
   };
 
   return (
@@ -40,20 +35,19 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
       open={visible}
       title="Create a Partner"
       onCancel={onCancel}
+      className="modal-create"
       footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
         <Button
           key="submit"
           type="primary"
           onClick={handleOk}
           loading={loading}
+          block
+          className="modal-confirm-btn"
         >
           Create
         </Button>,
       ]}
-      className="modal-create"
     >
       <Form
         form={form}
@@ -62,6 +56,14 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
         className="content"
         initialValues={{ remember: true }}
       >
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: "Please enter a name" }]}
+        >
+          <Input placeholder="Name" />
+        </Form.Item>
+
         <Form.Item
           name="email"
           label="Email Address"
@@ -72,12 +74,40 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
         >
           <Input placeholder="hello@example.com" />
         </Form.Item>
+
+        <Form.Item
+          name="max_establishments"
+          label="Max establishments"
+          rules={[{ required: true, message: "Please enter max establishments" }]}
+        >
+          <Input placeholder="1" />
+        </Form.Item>
+
         <Form.Item
           name="password"
           label="Password"
-          rules={[{ required: true, message: "Please enter your Password!" }]}
+          rules={[{ required: true, message: "Please enter your password" }]}
         >
-          <Input.Password placeholder="12345" />
+          <Input.Password placeholder="Enter your password" />
+        </Form.Item>
+
+        <Form.Item
+          name="password_confirm"
+          label="Confirm Password"
+          dependencies={["password"]}
+          rules={[
+            { required: true, message: "Please confirm your password" },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("The two passwords that you entered do not match!"));
+              },
+            }),
+          ]}
+        >
+          <Input.Password placeholder="Confirm your password" />
         </Form.Item>
       </Form>
     </Modal>
