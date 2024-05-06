@@ -1,34 +1,36 @@
 /* eslint-disable */
 
-// tmp_admin@example.com
-// stringst
+  // email: "happyadmin@mail.com"
+  //   password: "kaganat1"
 
-import React, { useState } from "react";
+  import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import login from "../../assets/Logo/Login.png";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
-import { setAccessToken, setRefreshToken } from "../../store/actions/authActions";
-import { loginAdmin } from "../../components/api/api";
+import { setAccessToken, setRefreshToken, setUserType } from "../../store/actions/authActions";
+import { loginAdmin, loginPartner } from "../../components/api/api";
 import "./style.scss";
 
 function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleSubmit = async (values) => {
     try {
       await form.validateFields(values);
-      const response = await loginAdmin(values);
-      if ( response ) {
+      const response = await (location.pathname.startsWith("/admin/login") ? loginAdmin(values) : loginPartner(values));
+      if (response) {
         sessionStorage.setItem("authToken", response.access);
         dispatch(setAccessToken(response.access));
         dispatch(setRefreshToken(response.refresh));
       }
+      localStorage.setItem("userType", location.pathname.startsWith("/admin/login") ? "admin" : "partner");
       console.log("Logged in successfully!", response);
-      navigate("/users");
+      navigate(location.pathname.startsWith("/admin/login") ? "/users" : "/qrcode");
     } catch (error) {
       console.log("Failed:", error);
       if (error.response && error.response.status) {
@@ -48,11 +50,9 @@ function Login() {
     }
   };
 
-  // email: "admin@gmail.com",
-  //   password: "password12345",
   return (
-    <div className=" bg-white h-screen flex items-center justify-center gap-5 container">
-      <div className="w-1/2 flex items-center flex-col">
+    <div className=" bg-white h-screen flex items-center justify-items-center gap-5 w-full">
+      <div className="flex items-center flex-col w-1/2">
         <div className=" border-[#FFE4C3] border-4 w-[400px] pt-20 pb-20 px-12 rounded-lg flex flex-col items-center">
           <div className="flex">
             <img src={Logo} alt="Happy Hours Logo" className="mb-8 w-9" />

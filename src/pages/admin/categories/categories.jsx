@@ -21,7 +21,6 @@ function Categories() {
 
   return (
     <div>
-      <Navigation />
       <Button onClick={showModal}>Добавить категорию</Button>
       <ModalDisable
         title="Are you sure you want

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Card, Avatar } from "antd";
 import { useSelector } from "react-redux";
 import japarom from "../../../assets/icons/japarov.svg";
-import Navigation from "../../../components/common/Navigation";
 import "./style.scss";
 
 function Users() {
@@ -129,7 +128,6 @@ function Users() {
 
   return (
     <div className="flex admin_users custom-container">
-      <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-4xl mb-8">User Management</div>
         {loading ? (
@@ -141,7 +139,7 @@ function Users() {
             columns={columns}
             dataSource={users}
             pagination={paginationConfig}
-            className="w-full h-full"
+            className="w-full h-full max-w-[1440px]"
           />
         )}
       </div>

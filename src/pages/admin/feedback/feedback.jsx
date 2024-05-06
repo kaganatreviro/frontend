@@ -119,8 +119,7 @@ function Feedback() {
   };
 
   return (
-    <div className="flex ">
-      <Navigation />
+    <div className="flex flex-1">
       <div className="bg-[#f4f4f4] flex-1 p-12">
         <div className="font-medium text-4xl mb-8 ml-6">Feedback</div>
         {loading ? (

@@ -1,33 +1,38 @@
-/* eslint-disable */
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
-}
-
-interface Action {
-  type: string;
-  payload: string | null;
+  userType: string | null;
 }
 
 const initialState: AuthState = {
   accessToken: null,
   refreshToken: null,
+  userType: null,
 };
 
-const authReducer = (
-  state: AuthState = initialState,
-  action: Action
-): AuthState => {
-  switch (action.type) {
-    case "SET_ACCESS_TOKEN":
-      return { ...state, accessToken: action.payload };
-    case "SET_REFRESH_TOKEN":
-      return { ...state, refreshToken: action.payload };
-    case "LOGOUT":
-      return { ...state, accessToken: null, refreshToken: null };
-    default:
-      return state;
-  }
-};
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    setAccessToken: (state, action: PayloadAction<string | null>) => {
+      state.accessToken = action.payload;
+    },
+    setRefreshToken: (state, action: PayloadAction<string | null>) => {
+      state.refreshToken = action.payload;
+    },
+    setUserType: (state, action: PayloadAction<string | null>) => {
+      state.userType = action.payload;
+    },
+    logout: (state) => {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.userType = null;
+    },
+  },
+});
 
-export default authReducer;
+export const { setAccessToken, setRefreshToken, setUserType, logout } = authSlice.actions;
+
+export default authSlice.reducer;

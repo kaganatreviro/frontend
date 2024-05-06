@@ -3,9 +3,8 @@ import Navigation from "../../../components/common/Navigation";
 
 function Establishments() {
   return (
-    <div className="flex">
-      <Navigation />
-      <div>awda</div>
+    <div className="flex flex-1">
+      <div>Establishments</div>
     </div>
   );
 }

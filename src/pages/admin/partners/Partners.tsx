@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Skeleton, Card, Avatar, Dropdown, Menu } from "antd";
 import { useAppDispatch } from '../../../helpers/hooks/hook';
-import Navigation from "../../../components/common/Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import ModalCreate from "../../../components/modal/create/ModalCreate";
@@ -126,7 +125,6 @@ function Partners() {
 
   return (
     <div className="flex admin_partners container">
-      <Navigation />
       <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
         <div className="font-medium text-4xl mb-8">Partner Management</div>
         {loading ? (

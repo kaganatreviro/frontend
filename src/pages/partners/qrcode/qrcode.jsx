@@ -5,9 +5,8 @@ import "./style.scss";
 
 function QRCode() {
   return (
-    <div className="flex">
-      <Navigation />
-      <div className="bg-[#f4f4f4] flex-1 p-12">
+    <div className="flex-1 flex bg-[#f4f4f4]">
+      <div className=" container flex-1 p-12">
         <div className="font-medium text-4xl mb-8 ml-6 absolute">QR Code</div>
         <div className="flex justify-center items-center flex-col h-full">
           <div className="w-[500px] flex flex-col items-center">

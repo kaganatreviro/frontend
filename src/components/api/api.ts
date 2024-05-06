@@ -34,6 +34,8 @@ export const request = async (
 
 export const loginAdmin = async (data: any) => request("/api/v1/user/token/admin/", "POST", data);
 
+export const loginPartner = async (data: any) => request("/api/v1/user/token/", "POST", data);
+
 export const createPartner = async (data: any) => request("/api/v1/user/create_partner/", "POST", data);
 
 export const fetchPartnerData = async () => request("/api/v1/user/partner_list", "GET");

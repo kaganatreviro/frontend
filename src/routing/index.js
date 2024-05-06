@@ -5,11 +5,14 @@ import Login from "../pages/login";
 import Categories from "../pages/admin/categories/categories";
 import QRCode from "../pages/partners/qrcode/qrcode";
 import Establishments from "../pages/partners/establishments/establishments";
+import Orders from "../pages/partners/orders";
+import Menu from "../pages/partners/menu";
+import Profile from "../pages/partners/profile";
 
 export default {
   Main: {
     path: "/",
-    element: <Users />,
+    element: <Login />,
     protected: false,
     role: "all",
   },
@@ -29,6 +32,24 @@ export default {
   Establishments: {
     path: "/establishments",
     element: <Establishments />,
+    protected: false,
+    role: "all",
+  },
+  Orders: {
+    path: "/orders",
+    element: <Orders />,
+    protected: false,
+    role: "all",
+  },
+  Menu: {
+    path: "/menu",
+    element: <Menu />,
+    protected: false,
+    role: "all",
+  },
+  Profile: {
+    path: "/profile",
+    element: <Profile />,
     protected: false,
     role: "all",
   },
