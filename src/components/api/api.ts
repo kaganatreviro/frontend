@@ -24,9 +24,9 @@ export const request = async (
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 401) {
-      sessionStorage.removeItem("authToken");
-      sessionStorage.removeItem("userID");
-      window.location.href = window.location.href.includes("/login") ? "/login" : "/dashboard";
+      // sessionStorage.removeItem("authToken");
+      // sessionStorage.removeItem("userID");
+      // window.location.href = window.location.href.includes("/login") ? "/login" : "/dashboard";
     }
     throw error;
   }

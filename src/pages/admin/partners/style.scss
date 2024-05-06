@@ -1,4 +1,18 @@
 .admin_partners {
+
+  .ant-table-wrapper {
+    height: 100%;
+  }
+  .ant-spin-nested-loading {
+    height: 100%;
+  }
+
+  .ant-spin-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
   .ant-table-thead {
     th {
       background: #fb7e00 !important;
@@ -51,6 +65,17 @@
     ):not([colspan])::before {
     display: none !important;
   }
+
+  .ant-btn {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: darken(#FB7E00, 10%) !important;
+      border: unset;
+    }
+  }
+
 }
 :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper .ant-table-cell,
 :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper
@@ -62,10 +87,7 @@
   overflow-wrap: break-word;
 }
 
-.table-wrapper {
-  height: calc(100vh - 240px);
-  overflow-y: auto;
-}
+
 :where(.css-dev-only-do-not-override-usln0u).ant-dropdown .ant-dropdown-menu,
 :where(.css-dev-only-do-not-override-usln0u).ant-dropdown-menu-submenu
   .ant-dropdown-menu {

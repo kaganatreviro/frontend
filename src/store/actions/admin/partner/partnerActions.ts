@@ -6,7 +6,6 @@ export const fetchPartner = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await fetchPartnerData();
-      console.log("data?", data);
       return data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

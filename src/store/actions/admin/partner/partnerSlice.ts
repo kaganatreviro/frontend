@@ -2,22 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchPartner } from "./partnerActions";
 // import { PartnerData } from "../../../../components/api/types";
 
+interface Partner {
+  id: number;
+  name: string;
+  email: string;
+  isBlocked: boolean;
+  maxEstablishments: number;
+}
 interface PartnerState {
-  data: {
-    name?: string;
-    email?: string;
-    maxEstablishments?: number;
-  };
+  partners: Partner[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: PartnerState = {
-  data: {
-    name: "",
-    email: "",
-    maxEstablishments: 0,
-  }, // Инициализировать поля name, email и maxEstablishments
+  partners: [],
   loading: false,
   error: null,
 };
@@ -33,7 +32,8 @@ const partnerSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchPartner.fulfilled, (state, action) => {
-        state.data = action.payload; // Теперь payload должен иметь тип PartnerData
+        // Предполагаем, что action.payload это массив данных о партнерах
+        state.partners = action.payload;
         state.loading = false;
       })
       .addCase(fetchPartner.rejected, (state, action) => {
