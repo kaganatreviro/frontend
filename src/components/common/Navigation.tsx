@@ -8,9 +8,10 @@ import { useSelector } from "react-redux";
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import NavigationIcons from "../../utils/NavigationIcons";
 
-function Navigation({ userType }: { userType: string }) {
+function Navigation() {
   const location = useLocation();
   const navigate = useNavigate();
+  const userType = localStorage.getItem("userType");
 
   const adminMenuItems = [
     { name: "Users", path: "/users" },

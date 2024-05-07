@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton, Card, Avatar, Dropdown, Menu, Button } from "antd";
+import { Table, Skeleton, Card, Button } from "antd";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../../store/store";
-import Navigation from "../../../components/common/Navigation";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import ModalCreate from "../../../components/modal/create/ModalCreate";
 import ModalDisable from "../../../components/modal/disable/ModalDisable";
