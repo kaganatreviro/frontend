@@ -2,22 +2,29 @@ import axios from "axios";
 import { BASE_API_URL } from "../../helpers/constants/Constants";
 
 async function refreshToken() {
+  const refreshToken = sessionStorage.getItem("refreshToken");
   try {
-    const refreshToken = sessionStorage.getItem("refreshToken");
-    console.log("Trying to refresh token with:", refreshToken);
     const response = await axios.post(`${BASE_API_URL}/api/v1/user/token/refresh/`, {
       refresh: refreshToken,
     });
-    console.log("Response from token refresh:", response);
     const { access, refresh } = response.data;
-    console.log("access token", access);
     sessionStorage.setItem("accessToken", access);
     sessionStorage.setItem("refreshToken", refresh);
     return access;
   } catch (error) {
     console.error("Failed to refresh token:", error);
-    // window.location.href = "/login";
     return null;
+  }
+}
+
+async function makeRequest(config: any) {
+  try {
+    const response = await axios(config);
+    console.log(`Response from ${config.url}:`, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error in request to ${config.url}:`, error);
+    throw error;
   }
 }
 
@@ -29,31 +36,28 @@ export const request = async (
   params?: any,
 ) => {
   const token = sessionStorage.getItem("accessToken");
-  console.log(`Sending request to ${url} with token:`, token);
+  const config = {
+    url: `${BASE_API_URL}${url}`,
+    headers: {
+      ...(formData ? { "Content-Type": "multipart/form-data" } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    method,
+    data: payload,
+    params,
+  };
+
   try {
-    const response = await axios({
-      url: `${BASE_API_URL}${url}`,
-      headers: {
-        ...(formData ? { "Content-Type": "multipart/form-data" } : {}),
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      method,
-      data: payload,
-      params,
-    });
-    console.log(`Response from ${url}:`, response.data);
-    return response.data;
+    return await makeRequest(config);
   } catch (error: any) {
     if (error.response?.status === 401 && !error.retryFlag) {
-      error.config.retryFlag = true; // Установка флага, чтобы избежать бесконечного цикла
       const newToken = await refreshToken();
       if (newToken) {
-        sessionStorage.setItem("accessToken", newToken);
-        error.config.headers.Authorization = `Bearer ${newToken}`;
-        // return axios(error.config);
+        config.headers.Authorization = `Bearer ${newToken}`;
+        const result = await makeRequest(config);
+        return result; // Повторный запрос с новым токеном
       }
     }
-    console.error(`Error in request to ${url}:`, error);
     throw error;
   }
 };

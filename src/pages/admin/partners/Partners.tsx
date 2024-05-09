@@ -170,7 +170,7 @@ function Partners() {
               </Button>
               <Table
                 columns={columns}
-                dataSource={Array.isArray(partners) ? partners : []}
+                dataSource={partners}
                 pagination={paginationConfig}
                 className="w-full h-full"
               />
