@@ -42,6 +42,7 @@ const partnerSlice = createSlice({
       .addCase(fetchPartner.fulfilled, (state, action) => {
         state.partners = action.payload;
         state.loading = false;
+        console.log("Updated partners in state:", state.partners);
       })
       .addCase(fetchPartner.rejected, (state, action) => {
         state.loading = false;

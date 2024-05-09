@@ -4,15 +4,15 @@ import { BASE_API_URL } from "../../helpers/constants/Constants";
 async function refreshToken() {
   try {
     const refreshToken = sessionStorage.getItem("refreshToken");
+    console.log("Trying to refresh token with:", refreshToken);
     const response = await axios.post(`${BASE_API_URL}/api/v1/user/token/refresh/`, {
       refresh: refreshToken,
     });
-    console.log("respose token new", response);
+    console.log("Response from token refresh:", response);
     const { access, refresh } = response.data;
     console.log("access token", access);
     sessionStorage.setItem("accessToken", access);
-    sessionStorage.setItem("refreshToken", refresh); // Перезаписываем refresh токен, если он возвращается новый
-
+    sessionStorage.setItem("refreshToken", refresh);
     return access;
   } catch (error) {
     console.error("Failed to refresh token:", error);
@@ -28,7 +28,8 @@ export const request = async (
   formData?: boolean,
   params?: any,
 ) => {
-  let token = sessionStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("accessToken");
+  console.log(`Sending request to ${url} with token:`, token);
   try {
     const response = await axios({
       url: `${BASE_API_URL}${url}`,
@@ -40,16 +41,19 @@ export const request = async (
       data: payload,
       params,
     });
+    console.log(`Response from ${url}:`, response.data);
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 401 && !error.retryFlag) {
-      error.retryFlag = true; // Установка флага, чтобы избежать бесконечного цикла
-      token = await refreshToken();
-      if (token) {
-        error.config.headers.Authorization = `Bearer ${token}`;
-        return axios(error.config);
+      error.config.retryFlag = true; // Установка флага, чтобы избежать бесконечного цикла
+      const newToken = await refreshToken();
+      if (newToken) {
+        sessionStorage.setItem("accessToken", newToken);
+        error.config.headers.Authorization = `Bearer ${newToken}`;
+        // return axios(error.config);
       }
     }
+    console.error(`Error in request to ${url}:`, error);
     throw error;
   }
 };

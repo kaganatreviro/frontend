@@ -24,27 +24,25 @@ interface Partner {
 
 function Partners() {
   const dispatch = useAppDispatch();
-  const partners = useSelector((state: RootState) => state.partner.partners);
+  const partners = useSelector((state: RootState) => state.partner.partners) || [];
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [isModalVisibleDetails, setIsModalVisibleDetails] = useState(false);
   useEffect(() => {
+    console.log("Current partners data:", partners);
     dispatch(fetchPartner());
   }, [dispatch]);
 
   const handleMenuClick = async (e: any, record: Partner) => {
     switch (e.key) {
       case "view":
-        console.log("View details for partner:", record);
         dispatch(setSelectedPartnerId(record.id));
         dispatch(fetchPartnerById(record.id));
         setIsModalVisibleDetails(true);
         break;
       case "block":
-        // partnerBlock();
-        console.log(record);
-        // Вызов функции для блокировки/разблокировки партнера
+        confirmBlockUnblock(record);
         break;
       default:
         console.log("No action selected");
@@ -122,7 +120,7 @@ function Partners() {
           is_blocked: updatedStatus,
         };
         await partnerBlock(data);
-        dispatch(fetchPartner()); // Обновить список после операции
+        dispatch(fetchPartner());
         console.log(updatedStatus ? "Blocked" : "Unblocked", "partner:", selectedPartner.name);
       } catch (error) {
         console.error("Failed to update partner status:", error);
@@ -147,9 +145,7 @@ function Partners() {
     setSelectedPartner(record);
     setIsModalVisibleBlock(true);
   };
-
-  console.log("Partners data for table:", partners);
-
+  console.log("Partners data in component:", partners);
   return (
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 admin_partners container">
@@ -174,7 +170,7 @@ function Partners() {
               </Button>
               <Table
                 columns={columns}
-                dataSource={partners}
+                dataSource={Array.isArray(partners) ? partners : []}
                 pagination={paginationConfig}
                 className="w-full h-full"
               />

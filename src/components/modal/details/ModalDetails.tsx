@@ -7,11 +7,7 @@ import "./style.scss";
 interface ModalDetailsProps {
   visible: boolean;
   onClose: () => void;
-  // partner: Partner;
-  // establishments: Establishment[];
 }
-
-const { TabPane } = Tabs;
 
 function ModalDetails({ onClose, visible }: ModalDetailsProps) {
   const partner = useSelector((state: RootState) => state.partner.currentPartnerDetails);
@@ -22,47 +18,51 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
     </div>
   );
 
+  const tabsItems = [
+    {
+      label: "Partner Info",
+      key: "1",
+      children: (
+        <div>
+          <div className="flex gap-8">
+            <div className="title">Name:</div>
+            <div>{partner?.name}</div>
+          </div>
+          <Divider />
+          <div className="flex gap-8">
+            <div className="title">Email:</div>
+            <div>{partner?.email}</div>
+          </div>
+          <Divider />
+          <div className="flex gap-8">
+            <div className="title">Phone:</div>
+            <div>{partner?.phone_number ? partner?.phone_number : "empty"}</div>
+          </div>
+          <Divider />
+          <div className="flex gap-8">
+            <div className="title">Status:</div>
+            <div>{partner?.isBlocked ? "Blocked" : "Active"}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Establishments",
+      key: "2",
+      children: (
+        <div>establishments</div>
+      ),
+    },
+  ];
+
   return (
     <Modal
       className="modal_details_admin"
       open={visible}
-      // closable={false}
       onCancel={onClose}
-      // footer={modalFooter}
       footer={[]}
     >
-      <Tabs defaultActiveKey="1" className="tab">
-        <TabPane tab="Partner Info" key="1">
-          <div>
-            <div className="flex gap-8">
-              <div className="title">Name:</div>
-              <div>{partner?.name}</div>
-            </div>
-            <Divider />
-            <div className="flex gap-8">
-              <div className="title">Email:</div>
-              <div>{partner?.email}</div>
-            </div>
-
-            <Divider />
-
-            <div className="flex gap-8">
-              <div className="title">Phone:</div>
-              <div>{partner?.phone_number ? partner?.phone_number : "empty"}</div>
-            </div>
-
-            <Divider />
-
-            <div className="flex gap-8">
-              <div className="title">Status:</div>
-              <div>{partner?.isBlocked ? "Blocked" : "Active"}</div>
-            </div>
-          </div>
-        </TabPane>
-        <TabPane tab="Establishments" key="2">
-          <div>establishments</div>
-        </TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="1" className="tab" items={tabsItems} />
     </Modal>
   );
 }
