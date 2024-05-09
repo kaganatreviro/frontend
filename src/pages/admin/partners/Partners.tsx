@@ -1,102 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { Table, Skeleton, Card, Button } from "antd";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Table, Skeleton, Card, Button, Dropdown, Menu } from "antd";
+import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { partnerBlock } from "../../../components/api/api";
+import { setSelectedPartnerId } from "../../../store/actions/admin/partner/partnerSlice";
+import ModalDetails from "../../../components/modal/details/ModalDetails";
 import { RootState } from "../../../store/store";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import ModalCreate from "../../../components/modal/create/ModalCreate";
 import ModalDisable from "../../../components/modal/disable/ModalDisable";
-import { fetchPartner } from "../../../store/actions/admin/partner/partnerActions";
+import { fetchPartner, fetchPartnerById } from "../../../store/actions/admin/partner/partnerActions";
 import "./style.scss";
 
 interface Partner {
   name: string;
   email: string;
   phone: string;
-  blocked: boolean;
+  is_blocked: boolean;
+  id: number;
   avatar?: string;
 }
 
 function Partners() {
   const dispatch = useAppDispatch();
   const partners = useSelector((state: RootState) => state.partner.partners);
-
+  const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
+  const [isModalVisibleDetails, setIsModalVisibleDetails] = useState(false);
   useEffect(() => {
     dispatch(fetchPartner());
   }, [dispatch]);
 
-  const handleMenuClick = (e: any, record: Partner) => {
-    if (e.key === "view") {
-      console.log("View details for partner:", record);
-    } else if (e.key === "block") {
-      const actionText = record.blocked ? "Unblock Partner" : "Block Partner";
-      console.log(actionText, ":", record);
+  const handleMenuClick = async (e: any, record: Partner) => {
+    switch (e.key) {
+      case "view":
+        console.log("View details for partner:", record);
+        dispatch(setSelectedPartnerId(record.id));
+        dispatch(fetchPartnerById(record.id));
+        setIsModalVisibleDetails(true);
+        break;
+      case "block":
+        // partnerBlock();
+        console.log(record);
+        // Вызов функции для блокировки/разблокировки партнера
+        break;
+      default:
+        console.log("No action selected");
     }
   };
 
-  // const columns: any = [
-  //   {
-  //     title: "Partner",
-  //     dataIndex: "name",
-  //     key: "name",
-  //     render: (text: any, record: any) => (
-  //       <div className="flex items-center ">
-  //         <Avatar src={record.avatar} style={{ marginRight: 8 }} />
-  //         <span className="text-grey-1000">{text}</span>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     title: "Email",
-  //     dataIndex: "email",
-  //     key: "email",
-  //     render: (email: any) => <span className="text-gray-600">{email}</span>,
-  //   },
-  //   {
-  //     title: "Phone",
-  //     dataIndex: "phone",
-  //     key: "phone",
-  //     render: (phone: any) => <span className="text-gray-600">{phone}</span>,
-  //   },
-  //   {
-  //     title: "Status",
-  //     dataIndex: "blocked",
-  //     key: "blocked",
-  //     render: (blocked: any) => (blocked ? (
-  //       <span className="text-red-400 ml-2">Blocked</span>
-  //     ) : (
-  //       <span className="text-green-500 ml-2">Active</span>
-  //     )),
-  //   },
-  //   {
-  //     title: "Action",
-  //     dataIndex: "action",
-  //     key: "action",
-  //     render: (text: any, record: any) => (
-  //       <Dropdown
-  //         overlay={(
-  //           <Menu onClick={(e) => handleMenuClick(e, record)}>
-  //             <Menu.Item key="view">View Details</Menu.Item>
-  //             <Menu.Item key="block" onClick={handleBlockPartner}>
-  //               {record.blocked ? "Unblock" : "Block"}
-  //             </Menu.Item>
-  //           </Menu>
-  //         )}
-  //         trigger={["click"]}
-  //       >
-  //         <Button className="ml-5">
-  //           <FontAwesomeIcon
-  //             icon={faEllipsis}
-  //             className="self-center mr-2 w-4 h-4"
-  //           />
-  //         </Button>
-  //       </Dropdown>
-  //     ),
-  //   },
-  // ];
   const columns: any = [
     {
       title: "Name",
@@ -117,7 +71,29 @@ function Partners() {
       title: "Status",
       dataIndex: "is_blocked",
       key: "is_blocked",
-      render: (isBlocked: boolean) => (isBlocked ? "Blocked" : "Active"),
+      render: (isBlocked: boolean) => (
+        <span style={{ color: isBlocked ? "#FC5757" : "#56CC8D" }}>
+          {isBlocked ? "Blocked" : "Active"}
+        </span>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_: any, record: Partner) => (
+        <Dropdown
+          menu={{
+            onClick: (e) => handleMenuClick(e, record),
+            items: [
+              { key: "view", label: "View Details" },
+              { key: "block", label: record.is_blocked ? "Unblock" : "Block" },
+            ],
+          }}
+          trigger={["click"]}
+        >
+          <Button className="action-button" type="primary" icon={<FontAwesomeIcon icon={faEllipsis} />} />
+        </Dropdown>
+      ),
     },
   ];
 
@@ -137,7 +113,21 @@ function Partners() {
     setIsModalVisibleBlock(true);
   };
 
-  const handleOkBlock = () => {
+  const handleOkBlock = async () => {
+    if (selectedPartner) {
+      const updatedStatus = !selectedPartner.is_blocked;
+      try {
+        const data = {
+          email: selectedPartner.email,
+          is_blocked: updatedStatus,
+        };
+        await partnerBlock(data);
+        dispatch(fetchPartner()); // Обновить список после операции
+        console.log(updatedStatus ? "Blocked" : "Unblocked", "partner:", selectedPartner.name);
+      } catch (error) {
+        console.error("Failed to update partner status:", error);
+      }
+    }
     setIsModalVisibleBlock(false);
   };
 
@@ -145,45 +135,65 @@ function Partners() {
     setIsModalVisibleBlock(false);
   };
 
+  const handleDetails = () => {
+    setIsModalVisibleDetails(true);
+  };
+
+  const handleCancelDetails = () => {
+    setIsModalVisibleDetails(false);
+  };
+
+  const confirmBlockUnblock = (record: Partner) => {
+    setSelectedPartner(record);
+    setIsModalVisibleBlock(true);
+  };
+
+  console.log("Partners data for table:", partners);
+
   return (
-    <div className="flex admin_partners container">
-      <div className="flex flex-col items-start p-12 bg-gray-100 flex-1">
-        <div className="font-medium text-4xl mb-8">Partner Management</div>
-        {!partners ? (
-          <Card bordered={false} className="w-full">
-            <Skeleton active paragraph={{ rows: 4 }} />
-          </Card>
-        ) : (
-          <>
-            <Button
-              className="bg-[#FB7E00] hover:bg-[#D56A00] px-3 py-2 text-white rounded-lg mb-6"
-              onClick={() => handleAddPartner()}
-            >
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="self-center mr-2 w-4 h-4"
+    <div className="flex-1 flex bg-[#f4f4f4]">
+      <div className="flex-1 admin_partners container">
+        <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
+          <div className="font-medium text-4xl mb-8">Partner Management</div>
+          {!partners ? (
+            <Card bordered={false} className="w-full">
+              <Skeleton active paragraph={{ rows: 4 }} />
+            </Card>
+          ) : (
+            <>
+              <Button
+                className="bg-[#FB7E00] px-3 py-2 text-white rounded-lg mb-6"
+                onClick={() => handleAddPartner()}
+                type="primary"
+              >
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="self-center mr-2 w-4 h-4"
+                />
+                <div className="text-white rounded-lg">Add New</div>
+              </Button>
+              <Table
+                columns={columns}
+                dataSource={partners}
+                pagination={paginationConfig}
+                className="w-full h-full"
               />
-              <div className="text-white rounded-lg">Add New</div>
-            </Button>
-            <Table
-              columns={columns}
-              dataSource={partners}
-              pagination={paginationConfig}
-              className="w-full h-full"
-            />
-          </>
-        )}
+            </>
+          )}
+        </div>
+        <ModalDisable
+          title={"Are you sure you want \n to block this partner?"}
+          onOk={handleOkBlock}
+          onCancel={handleCancelBlock}
+          visible={isModalVisibleBlock}
+        />
+        <ModalCreate
+          onCancel={handleCancel}
+          visible={isModalVisible}
+        />
+
+        <ModalDetails visible={isModalVisibleDetails} onClose={handleCancelDetails} />
       </div>
-      <ModalDisable
-        title={"Are you sure you want \n to block this partner?"}
-        onOk={handleOkBlock}
-        onCancel={handleCancelBlock}
-        visible={isModalVisibleBlock}
-      />
-      <ModalCreate
-        onCancel={handleCancel}
-        visible={isModalVisible}
-      />
     </div>
   );
 }

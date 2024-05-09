@@ -1,21 +1,6 @@
 .modal-create {
   max-width: 365px !important;
-  .modal-confirm-btn {
-    //width: 140px;
-    //margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FB7E00;
-    color: white;
-    border-radius: 10px;
-    padding: 8px 38px;
-    font-weight: 400;
-    font-size: 20px;
-    &:hover {
-      background-color: darken(#FB7E00, 10%) !important;
-    }
-  }
+
   .content {
     display: flex;
     flex-direction: column;

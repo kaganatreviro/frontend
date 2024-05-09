@@ -1,5 +1,5 @@
-// src/features/profile/profileSlice.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchMe, fetchMeEdit } from "../../../components/api/api";
 
 interface UserProfile {
   id: number;
@@ -7,6 +7,7 @@ interface UserProfile {
   name: string | null;
   role: string;
   max_establishments: number;
+  phone_number: string | null;
 }
 
 interface ProfileState {
@@ -25,14 +26,23 @@ export const fetchProfile = createAsyncThunk(
   "profile/fetchProfile",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("https://api.example.com/profile");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
+      const response = await fetchMe();
+      return response;
+    } catch (error: any) {
       return rejectWithValue("Failed to fetch profile");
+    }
+  },
+);
+
+// Добавление асинхронного thunk для редактирования профиля
+export const editProfile = createAsyncThunk(
+  "profile/editProfile",
+  async (data: Partial<UserProfile>, { rejectWithValue }) => {
+    try {
+      const response = await fetchMeEdit(data);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue("Failed to edit profile");
     }
   },
 );
@@ -51,6 +61,18 @@ const profileSlice = createSlice({
         state.profile = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
+      })
+      // Обработка состояний для асинхронного запроса редактирования профиля
+      .addCase(editProfile.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.profile = action.payload;
+      })
+      .addCase(editProfile.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
       });

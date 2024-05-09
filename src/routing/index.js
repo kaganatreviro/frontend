@@ -1,4 +1,4 @@
-import Users from "../pages/admin/users";
+import Users from "../pages/admin/users/Users";
 import Partners from "../pages/admin/partners/Partners";
 import Feedback from "../pages/admin/feedback/feedback";
 import Login from "../pages/login/Login";

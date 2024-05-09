@@ -68,8 +68,17 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           name="email"
           label="Email Address"
           rules={[
-            { type: "email", message: "This email is not valid" },
-            { required: true, message: "Please enter your email" },
+            { type: "email",
+              message: "This email is not valid",
+            },
+            {
+              required: true,
+              message: "Please enter your email",
+            },
+            {
+              pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "Email should contain only English letters, numbers, and basic symbols.",
+            },
           ]}
         >
           <Input placeholder="hello@example.com" />
@@ -86,7 +95,8 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
         <Form.Item
           name="password"
           label="Password"
-          rules={[{ required: true, message: "Please enter your password" }]}
+          rules={[{ required: true, message: "Please enter your password" },
+            { min: 8, message: "Password must be at least 8 characters long" }]}
         >
           <Input.Password placeholder="Enter your password" />
         </Form.Item>
@@ -97,6 +107,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           dependencies={["password"]}
           rules={[
             { required: true, message: "Please confirm your password" },
+            { min: 8, message: "Password must be at least 8 characters long" },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue("password") === value) {
