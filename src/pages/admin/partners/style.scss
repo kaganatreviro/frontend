@@ -13,12 +13,7 @@
     justify-content: space-between;
     height: 100%;
   }
-  .ant-table-thead {
-    th {
-      background: #fb7e00 !important;
-      color: #ffffff !important;
-    }
-  }
+
 
   .ant-pagination-total-text {
     color: #7d7d7d !important;
@@ -72,11 +67,25 @@
 
     &:hover {
       background-color: darken(#FB7E00, 10%) !important;
+    }
+  }
+
+  .action-button {
+    color: black;
+    border: none; /* Убрать границу */
+    background: transparent; /* Сделать фон прозрачным */
+    box-shadow: unset;
+
+    &:hover {
+      background-color: #FB7E00 !important;
       border: unset;
     }
   }
 
+
 }
+
+// NO STYLE
 :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper .ant-table-cell,
 :where(.css-dev-only-do-not-override-usln0u).ant-table-wrapper
   .ant-table-thead
@@ -101,3 +110,4 @@
   box-shadow: none;
   width: 130px;
 }
+

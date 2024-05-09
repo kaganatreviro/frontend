@@ -46,15 +46,15 @@ module.exports = {
           height: "100%",
           minHeight: "100vh",
           margin: "0 auto",
-          padding: "0 3.75rem",
+          // padding: "0 3.75rem",
           "@screen sm": {
-            padding: "0 2.5rem",
+            // padding: "0 2.5rem",
           },
           "@screen md": {
-            padding: "0 4rem",
+            // padding: "0 4rem",
           },
           "@screen lg": {
-            padding: "0 5rem",
+            // padding: "0 5rem",
           },
         },
       };

@@ -7,31 +7,33 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { authNotRequiredPathes } from "./helpers/auth/authNotRequiredPathes";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import routing from "./routing";
 import Navigation from "./components/common/Navigation";
-import Login from "./pages/login";
+import { RootState } from "./store/store";
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  const tokens = useSelector((state: RootState) => state.token);
+  useEffect(() => {
+    const authNotRequired = authNotRequiredPathes.some((path) => location.pathname.startsWith(path.replace(/\/:\w+\*?$/, "")));
+    if (!authNotRequired && !tokens.access) {
+      navigate("/login");
+    }
+  }, [tokens.access, navigate, location.pathname]);
 
-  // useEffect(() => {
-  //     const authNotRequired = authNotRequiredPathes.some((path) => location.pathname.startsWith(path.replace(/\/:\w+\*?$/, "")));
-  //     if (!authNotRequired && !authStore.token) {
-  //         navigate("/dashboard");
-  //     }
-  // }, [authStore.token, navigate, location.pathname]);
-
-  // usehistory
   const isAdminLoginPage = location.pathname === "/admin/login";
   const isUserLoginPage = location.pathname === "/login";
-  const userType = localStorage.getItem("userType");
-  console.log(userType);
-  const authState = useSelector((state) => state.auth);
+  // const userType = localStorage.getItem("userType");
+  // console.log(userType);
+
   return (
     <main className="app flex justify-center">
       {!isAdminLoginPage && !isUserLoginPage && (
-        <Navigation userType={userType} />
+        <Navigation />
       )}
       <Routes>
         {Object.keys(routing).map((key) => {
@@ -43,7 +45,7 @@ function App() {
           }
           return null;
         })}
-        <Route path="*" element={<Navigate to="/admin/login" />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </main>
   );

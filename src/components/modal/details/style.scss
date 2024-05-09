@@ -1,0 +1,25 @@
+.modal_details_admin {
+  .ant-modal-content {
+    //padding: 0;
+
+    .ant-tabs {
+      width: 100%; // Расширяет вкладки на всю ширину модального окна
+    }
+  }
+
+
+  .tab .ant-tabs-nav {
+    width: 100%;
+
+    .ant-tabs-nav-wrap {
+      justify-content: space-between; // Разделяет вкладки на равные части
+      width: 100%;
+    }
+  }
+
+  .title {
+    width: 60px;
+    font-weight: 600;
+  }
+
+}

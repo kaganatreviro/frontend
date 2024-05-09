@@ -3,35 +3,37 @@
   // email: "happyadmin@mail.com"
   //   password: "kaganat1"
 
-  import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAppDispatch } from "../../helpers/hooks/hook";
+// @ts-ignore
 import login from "../../assets/Logo/Login.png";
+// @ts-ignore
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
-import { setAccessToken, setRefreshToken, setUserType } from "../../store/actions/authActions";
+import { setAccessToken, setRefreshToken } from "../../store/actions/authActions";
 import { loginAdmin, loginPartner } from "../../components/api/api";
+import { setTokens } from "../../store/actions/token/tokenSlice";
 import "./style.scss";
 
 function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: any) => {
     try {
       await form.validateFields(values);
       const response = await (location.pathname.startsWith("/admin/login") ? loginAdmin(values) : loginPartner(values));
       if (response) {
-        sessionStorage.setItem("authToken", response.access);
-        dispatch(setAccessToken(response.access));
-        dispatch(setRefreshToken(response.refresh));
+        // sessionStorage.setItem("authToken", response.access);
+        dispatch(setTokens({ refresh: response.refresh, access: response.access}));
       }
       localStorage.setItem("userType", location.pathname.startsWith("/admin/login") ? "admin" : "partner");
       console.log("Logged in successfully!", response);
       navigate(location.pathname.startsWith("/admin/login") ? "/users" : "/qrcode");
-    } catch (error) {
+    } catch (error: any) {
       console.log("Failed:", error);
       if (error.response && error.response.status) {
         form.setFields([
