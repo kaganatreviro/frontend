@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import routing from "./routing";
 import Navigation from "./components/common/Navigation";
-import { setUserType } from "./store/actions/authActions";
+import Login from "./pages/login";
 
 function App() {
   const location = useLocation();
@@ -28,8 +28,6 @@ function App() {
   const userType = localStorage.getItem("userType");
   console.log(userType);
   const authState = useSelector((state) => state.auth);
-  console.log(authState);
-
   return (
     <main className="app flex justify-center">
       {!isAdminLoginPage && !isUserLoginPage && (
@@ -45,7 +43,7 @@ function App() {
           }
           return null;
         })}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/admin/login" />} />
       </Routes>
     </main>
   );

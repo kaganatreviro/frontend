@@ -50,6 +50,7 @@
         "tsx": "never"
       }
     ],
+    "no-process-env": "off",
 
     "import/no-extraneous-dependencies": ["error", {"devDependencies": false}],
     "react/jsx-uses-vars": "error",
