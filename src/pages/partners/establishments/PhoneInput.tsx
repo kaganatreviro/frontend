@@ -25,7 +25,7 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
         {
           pattern:
             /^996\d{9}$/,
-          message: "Please enter a valid phone number (996 555 555 555)",
+          message: "Please enter a valid phone number",
         },
       ]}
     >

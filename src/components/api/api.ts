@@ -69,4 +69,15 @@ export const loginPartner = async (data: any) => request("/api/v1/user/token/", 
 export const createPartner = async (data: any) => request("/api/v1/user/create_partner/", "POST", data);
 
 export const fetchPartnerData = async () => request("/api/v1/user/partner_list", "GET");
+
 export const fetchEstablishments = async () => request("/api/v1/partner/establishment/list/", "GET");
+
+export const fetchPartnerId = async (id: number) => request(`/api/v1/user/profiles_admin/${id}/`, "GET");
+
+export const fetchMe = async () => request("/api/v1/user/", "GET");
+
+export const fetchMeEdit = async (data: any) => request("/api/v1/user/", "PUT", data);
+
+export const fetchUsersList = async () => request("/api/v1/user/client_list/", "GET");
+
+export const partnerBlock = async (data: any) => request("/api/v1/user/block_user/", "POST", data);

@@ -81,8 +81,8 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 alt=""
               />
               <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-gray-500">
-                <div className="flex items-center text-lg">
+              <div className="flex items-center justify-between text-[#FB7E00]">
+                <div className="flex items-center text-lg ">
                   <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
                   <div>Time: 10:00-11:00</div>
                 </div>
@@ -93,7 +93,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 >
                   <FontAwesomeIcon
                     icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer"
+                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
                   />
                 </Dropdown>
               </div>
@@ -107,8 +107,8 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 alt=""
               />
               <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-gray-500">
-                <div className="flex items-center text-lg">
+              <div className="flex items-center justify-between text-[#FB7E00]">
+                <div className="flex items-center text-lg ">
                   <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
                   <div>Time: 10:00-11:00</div>
                 </div>
@@ -119,7 +119,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 >
                   <FontAwesomeIcon
                     icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer"
+                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
                   />
                 </Dropdown>
               </div>
@@ -133,8 +133,8 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 alt=""
               />
               <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-gray-500">
-                <div className="flex items-center text-lg">
+              <div className="flex items-center justify-between text-[#FB7E00]">
+                <div className="flex items-center text-lg ">
                   <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
                   <div>Time: 10:00-11:00</div>
                 </div>
@@ -145,7 +145,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 >
                   <FontAwesomeIcon
                     icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer"
+                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
                   />
                 </Dropdown>
               </div>

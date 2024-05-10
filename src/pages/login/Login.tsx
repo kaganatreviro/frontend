@@ -32,7 +32,7 @@ function Login() {
       }
       localStorage.setItem("userType", location.pathname.startsWith("/admin/login") ? "admin" : "partner");
       console.log("Logged in successfully!", response);
-      navigate(location.pathname.startsWith("/admin/login") ? "/users" : "/qrcode");
+      navigate(location.pathname.startsWith("/admin/login") ? "/users" : "/profile");
     } catch (error: any) {
       console.log("Failed:", error);
       if (error.response && error.response.status) {
