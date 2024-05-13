@@ -85,13 +85,19 @@ export default function Profile() {
             <Form.Item
               label="Phone Number"
               name="phone_number"
-              rules={[{ required: true, message: "Please input your phone number!" }]}
+              rules={[
+                { required: true, message: "Please input your phone number!" },
+                {
+                  pattern: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+                  message: "Please enter a valid phone number!",
+                },
+              ]}
             >
               <Input placeholder="Phone Number" />
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" block>
+              <Button type="primary" className="modal-confirm-btn" htmlType="submit" block>
                 Submit
               </Button>
             </Form.Item>
