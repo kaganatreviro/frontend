@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Route,
   Routes,
@@ -6,7 +6,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { authNotRequiredPathes } from "./helpers/auth/authNotRequiredPathes";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -52,10 +52,3 @@ function App() {
 }
 
 export default App;
-
-// useEffect(() => {
-//     const authNotRequired = authNotRequiredPathes.some((path) => location.pathname.startsWith(path.replace(/\/:\w+\*?$/, "")));
-//     if (!authNotRequired && !authStore.token) {
-//         navigate("/dashboard");
-//     }
-// }, [authStore.token, navigate, location.pathname]);
