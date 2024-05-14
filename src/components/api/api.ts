@@ -70,8 +70,6 @@ export const createPartner = async (data: any) => request("/api/v1/user/admin/pa
 
 export const fetchPartnerData = async () => request("/api/v1/user/admin/partners/list/", "GET");
 
-export const fetchEstablishments = async () => request("/api/v1/partner/establishment/list/", "GET");
-
 export const fetchPartnerId = async (id: number) => request(`/api/v1/user/admin/partners/${id}/`, "GET");
 
 export const fetchMe = async () => request("/api/v1/user/users/profile/", "GET");
@@ -88,3 +86,8 @@ export const addItemMenu = async (data: any) => request("/api/v1/beverage/bevera
 export const fetchMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "GET");
 export const editMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "PUT");
 export const deleteMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "DELETE");
+
+// Establishment
+export const fetchEstablishments = async () => request("/api/v1/partner/establishments/", "GET");
+export const createEstablishment = async (data: any) => request("/api/v1/partner/establishments/", "POST", data);
+export const editEstablishment = async (id: number) => request(`/api/v1/partner/establishments/${id}/`, "PUT");

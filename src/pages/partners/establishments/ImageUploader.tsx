@@ -1,33 +1,35 @@
 /* eslint-disable */
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 interface ImageUploaderProps {
-  onUpload: (file: File) => void;
+  onUpload: (file: File | null) => void;
+  image: File | null;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
-  const [image, setImage] = useState<File | null>(null);
-
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, image }) => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(image);
+  console.log(image instanceof File);
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
-      setImage(file);
+      setSelectedImage(file);
       onUpload(file);
     }
   };
 
   const handleImageRemove = () => {
-    setImage(null);
+    setSelectedImage(null);
+    onUpload(null);
   };
 
   return (
     <div className="w-[200px]">
-      {image ? (
+      {selectedImage ? (
         <div className="relative flex">
           <img
-            src={URL.createObjectURL(image)}
+            src={URL.createObjectURL(selectedImage)}
             alt="Uploaded Image"
             className="w-[200px] h-[200px] rounded-full"
           />

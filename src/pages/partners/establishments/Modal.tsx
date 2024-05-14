@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState } from "react";
+import { createEstablishment } from "../../../components/api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import PhoneInput from "./PhoneInput";
@@ -19,12 +20,14 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const [description, setDescription] = React.useState("");
   const [name, setName] = React.useState("");
+  const [startTime, setStartTime] = useState<string | null>(null);
+  const [endTime, setEndTime] = useState<string | null>(null);
+  const [longitude, setLongitude] = React.useState<number | null>(null);
+  const [latitude, setLatitude] = React.useState<number | null>(null);
+  const [input, setInput] = React.useState<string>("");
 
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
-  };
-  const handleTimeChange = (value: Date | null) => {
-    setSelectedTime(value);
   };
 
   const handleDescriptionChange = (
@@ -39,24 +42,69 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
-  const handleImageUpload = (file: File) => {
+  const handleImageUploadInModal = (file: File | null) => {
     setUploadedImage(file);
+    console.log(file instanceof File);
   };
+
   const [form] = Form.useForm();
-  
-  const onFinish = (values: any) => {
-    console.log("Received values:", values);
-    console.log("Saved!");
-  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+  const handleStartTimeChange = (time: string | null) => {
+    setStartTime(time);
+  };
+
+  const handleEndTimeChange = (time: string | null) => {
+    setEndTime(time);
+  };
+
+  const handleLocationSelect = (
+    location: { lat: number; lng: number },
+    address: string
+  ) => {
+    setLongitude(location.lng);
+    setLatitude(location.lat);
+    setInput(address);
+  };
+
+  const handleSave = async () => {
+    try {
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append(
+        "location",
+        JSON.stringify({ type: "Point", coordinates: [longitude, latitude] })
+      );
+      formData.append("description", description);
+      formData.append("phone_number", phoneNumber);
+      formData.append("email", "Sierra@gmail.com");
+      formData.append("address", input);
+      if (startTime !== null) {
+        formData.append("happyhours_start", startTime);
+      }
+      if (endTime !== null) {
+        formData.append("happyhours_end", endTime);
+      }
+
+      if (uploadedImage !== null) {
+        formData.append("logo", uploadedImage);
+      }
+
+      const response = await createEstablishment(formData);
+      console.log("Response:", response);
+    } catch (error) {
+      console.error("Failed to create establishment:", error);
+    }
+  };
+
   return (
     isModalOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-10 px-10">
-          <div className="flex justify-between pt-2 mb-12">
+        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10">
+          <div className="flex justify-between pt-2 mb-10">
             <div className="text-3xl">Establishment's Profile:</div>
             <button
               onClick={onClose}
@@ -69,12 +117,16 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
           <Form
             form={form}
             name="profileForm"
-            onFinish={onFinish}
+            onFinish={handleSave}
             onFinishFailed={onFinishFailed}
+            encType="multipart/form-data"
           >
-            <div className="flex mb-10 gap-20 ">
+            <div className="flex gap-20 ">
               <div>
-                <ImageUploader onUpload={handleImageUpload} />
+                <ImageUploader
+                  image={uploadedImage}
+                  onUpload={handleImageUploadInModal}
+                />
               </div>
 
               <div>
@@ -104,11 +156,14 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                   </div>
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Time:</div>
-                    <TimeRangePickers />
+                    <TimeRangePickers
+                      onStartTimeChange={handleStartTimeChange}
+                      onEndTimeChange={handleEndTimeChange}
+                    />
                   </div>
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Location:</div>
-                    <Map />
+                    <Map onLocationSelect={handleLocationSelect} />
                   </div>
 
                   <div>
@@ -128,13 +183,12 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                         placeholder="Enter description"
                         maxLength={1000}
                         className="w-[350px] border-gray-300 placeholder-gray-300 text-lg"
-                        style={{ height: "200px" }}
+                        style={{ height: "100px" }}
                       />
                     </Form.Item>
                   </div>
                   <div className=" mt-8 flex justify-end">
                     <Form.Item>
-                      {" "}
                       <button className="bg-[#FB7E00] hover:bg-[#D56A00] w-[120px] justify-center text-white rounded-lg py-2 px-6 text-xl flex items-center">
                         Save
                       </button>

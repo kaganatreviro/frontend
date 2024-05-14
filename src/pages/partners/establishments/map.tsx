@@ -1,5 +1,4 @@
 /* eslint-disable */
-"AIzaSyAkxqtXfwB-RgYwTwR38_3Vp6Fm88xH2OE";
 import React, { useState, useRef, ReactNode, CSSProperties } from "react";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +9,8 @@ import {
 import { Form, Input } from "antd";
 
 const containerStyle = {
-  width: "680px",
-  height: "720px",
+  width: "650px",
+  height: "620px",
 };
 
 interface ModalProps {
@@ -28,13 +27,21 @@ const Modal = ({ children, onClose }: ModalProps) => {
     </div>
   );
 };
+interface MapProps {
+  onLocationSelect: (
+    location: { lat: number; lng: number },
+    address: string
+  ) => void;
+}
 
-
-function Map() {
+const Map: React.FC<MapProps> = ({ onLocationSelect }) => {
   const [selectedLocation, setSelectedLocation] = useState({
     lat: 42.8746,
     lng: 74.5698,
   });
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [input, setInput] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -43,6 +50,9 @@ function Map() {
   const markerRef = useRef<google.maps.Marker | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  console.log(API_KEY, "aa");
+  console.log(process.env);
 
 const handlePlaceSelect = () => {
   if (searchValue.trim() === "") {
@@ -68,17 +78,20 @@ const handlePlaceSelect = () => {
       if (mapRef.current) {
         mapRef.current.panTo({ lat, lng });
       }
+      onLocationSelect({ lat, lng }, addressObject.formatted_address || "");
     } else {
       setError("Invalid location");
     }
   }
 };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handlePlaceSelect();
-    }
-  };
+
+
+const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    handlePlaceSelect();
+  }
+};
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -125,15 +138,15 @@ const handlePlaceSelect = () => {
     transform: "translate(-50%, -50%)",
     backgroundColor: "#ffffff",
     width: "750px",
-    height: "880px",
+    height: "828px",
     zIndex: 100,
-    paddingTop: "14px",
+    paddingTop: "30px",
   };
 
   return (
     <div>
       <LoadScript
-        googleMapsApiKey="AIzaSyAkxqtXfwB-RgYwTwR38_3Vp6Fm88xH2OE"
+        googleMapsApiKey={API_KEY || ""}
         libraries={["places"]}
       >
         <Form.Item
@@ -191,7 +204,7 @@ const handlePlaceSelect = () => {
                 />
                 <button
                   onClick={closeMapModal}
-                  className="text-[#FB7E00] hover:text-[#c4874a] focus:outline-none flex items-center self-start mt-10 ml-12"
+                  className="text-[#FB7E00] hover:text-[#c4874a] focus:outline-none flex items-center self-start mt-8 ml-12"
                 >
                   <FontAwesomeIcon
                     icon={faArrowLeftLong}
@@ -206,6 +219,6 @@ const handlePlaceSelect = () => {
       </LoadScript>
     </div>
   );
-}
+};
 
 export default Map;

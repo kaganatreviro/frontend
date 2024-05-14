@@ -4,7 +4,12 @@ import { TimePicker, Form } from "antd";
 import dayjs from "dayjs";
 import { RangePickerProps } from "antd/lib/date-picker";
 
-const TimeRangePickers: React.FC = () => {
+interface TimeRangePickersProps {
+  onStartTimeChange: (time: string | null) => void;
+  onEndTimeChange: (time: string | null) => void;
+}
+
+const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [form] = Form.useForm();
@@ -12,11 +17,13 @@ const TimeRangePickers: React.FC = () => {
   const handleChange: RangePickerProps["onChange"] = (dates, dateStrings) => {
     if (dates && dates[0]) {
       setStartTime(dates[0].format("HH:mm"));
+      props.onStartTimeChange(dates[0].format("HH:mm"));
     } else {
       setStartTime(null);
     }
     if (dates && dates[1]) {
       setEndTime(dates[1].format("HH:mm"));
+      props.onEndTimeChange(dates[1].format("HH:mm"));
     } else {
       setEndTime(null);
     }
@@ -35,20 +42,20 @@ const TimeRangePickers: React.FC = () => {
   };
 
   return (
-      <Form.Item
-        label="Time Range"
-        name="timeRange"
-        rules={[
-          {
-            type: "array",
-            required: true,
-            message: "Please select time range!",
-          },
-          { validator: validateEndTime },
-        ]}
-      >
-        <TimePicker.RangePicker onChange={handleChange} format="HH:mm" />
-      </Form.Item>
+    <Form.Item
+      label="Time Range"
+      name="timeRange"
+      rules={[
+        {
+          type: "array",
+          required: true,
+          message: "Please select time range!",
+        },
+        { validator: validateEndTime },
+      ]}
+    >
+      <TimePicker.RangePicker onChange={handleChange} format="HH:mm" />
+    </Form.Item>
   );
 };
 
