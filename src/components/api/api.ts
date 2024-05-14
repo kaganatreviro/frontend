@@ -4,7 +4,7 @@ import { BASE_API_URL } from "../../helpers/constants/Constants";
 async function refreshToken() {
   const refreshToken = sessionStorage.getItem("refreshToken");
   try {
-    const response = await axios.post(`${BASE_API_URL}/api/v1/user/token/refresh/`, {
+    const response = await axios.post(`${BASE_API_URL}/api/v1/user/auth/token/refresh/`, {
       refresh: refreshToken,
     });
     const { access, refresh } = response.data;
@@ -62,26 +62,29 @@ export const request = async (
   }
 };
 
-export const loginAdmin = async (data: any) => request("/api/v1/user/token/admin/", "POST", data);
+export const loginAdmin = async (data: any) => request("/api/v1/user/admin/auth/token/", "POST", data);
 
-export const loginPartner = async (data: any) => request("/api/v1/user/token/", "POST", data);
+export const loginPartner = async (data: any) => request("/api/v1/user/auth/token/", "POST", data);
 
-export const createPartner = async (data: any) => request("/api/v1/user/create_partner/", "POST", data);
+export const createPartner = async (data: any) => request("/api/v1/user/admin/partners/create/", "POST", data);
 
-export const fetchPartnerData = async () => request("/api/v1/user/partner_list", "GET");
+export const fetchPartnerData = async () => request("/api/v1/user/admin/partners/list/", "GET");
 
 export const fetchEstablishments = async () => request("/api/v1/partner/establishment/list/", "GET");
 
-export const fetchPartnerId = async (id: number) => request(`/api/v1/user/profiles_admin/${id}/`, "GET");
+export const fetchPartnerId = async (id: number) => request(`/api/v1/user/admin/partners/${id}/`, "GET");
 
-export const fetchMe = async () => request("/api/v1/user/", "GET");
+export const fetchMe = async () => request("/api/v1/user/users/profile/", "GET");
 
-export const fetchMeEdit = async (data: any) => request("/api/v1/user/", "PUT", data);
+export const fetchMeEdit = async (data: any) => request("/api/v1/user/users/profile/", "PUT", data);
 
-export const fetchUsersList = async () => request("/api/v1/user/client_list/", "GET");
+export const fetchUsersList = async () => request("/api/v1/user/admin/clients/list/", "GET");
 
-export const partnerBlock = async (data: any) => request("/api/v1/user/block_user/", "POST", data);
+export const partnerBlock = async (data: any) => request("/api/v1/user/admin/users/block", "POST", data);
 
+// MENU
 export const fetchMenu = async () => request("/api/v1/beverage/beverages/", "GET");
-
 export const addItemMenu = async (data: any) => request("/api/v1/beverage/beverages/", "POST", data);
+export const fetchMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "GET");
+export const editMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "PUT");
+export const deleteMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "DELETE");
