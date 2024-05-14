@@ -58,7 +58,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
 
   return (
     <div className="flex-1 flex partner_establishments bg-[#f4f4f4]">
-      <div className="container flex-1 p-12">
+      <div className=" flex-1 p-12">
         <div className="flex justify-between">
           <div className="font-medium text-4xl mb-8">Establishments</div>
         </div>
@@ -67,7 +67,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
             <Skeleton active paragraph={{ rows: 4 }} />
           </Card>
         ) : (
-          <div>
+          <>
             <div>
               <div className="text-2xl text-gray-400 mb-6">
                 You have 1 establishment left to add
@@ -80,7 +80,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
               </button>
             </div>
 
-            <div className="mt-16 flex gap-8">
+            <div className="mt-16 flex gap-8 flex-wrap">
               {[1, 2, 3].map((item) => (
                 <div
                   key={item}
@@ -117,7 +117,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
               ))}
             </div>
             <Modal isModalOpen={isModalOpen} onClose={toggleModal} />
-          </div>
+          </>
         )}
       </div>
     </div>
