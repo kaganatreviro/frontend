@@ -5,7 +5,6 @@ import {
   useLocation,
   Navigate,
   useNavigate,
-  HashRouter,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { authNotRequiredPathes } from "./helpers/auth/authNotRequiredPathes";
@@ -33,21 +32,21 @@ function App() {
 
   return (
     <main className="app flex justify-center">
-      {!isAdminLoginPage && !isUserLoginPage && <Navigation />}
-      <HashRouter>
-        <Routes>
-          {Object.keys(routing).map((key) => {
-            const route = routing[key];
-            if (route.role === "all") {
-              return (
-                <Route key={key} path={route.path} element={route.element} />
-              );
-            }
-            return null;
-          })}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </HashRouter>
+      {!isAdminLoginPage && !isUserLoginPage && (
+        <Navigation />
+      )}
+      <Routes>
+        {Object.keys(routing).map((key) => {
+          const route = routing[key];
+          if (route.role === "all") {
+            return (
+              <Route key={key} path={route.path} element={route.element} />
+            );
+          }
+          return null;
+        })}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </main>
   );
 }
