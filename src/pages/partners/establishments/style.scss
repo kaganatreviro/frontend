@@ -1,38 +1,35 @@
-partner_establishments {
+.partner_establishments {
+    .dropdown-wrapper .ant-dropdown-menu {
+      min-width: 200px;
+    }
+    .ant-dropdown-menu-title-content{
+          font-size: 20px;
+    }
+    .ant-picker-range, .ant-picker-outlined {
+      width: 350px;
+      height: 46px;
+      font-size: 16px;
+    }
+    :where(.css-dev-only-do-not-override-usln0u).ant-picker .ant-picker-input >input {
+        font-size: 16px;
 
-
-.dropdown-wrapper .ant-dropdown-menu {
-  min-width: 200px;
-}
-.ant-dropdown-menu-title-content{
-      font-size: 20px;
-}
-.ant-picker-range, .ant-picker-outlined {
-  width: 350px;
-  height: 46px;
-  font-size: 16px;
-}
-:where(.css-dev-only-do-not-override-usln0u).ant-picker .ant-picker-input >input {
-    font-size: 16px;
-
-}
-.special-label {
-  display: none;
-}
-.form-control   {
-  height: 46px !important;
-  font-size: 16px;
-  outline: none;
-}
-.form-control:hover {
-  border-color: #2e5bd6 !important;
-  transition: ease-in-out .3s;
-}
-.form-control::placeholder{
-  color: rgb(211, 211, 211);
-}
-.ant-form-item-label {
-  display: none;
-}
-
+    }
+    .special-label {
+      display: none;
+    }
+    .form-control   {
+      height: 46px !important;
+      font-size: 16px;
+      outline: none;
+    }
+    .form-control:hover {
+      border-color: #2e5bd6 !important;
+      transition: ease-in-out .3s;
+    }
+    .form-control::placeholder{
+      color: rgb(211, 211, 211);
+    }
+    .ant-form-item-label {
+      display: none;
+    }
 }

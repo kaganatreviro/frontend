@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu, Card, Skeleton } from "antd";
 import { fetchEstablishments } from "../../../components/api/api";
+import './style.scss';
 
 import Modal from "./Modal";
 
