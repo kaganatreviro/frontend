@@ -60,7 +60,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
     </Menu>
   );
   return (
-    <div className="flex-1 flex bg-[#f4f4f4]">
+    <div className="flex-1 flex partner_establishments bg-[#f4f4f4]">
       <div className="container flex-1 p-12">
         <div className="flex justify-between">
           <div className="font-medium text-4xl mb-8">Establishments</div>

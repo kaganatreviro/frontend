@@ -55,7 +55,7 @@ export const request = async (
       if (newToken) {
         config.headers.Authorization = `Bearer ${newToken}`;
         const result = await makeRequest(config);
-        return result; // Повторный запрос с новым токеном
+        return result;
       }
     }
     throw error;

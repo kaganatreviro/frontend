@@ -55,6 +55,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
         name="createPartnerForm"
         className="content"
         initialValues={{ remember: true }}
+        requiredMark={false}
       >
         <Form.Item
           name="name"
