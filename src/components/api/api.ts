@@ -81,3 +81,7 @@ export const fetchMeEdit = async (data: any) => request("/api/v1/user/", "PUT", 
 export const fetchUsersList = async () => request("/api/v1/user/client_list/", "GET");
 
 export const partnerBlock = async (data: any) => request("/api/v1/user/block_user/", "POST", data);
+
+export const fetchMenu = async () => request("/api/v1/beverage/beverages/", "GET");
+
+export const addItemMenu = async (data: any) => request("/api/v1/beverage/beverages/", "POST", data);

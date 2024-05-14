@@ -55,6 +55,7 @@ export default function Profile() {
             autoComplete="off"
             layout="vertical"
             className="flex flex-col h-full"
+            requiredMark={false}
           >
             <Form.Item
               label="Name"

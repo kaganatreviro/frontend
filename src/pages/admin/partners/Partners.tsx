@@ -24,13 +24,12 @@ interface Partner {
 
 function Partners() {
   const dispatch = useAppDispatch();
-  const partners = useSelector((state: RootState) => state.partner.partners) || [];
+  const partners = useSelector((state: RootState) => state.partner.partners);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [isModalVisibleDetails, setIsModalVisibleDetails] = useState(false);
   useEffect(() => {
-    console.log("Current partners data:", partners);
     dispatch(fetchPartner());
   }, [dispatch]);
 
