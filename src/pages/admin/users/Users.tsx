@@ -15,7 +15,7 @@ function Users() {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
 
   const columns = [
     {
