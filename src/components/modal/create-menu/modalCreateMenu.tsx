@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select, Button } from "antd";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { addItem } from "../../../store/actions/partner/menu";
 
-interface MenuItem {
+interface Menu {
   id?: number;
   name: string;
   price: number;
@@ -16,7 +16,7 @@ interface MenuItem {
 interface ModalCreateMenuProps {
   isVisible: boolean;
   onCancel: () => void;
-  onSubmit: (values: MenuItem) => void;
+  onSubmit: (values: Menu) => void;
   categories: Array<{ label: string; value: string }>;
 }
 
@@ -29,8 +29,8 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories }: ModalCre
     form.resetFields();
   };
 
-  const handleFinish = (values: MenuItem) => {
-    dispatch(addItem(values)); // Dispatch добавления элемента
+  const handleFinish = (values: Menu) => {
+    dispatch(addItem(values));
     form.resetFields();
   };
 
