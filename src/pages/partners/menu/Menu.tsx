@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Card, Switch, Button } from "antd";
+import { fetchPartner } from "store/actions/admin/partner/partnerActions";
+import { partnerBlock } from "components/api/api";
+import { CloseOutlined } from "@ant-design/icons";
+import ModalDisable from "../../../components/modal/disable/ModalDisable";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
 import { getMenu } from "../../../store/actions/partner/menu";
@@ -11,6 +15,7 @@ function Menu() {
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.partnerMenu.items);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
 
   useEffect(() => {
     dispatch(getMenu());
@@ -35,6 +40,28 @@ function Menu() {
     // Handle the submit action (e.g., API call to add item)
   };
 
+  const handleOkBlock = async () => {
+    // if (selectedPartner) {
+    //   const updatedStatus = !selectedPartner.is_blocked;
+    //   try {
+    //     const data = {
+    //       email: selectedPartner.email,
+    //       is_blocked: updatedStatus,
+    //     };
+    //     await partnerBlock(data);
+    //     dispatch(fetchPartner());
+    //     console.log(updatedStatus ? "Blocked" : "Unblocked", "partner:", selectedPartner.name);
+    //   } catch (error) {
+    //     console.error("Failed to update partner status:", error);
+    //   }
+    // }
+    setIsModalVisibleBlock(false);
+  };
+
+  const handleCancelBlock = () => {
+    setIsModalVisibleBlock(false);
+  };
+
   return (
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 partner_menu container">
@@ -46,7 +73,7 @@ function Menu() {
           </Button>
           <div className="cards_container">
             {data.map((item: any) => (
-              <Card title={item.name} bordered={false} style={{ width: 300 }} key={item.id}>
+              <Card title={item.name} bordered={false} style={{ width: 300 }} key={item.id} extra={<CloseOutlined style={{ color: "red", cursor: "pointer" }} />}>
                 <p>
                   Price: $
                   {item.price}
@@ -70,6 +97,13 @@ function Menu() {
           </div>
         </div>
       </div>
+      <ModalDisable
+        title={"Are you sure you want \n to block this partner?"}
+        onOk={handleOkBlock}
+        onCancel={handleCancelBlock}
+        visible={isModalVisibleBlock}
+      />
+
       <ModalCreateMenu
         isVisible={isModalVisible}
         onCancel={handleModalClose}
