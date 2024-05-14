@@ -8,8 +8,7 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, Menu } from "antd";
-import "./style.scss";
+import { Dropdown, Menu, Card, Skeleton } from "antd";
 import { fetchEstablishments } from "../../../components/api/api";
 
 import Modal from "./Modal";
@@ -20,6 +19,12 @@ interface EstablishmentProps {
 
 const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     console.log("Fetching establishments...");
@@ -60,99 +65,116 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
         <div className="flex justify-between">
           <div className="font-medium text-4xl mb-8">Establishments</div>
         </div>
-        <div>
-          <div className="text-2xl text-gray-400 mb-6">
-            You have 1 establishment left to add
-          </div>
-          <button className="bg-[#FB7E00] hover:bg-[#D56A00] text-white rounded-lg py-2 px-6 text-2xl flex items-center">
-            <FontAwesomeIcon icon={faPlus} />
-            <div className="ml-2" onClick={toggleModal}>
-              Create New
+        {loading ? (
+          <Card bordered={false} className="w-full">
+            <Skeleton active paragraph={{ rows: 4 }} />
+          </Card>
+        ) : (
+          <div>
+            <div>
+              <div className="text-2xl text-gray-400 mb-6">
+                You have 1 establishment left to add
+              </div>
+              <button className="bg-[#FB7E00] hover:bg-[#D56A00] text-white rounded-lg py-2 px-6 text-2xl flex items-center">
+                <FontAwesomeIcon icon={faPlus} />
+                <div className="ml-2" onClick={toggleModal}>
+                  Create New
+                </div>
+              </button>
             </div>
-          </button>
-        </div>
 
-        <div className="mt-16 flex gap-8">
-          <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
-            <div className="">
-              <img
-                src="https://hh.ru/employer-logo/1701679.jpeg"
-                className="w-full rounded-md"
-                alt=""
-              />
-              <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-[#FB7E00]">
-                <div className="flex items-center text-lg ">
-                  <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
-                  <div>Time: 10:00-11:00</div>
-                </div>
-                <Dropdown
-                  overlay={menu}
-                  trigger={["click"]}
-                  overlayClassName="dropdown-wrapper"
-                >
-                  <FontAwesomeIcon
-                    icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
+            <div className="mt-16 flex gap-8">
+              <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
+                <div className="">
+                  <img
+                    src="https://hh.ru/employer-logo/1701679.jpeg"
+                    className="w-full rounded-md"
+                    alt=""
                   />
-                </Dropdown>
+                  <div className="text-3xl mb-2 mt-3">Sierra</div>
+                  <div className="flex items-center justify-between text-[#FB7E00]">
+                    <div className="flex items-center text-lg ">
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        className="w-5 h-5 mr-3"
+                      />
+                      <div>Time: 10:00-11:00</div>
+                    </div>
+                    <Dropdown
+                      overlay={menu}
+                      trigger={["click"]}
+                      overlayClassName="dropdown-wrapper"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEllipsis}
+                        className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
+                      />
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
+                <div className="">
+                  <img
+                    src="https://hh.ru/employer-logo/1701679.jpeg"
+                    className="w-full rounded-md"
+                    alt=""
+                  />
+                  <div className="text-3xl mb-2 mt-3">Sierra</div>
+                  <div className="flex items-center justify-between text-[#FB7E00]">
+                    <div className="flex items-center text-lg ">
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        className="w-5 h-5 mr-3"
+                      />
+                      <div>Time: 10:00-11:00</div>
+                    </div>
+                    <Dropdown
+                      overlay={menu}
+                      trigger={["click"]}
+                      overlayClassName="dropdown-wrapper"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEllipsis}
+                        className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
+                      />
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
+                <div className="">
+                  <img
+                    src="https://hh.ru/employer-logo/1701679.jpeg"
+                    className="w-full rounded-md"
+                    alt=""
+                  />
+                  <div className="text-3xl mb-2 mt-3">Sierra</div>
+                  <div className="flex items-center justify-between text-[#FB7E00]">
+                    <div className="flex items-center text-lg ">
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        className="w-5 h-5 mr-3"
+                      />
+                      <div>Time: 10:00-11:00</div>
+                    </div>
+                    <Dropdown
+                      overlay={menu}
+                      trigger={["click"]}
+                      overlayClassName="dropdown-wrapper"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEllipsis}
+                        className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
+                      />
+                    </Dropdown>
+                  </div>
+                </div>
               </div>
             </div>
+            <Modal isModalOpen={isModalOpen} onClose={toggleModal} />
           </div>
-          <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
-            <div className="">
-              <img
-                src="https://hh.ru/employer-logo/1701679.jpeg"
-                className="w-full rounded-md"
-                alt=""
-              />
-              <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-[#FB7E00]">
-                <div className="flex items-center text-lg ">
-                  <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
-                  <div>Time: 10:00-11:00</div>
-                </div>
-                <Dropdown
-                  overlay={menu}
-                  trigger={["click"]}
-                  overlayClassName="dropdown-wrapper"
-                >
-                  <FontAwesomeIcon
-                    icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
-                  />
-                </Dropdown>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4">
-            <div className="">
-              <img
-                src="https://hh.ru/employer-logo/1701679.jpeg"
-                className="w-full rounded-md"
-                alt=""
-              />
-              <div className="text-3xl mb-2 mt-3">Sierra</div>
-              <div className="flex items-center justify-between text-[#FB7E00]">
-                <div className="flex items-center text-lg ">
-                  <FontAwesomeIcon icon={faClock} className="w-5 h-5 mr-3" />
-                  <div>Time: 10:00-11:00</div>
-                </div>
-                <Dropdown
-                  overlay={menu}
-                  trigger={["click"]}
-                  overlayClassName="dropdown-wrapper"
-                >
-                  <FontAwesomeIcon
-                    icon={faEllipsis}
-                    className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
-                  />
-                </Dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Modal isModalOpen={isModalOpen} onClose={toggleModal} />
+        )}
       </div>
     </div>
   );
