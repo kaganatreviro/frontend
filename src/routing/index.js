@@ -6,7 +6,7 @@ import Categories from "../pages/admin/categories/categories";
 import QRCode from "../pages/partners/qrcode/qrcode";
 import Establishments from "../pages/partners/establishments/establishments";
 import Orders from "../pages/partners/orders";
-import Menu from "../pages/partners/menu";
+import Menu from "../pages/partners/menu/Menu";
 import Profile from "../pages/partners/profile/Profile";
 
 export default {
