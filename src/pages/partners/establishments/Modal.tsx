@@ -4,11 +4,12 @@ import { createEstablishment } from "../../../components/api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import PhoneInput from "./PhoneInput";
-import CustomTimePicker from "./TimePicker";
 import Map from "./map";
 import { Input, Form, Button, message } from "antd";
 import ImageUploader from "./ImageUploader";
 import TimeRangePickers from "./TimePicker";
+import { useAppDispatch } from "../../../helpers/hooks/hook";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -25,6 +26,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [longitude, setLongitude] = React.useState<number | null>(null);
   const [latitude, setLatitude] = React.useState<number | null>(null);
   const [input, setInput] = React.useState<string>("");
+  const dispatch = useAppDispatch();
 
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
@@ -97,9 +99,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       console.log("Response:", response);
       localStorage.setItem("establishmentId", response.id);
       message.success("Establishment created successfully!");
+      dispatch(fetchEstablishmentsList());
       onClose();
       console.log(localStorage);
-
     } catch (error) {
       console.error("Failed to create establishment:", error);
       message.error("Failed to create establishment.");

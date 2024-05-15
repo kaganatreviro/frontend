@@ -9,9 +9,13 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Menu, Card, Skeleton } from "antd";
-import { fetchEstablishments } from "../../../components/api/api";
+import { deleteEstablishment, fetchEstablishments } from "../../../components/api/api";
 import "./style.scss";
 import Modal from "./Modal";
+import { useAppDispatch } from "../../../helpers/hooks/hook";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 interface EstablishmentProps {
   name: string;
@@ -20,6 +24,14 @@ interface EstablishmentProps {
 const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      dispatch(fetchEstablishmentsList());
+    }, [dispatch]);
+  const establishments = useSelector((state: RootState) => state.establishments.establishments) || [];
+
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -39,7 +51,17 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
     } else if (e.key === "edit") {
     }
   };
-  const menu = (
+
+const handleDelete = async (estId: number) => {
+  try {
+    await deleteEstablishment(estId);
+    dispatch(fetchEstablishmentsList());
+  } catch (error) {
+    console.error("Error deleting establishment:", error);
+  }
+};
+
+  const menu = (estId: number) => (
     <Menu onClick={handleMenuClick} className="text-lg">
       <Menu.Item key="edit">
         <div className="flex items-center">
@@ -47,7 +69,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
           <div>Edit details</div>
         </div>
       </Menu.Item>
-      <Menu.Item key="delete">
+      <Menu.Item key="delete" onClick={() => handleDelete(estId)}>
         <div className="flex items-center">
           <FontAwesomeIcon icon={faXmark} className="w-6 h-6 mr-2" />
           <div>Delete item</div>
@@ -81,34 +103,37 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
             </div>
 
             <div className="mt-16 flex gap-8 flex-wrap">
-              {[1, 2, 3].map((item) => (
+              {establishments.map((establishment, index) => (
                 <div
-                  key={item}
-                  className="bg-white w-[400px] rounded-md overflow-hidden shadow-lg p-4"
+                  key={index}
+                  className="bg-white w-[300px] rounded-md overflow-hidden shadow-lg p-4"
                 >
                   <div className="">
                     <img
-                      src="https://hh.ru/employer-logo/1701679.jpeg"
-                      className="w-full rounded-md"
+                      src={establishment.logo}
+                      className="w-[250px] h-[250px] rounded-md"
                       alt=""
                     />
-                    <div className="text-3xl mb-2 mt-3">Sierra</div>
+                    <div className="text-xl mt-3">{establishment.name}</div>
                     <div className="flex items-center justify-between text-[#FB7E00]">
-                      <div className="flex items-center text-lg ">
+                      <div className="flex items-center text-sm ">
                         <FontAwesomeIcon
                           icon={faClock}
-                          className="w-5 h-5 mr-3"
+                          className="w-3 h-3 mr-2"
                         />
-                        <div>Time: 10:00-11:00</div>
+                        <div>
+                          Time: {establishment.happyhours_start.slice(0, 5)}:
+                          {establishment.happyhours_end.slice(0, 5)}
+                        </div>
                       </div>
                       <Dropdown
-                        overlay={menu}
+                        overlay={menu(establishment.id)}
                         trigger={["click"]}
                         overlayClassName="dropdown-wrapper"
                       >
                         <FontAwesomeIcon
                           icon={faEllipsis}
-                          className="w-8 h-8  mr-3 cursor-pointer text-gray-500"
+                          className="w-5 h-5  mr-3 cursor-pointer text-gray-500"
                         />
                       </Dropdown>
                     </div>

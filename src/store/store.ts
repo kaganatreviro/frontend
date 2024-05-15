@@ -5,6 +5,7 @@ import profileReducer from "./actions/partner/profileSlice";
 import tokenReducer from "./actions/token/tokenSlice";
 import usersReducer from "./actions/admin/users/usersSlice";
 import menuReducer from "./actions/partner/menu";
+import establishemntsSlice from "./actions/partner/establishemntsSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     partnerProfile: profileReducer,
     token: tokenReducer,
     auth: authReducer,
+    establishments: establishemntsSlice,
   },
 });
 
