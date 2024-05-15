@@ -51,8 +51,6 @@ const Map: React.FC<MapProps> = ({ onLocationSelect }) => {
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-  console.log(API_KEY, "aa");
-  console.log(process.env);
 
 const handlePlaceSelect = () => {
   if (searchValue.trim() === "") {
@@ -142,11 +140,12 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     zIndex: 100,
     paddingTop: "30px",
   };
+  console.log(API_KEY, "aa")
 
   return (
     <div>
       <LoadScript
-        googleMapsApiKey="AIzaSyCaGifO3w6MNsHVONCK_CD-ow0SgIz49qo"
+        googleMapsApiKey={API_KEY || ""}
         libraries={["places"]}
       >
         <Form.Item
