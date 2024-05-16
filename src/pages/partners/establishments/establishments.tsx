@@ -16,6 +16,7 @@ import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import EstablishmentDetails from "./ViewDetails";
 
 interface EstablishmentProps {
   name: string;
@@ -23,7 +24,9 @@ interface EstablishmentProps {
 
 const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewDetailsModalOpen, setIsViewDetailsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedEst, setSelectedEst] = useState<number | null>(null);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -61,12 +64,25 @@ const handleDelete = async (estId: number) => {
   }
 };
 
+  const toggleViewDetailsModal = () => {
+    setIsViewDetailsModalOpen(!isViewDetailsModalOpen);
+  };
+
   const menu = (estId: number) => (
     <Menu onClick={handleMenuClick} className="text-lg">
       <Menu.Item key="edit">
         <div className="flex items-center">
           <FontAwesomeIcon icon={faPenToSquare} className="w-6 h-6 mr-2" />
           <div>Edit details</div>
+        </div>
+      </Menu.Item>
+      <Menu.Item key="view" onClick={() => {
+        setSelectedEst(estId);
+        toggleViewDetailsModal();
+      }}>
+        <div className="flex items-center">
+          <FontAwesomeIcon icon={faPenToSquare} className="w-6 h-6 mr-2" />
+          <div>View details</div>
         </div>
       </Menu.Item>
       <Menu.Item key="delete" onClick={() => handleDelete(estId)}>
@@ -142,6 +158,11 @@ const handleDelete = async (estId: number) => {
               ))}
             </div>
             <Modal isModalOpen={isModalOpen} onClose={toggleModal} />
+            <EstablishmentDetails
+              isOpen={isViewDetailsModalOpen}
+              onClose={toggleViewDetailsModal}
+              establishmentId={selectedEst}
+            />
           </>
         )}
       </div>

@@ -90,5 +90,5 @@ export const deleteMenuId = async (id: number) => request(`/api/v1/beverage/beve
 // Establishment
 export const fetchEstablishments = async () => request("/api/v1/partner/establishments/", "GET");
 export const createEstablishment = async (data: any) => request("/api/v1/partner/establishments/", "POST", data);
-export const editEstablishment = async (id: number) => request(`/api/v1/partner/establishments/${id}/`, "PUT");
+export const updateEstablishment = async (id: number, data: any) => request(`/api/v1/partner/establishments/${id}/`, "PUT", data);
 export const deleteEstablishment = async (id: number) => request(`/api/v1/partner/establishments/${id}/`, "DELETE");

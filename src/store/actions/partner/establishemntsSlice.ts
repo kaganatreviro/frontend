@@ -4,7 +4,6 @@ import { fetchEstablishments } from "../../../components/api/api";
 export interface Establishment {
   id: number;
   name: string;
-  email: string;
   location: {
     type: "Point";
     coordinates: [12.9721, 77.5933];
