@@ -37,6 +37,11 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    height: 60px;
+  }
+
+  .ant-card-head-wrapper {
+    align-items: flex-start;
   }
 
 
