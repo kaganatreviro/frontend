@@ -64,6 +64,7 @@ function Login() {
             form={form}
             name="login_form"
             className="login-form"
+            requiredMark={false}
             initialValues={{ remember: true }}
             onFinish={handleSubmit}
             layout="vertical"

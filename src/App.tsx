@@ -45,7 +45,7 @@ function App() {
           }
           return null;
         })}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </main>
   );
