@@ -5,4 +5,45 @@
     flex-wrap: wrap;
     gap: 64px;
   }
+
+  .ant-card-head {
+    padding: 16px;
+  }
+
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: flex-start;
+    padding: 0 16px 16px;
+  }
+  :where(.css-dev-only-do-not-override-1kuana8).ant-switch.ant-switch-checked {
+    background-color: #FB7E00 !important;
+  }
+  :where(.css-dev-only-do-not-override-1kuana8).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+    background-color: #FB7E00 !important;
+  }
+
+  .custom-switch .ant-switch-checked .ant-switch-inner {
+    background-color: #FB7E00 !important;
+  }
+
+  .ant-card-head-title {
+    white-space: unset;
+  }
+
+  .description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+
+  .content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

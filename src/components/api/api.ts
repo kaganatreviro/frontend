@@ -20,7 +20,7 @@ async function refreshToken() {
 async function makeRequest(config: any) {
   try {
     const response = await axios(config);
-    console.log(`Response from ${config.url}:`, response.data);
+    // console.log(`Response from ${config.url}:`, response.data);
     return response.data;
   } catch (error) {
     console.error(`Error in request to ${config.url}:`, error);
@@ -81,10 +81,11 @@ export const fetchUsersList = async () => request("/api/v1/user/admin/clients/li
 export const partnerBlock = async (data: any) => request("/api/v1/user/admin/users/block", "POST", data);
 
 // MENU
-export const fetchMenu = async () => request("/api/v1/beverage/beverages/", "GET");
+export const fetchAllMenu = async () => request("/api/v1/beverage/beverages/", "GET");
+export const fetchMenu = async (id: number) => request(`/api/v1/partner/menu/${id}/`, "GET");
 export const addItemMenu = async (data: any) => request("/api/v1/beverage/beverages/", "POST", data);
 export const fetchMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "GET");
-export const editMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "PUT");
+export const editMenuId = async (id: number, data: any) => request(`/api/v1/beverage/beverages/${id}/`, "PUT", data);
 export const deleteMenuId = async (id: number) => request(`/api/v1/beverage/beverages/${id}/`, "DELETE");
 
 // Establishment

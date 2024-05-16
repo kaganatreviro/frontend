@@ -1,0 +1,17 @@
+.partner_modal_menu {
+  .ant-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .grey {
+      background-color: #949AA8;
+    }
+  }
+
+  .content {
+    display: flex;
+    gap: 55px;
+    align-items: center;
+  }
+}

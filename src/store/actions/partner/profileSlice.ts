@@ -12,13 +12,13 @@ interface UserProfile {
 
 interface ProfileState {
   profile: UserProfile | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
+  isLoading: boolean;
   error: string | null;
 }
 
 const initialState: ProfileState = {
   profile: null,
-  status: "idle",
+  isLoading: false,
   error: null,
 };
 
@@ -54,26 +54,25 @@ const profileSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
-        state.status = "loading";
+        state.isLoading = true;
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.isLoading = false;
         state.profile = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.status = "failed";
+        state.isLoading = false;
         state.error = action.payload as string;
       })
-      // Обработка состояний для асинхронного запроса редактирования профиля
       .addCase(editProfile.pending, (state) => {
-        state.status = "loading";
+        state.isLoading = true;
       })
       .addCase(editProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.isLoading = false;
         state.profile = action.payload;
       })
       .addCase(editProfile.rejected, (state, action) => {
-        state.status = "failed";
+        state.isLoading = false;
         state.error = action.payload as string;
       });
   },
