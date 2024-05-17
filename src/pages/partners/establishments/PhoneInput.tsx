@@ -12,7 +12,6 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
   const handlePhoneChange = (phone: string) => {
     onChange(phone);
   };
-  console.log(value)
 
   return (
     <Form.Item
@@ -23,15 +22,13 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
           message: "Please enter a valid phone number",
         },
         {
-          pattern:
-            /^996\d{9}$/,
+          pattern: /^996\d{9}$/,
           message: "Please enter a valid phone number",
         },
       ]}
     >
       <PhoneInput
         country={"kg"}
-        value={value}
         onChange={handlePhoneChange}
         inputStyle={{
           width: "100%",

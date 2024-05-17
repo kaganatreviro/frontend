@@ -140,12 +140,11 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     zIndex: 100,
     paddingTop: "30px",
   };
-  console.log(API_KEY, "aa")
 
   return (
     <div>
       <LoadScript
-        googleMapsApiKey="AIzaSyATVcHURWxgb10BwMbVJv_EX4Go3VeoBZY"
+        googleMapsApiKey=""
         libraries={["places"]}
       >
         <Form.Item

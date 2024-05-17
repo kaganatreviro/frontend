@@ -32,4 +32,26 @@
     .ant-form-item-label {
       display: none;
     }
+    :where(.css-dev-only-do-not-override-usln0u).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-usln0u).ant-dropdown-menu-submenu .ant-dropdown-menu {
+        padding: 4px;
+        list-style-type: none;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: #d3d3d3 solid 1px;
+        border-radius: 8px;
+        outline: none;
+        box-shadow: none;
+        width: 150px !important;
+    }
 }
+    :where(.css-dev-only-do-not-override-usln0u).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-usln0u).ant-dropdown-menu-submenu .ant-dropdown-menu {
+        padding: 4px;
+        list-style-type: none;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: #d3d3d3 solid 1px;
+        border-radius: 8px;
+        outline: none;
+        box-shadow: none;
+        width: 150px !important;
+    }

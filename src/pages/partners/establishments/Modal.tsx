@@ -78,12 +78,12 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       formData.append("name", name);
       formData.append(
         "location",
-        JSON.stringify({ type: "Point", coordinates: [longitude, latitude] })
+        JSON.stringify({ type: "Point", coordinates: [74.5924756, 42.8441918] })
       );
       formData.append("description", description);
       formData.append("phone_number", phoneNumber);
       formData.append("email", "Sierra@gmail.com");
-      formData.append("address", input);
+      formData.append("address", "62 Toktonaliyev St, Bishkek, Kyrgyzstan");
       if (startTime !== null) {
         formData.append("happyhours_start", startTime);
       }
@@ -107,7 +107,6 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       message.error("Failed to create establishment.");
     }
   };
-
   return (
     isModalOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

@@ -10,7 +10,6 @@ interface ImageUploaderProps {
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, image }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(image);
-  console.log(image instanceof File);
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
@@ -31,7 +30,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, image }) => {
           <img
             src={URL.createObjectURL(selectedImage)}
             alt="Uploaded Image"
-            className="w-[200px] h-[200px] rounded-full"
+            className="w-[200px] h-[200px] rounded-md"
           />
           <button
             className="absolute top-0 right-0  w-10 h-10 bg-white border border-[#FB7E00] rounded-full flex items-center justify-center -mt-2 -mr-2 focus:outline-none"
