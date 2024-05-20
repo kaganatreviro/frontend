@@ -10,7 +10,7 @@ import {
   Descriptions,
   Avatar,
   Button,
-  Carousel, Skeleton,
+  Carousel, Skeleton, Collapse,
 } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -64,22 +64,31 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
       setLoading(false);
     }, 500); // Имитация задержки для демонстрации
   };
-
+  const { Panel } = Collapse;
   const renderEstablishmentDetails = (establishment: Establishment) => {
     const happyHours = `${moment(establishment.happyhours_start, "HH:mm").format("HH:mm")} - ${moment(establishment.happyhours_end, "HH:mm").format("HH:mm")}`;
 
     return (
       <Card key={establishment.id} className="establishment-card">
-        <Descriptions title={establishment.name} bordered>
+        <Descriptions
+          title={(
+            <div className="flex gap-2 items-center justify-center">
+              <Avatar src={establishment.logo} alt={`${establishment.name} logo`} />
+              <div className="">{establishment.name}</div>
+            </div>
+        )}
+          bordered
+        >
           <Descriptions.Item label="Address">{establishment.address}</Descriptions.Item>
-          <Descriptions.Item label="Description">{establishment.description}</Descriptions.Item>
           <Descriptions.Item label="Phone Number">{establishment.phone_number}</Descriptions.Item>
           <Descriptions.Item label="Email">{establishment.email}</Descriptions.Item>
           <Descriptions.Item label="Happy Hours">{happyHours}</Descriptions.Item>
-          <Descriptions.Item label="Logo">
-            <Avatar src={establishment.logo} alt={`${establishment.name} logo`} />
-          </Descriptions.Item>
         </Descriptions>
+        <Collapse bordered={false}>
+          <Panel header="View Description" key="1">
+            {establishment.description}
+          </Panel>
+        </Collapse>
       </Card>
     );
   };
@@ -125,12 +134,15 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
               <div>{partner?.isBlocked ? "Blocked" : "Active"}</div>
             </div>
             <Divider />
-            <div className="title">Max Establishments:</div>
-            <InputNumber
-              min={1}
-              value={partner?.max_establishments}
-              onChange={handleMaxEstablishmentsChange}
-            />
+            <div className="flex gap-8">
+              <div className="title">Max Establishments:</div>
+              <InputNumber
+                min={1}
+                value={partner?.max_establishments}
+                onChange={handleMaxEstablishmentsChange}
+              />
+            </div>
+
           </div>
         )
       ),
