@@ -144,7 +144,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   return (
     <div>
       <LoadScript
-        googleMapsApiKey=""
+        googleMapsApiKey={API_KEY || ""}
         libraries={["places"]}
       >
         <Form.Item
