@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createEstablishment } from "../../../components/api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,8 @@ import ImageUploader from "./ImageUploader";
 import TimeRangePickers from "./TimePicker";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -27,6 +29,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [latitude, setLatitude] = React.useState<number | null>(null);
   const [input, setInput] = React.useState<string>("");
   const dispatch = useAppDispatch();
+  const profile = useSelector(
+    (state: RootState) => state.partnerProfile.profile
+  );
 
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
@@ -78,12 +83,12 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       formData.append("name", name);
       formData.append(
         "location",
-        JSON.stringify({ type: "Point", coordinates: [74.5924756, 42.8441918] })
+        JSON.stringify({ type: "Point", coordinates: [longitude, latitude] })
       );
       formData.append("description", description);
       formData.append("phone_number", phoneNumber);
-      formData.append("email", "Sierra@gmail.com");
-      formData.append("address", "62 Toktonaliyev St, Bishkek, Kyrgyzstan");
+      formData.append("email", profile?.email || "");
+      formData.append("address", input);
       if (startTime !== null) {
         formData.append("happyhours_start", startTime);
       }
