@@ -60,6 +60,11 @@ function Partners() {
       key: "email",
     },
     {
+      title: "Phone Number",
+      dataIndex: "phone_number",
+      key: "phone_number",
+    },
+    {
       title: "Max Establishments",
       dataIndex: "max_establishments",
       key: "max_establishments",
@@ -95,7 +100,7 @@ function Partners() {
   ];
 
   const paginationConfig = {
-    pageSize: 6,
+    pageSize: 10,
     showTotal: (total: any, range: any) => `Results ${range[0]}-${range[1]} of ${total}`,
   };
   const handleAddPartner = () => {
@@ -144,7 +149,7 @@ function Partners() {
     setSelectedPartner(record);
     setIsModalVisibleBlock(true);
   };
-  console.log("Partners data in component:", partners);
+
   return (
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 admin_partners container">

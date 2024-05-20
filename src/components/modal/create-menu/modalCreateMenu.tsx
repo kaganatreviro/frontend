@@ -38,26 +38,30 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories, initialVal
     form.resetFields();
   };
 
-  const handleFinish = (values: Menu) => {
+  const handleFinish = async (values: Menu) => {
     const establishmentId = localStorage.getItem("establishmentId");
     const numericEstablishmentId = Number(establishmentId);
     if (establishmentId) {
       values.establishment = numericEstablishmentId;
     }
-    values.category = 2;
 
-    if (initialValues && initialValues.id) {
-      // Editing existing item
-      dispatch(updateItem({ id: initialValues.id, data: values }));
-      message.success("Item successfully updated!");
-    } else {
-      // Adding new item
-      dispatch(addItem(values));
-      message.success("Item successfully added!");
+    try {
+      if (initialValues && initialValues.id) {
+        // Editing existing item
+        await dispatch(updateItem({ id: initialValues.id, data: values })).unwrap();
+        message.success("Item successfully updated!");
+      } else {
+        // Adding new item
+        await dispatch(addItem(values));
+        message.success("Item successfully added!");
+      }
+
+      form.resetFields();
+      await dispatch(getMenu()).unwrap();
+      handleCancel();
+    } catch (error) {
+      message.error(`An error occurred: ${error}`);
     }
-    form.resetFields();
-    dispatch(getMenu());
-    handleCancel();
   };
 
   return (
