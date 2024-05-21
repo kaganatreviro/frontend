@@ -20,7 +20,6 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const [description, setDescription] = React.useState("");
   const [name, setName] = React.useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
@@ -47,11 +46,10 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
     setName(e.target.value);
   };
 
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
-  const handleImageUploadInModal = (file: File | null) => {
+  const handleImageUploadInModal = (file: string | null) => {
     setUploadedImage(file);
-    console.log(file instanceof File);
   };
 
   const [form] = Form.useForm();

@@ -56,7 +56,7 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
               <div className="mb-2">
                 <p className="font-bold">Time:</p>
                 <p>
-                  {establishments[0].happyhours_start.slice(0, 5)}:
+                  {establishments[0].happyhours_start.slice(0, 5)}- 
                   {establishments[0].happyhours_end.slice(0, 5)}
                 </p>
               </div>

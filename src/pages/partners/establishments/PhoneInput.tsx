@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { Form, Input } from "antd";
 
@@ -9,7 +9,14 @@ interface PhoneInputProps {
 }
 
 const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
+  const [internalValue, setInternalValue] = useState(value);
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
   const handlePhoneChange = (phone: string) => {
+    setInternalValue(phone);
     onChange(phone);
   };
 
@@ -22,14 +29,16 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
           message: "Please enter a valid phone number",
         },
         {
-          pattern: /^996\d{9}$/,
+          pattern: /^\d{12}$/,
           message: "Please enter a valid phone number",
         },
       ]}
     >
       <PhoneInput
         country={"kg"}
+        value={internalValue}
         onChange={handlePhoneChange}
+        countryCodeEditable={false}
         inputStyle={{
           width: "100%",
           height: "40px",
@@ -38,9 +47,6 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
           paddingLeft: "8px",
         }}
         placeholder="Enter your phone"
-        inputProps={{
-          required: true,
-        }}
       />
     </Form.Item>
   );

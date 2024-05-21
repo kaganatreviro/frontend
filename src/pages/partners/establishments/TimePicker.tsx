@@ -1,31 +1,34 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import { TimePicker, Form } from "antd";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { RangePickerProps } from "antd/lib/date-picker";
 
 interface TimeRangePickersProps {
   onStartTimeChange: (time: string | null) => void;
   onEndTimeChange: (time: string | null) => void;
+  defaultValue?: [string | null, string | null];
 }
 
 const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
-  const [startTime, setStartTime] = useState<string | null>(null);
-  const [endTime, setEndTime] = useState<string | null>(null);
-  const [form] = Form.useForm();
+  const defaultStartTime = props.defaultValue ? props.defaultValue[0] : null;
+  const defaultEndTime = props.defaultValue ? props.defaultValue[1] : null;
 
-  const handleChange: RangePickerProps["onChange"] = (dates, dateStrings) => {
-    if (dates && dates[0]) {
-      setStartTime(dates[0].format("HH:mm"));
-      props.onStartTimeChange(dates[0].format("HH:mm"));
-    } else {
-      setStartTime(null);
+  const [startTime, setStartTime] = useState<string | null>(defaultStartTime);
+  const [endTime, setEndTime] = useState<string | null>(defaultEndTime);
+
+  useEffect(() => {
+    if (props.defaultValue) {
+      setStartTime(props.defaultValue[0]);
+      setEndTime(props.defaultValue[1]);
     }
-    if (dates && dates[1]) {
-      setEndTime(dates[1].format("HH:mm"));
-      props.onEndTimeChange(dates[1].format("HH:mm"));
+  }, [props.defaultValue]);
+
+  const handleChange = (type: "start" | "end", value: string) => {
+    if (type === "start") {
+      setStartTime(value);
+      props.onStartTimeChange(value);
     } else {
-      setEndTime(null);
+      setEndTime(value);
+      props.onEndTimeChange(value);
     }
   };
 
@@ -42,20 +45,19 @@ const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
   };
 
   return (
-    <Form.Item
-      label="Time Range"
-      name="timeRange"
-      rules={[
-        {
-          type: "array",
-          required: true,
-          message: "Please select time range!",
-        },
-        { validator: validateEndTime },
-      ]}
-    >
-      <TimePicker.RangePicker onChange={handleChange} format="HH:mm" />
-    </Form.Item>
+    <div>
+      <input
+        type="time"
+        value={startTime || ""}
+        onChange={(e) => handleChange("start", e.target.value)}
+      />
+      <br />
+      <input
+        type="time"
+        value={endTime || ""}
+        onChange={(e) => handleChange("end", e.target.value)}
+      />
+    </div>
   );
 };
 

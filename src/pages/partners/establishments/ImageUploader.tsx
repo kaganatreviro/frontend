@@ -1,20 +1,34 @@
 /* eslint-disable */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ImageUploaderProps {
-  onUpload: (file: File | null) => void;
-  image: File | null;
+  onUpload: (file: string | null) => void;
+  image: string | null;
+  defaultValue?: string | null;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, image }) => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(image);
+const ImageUploader: React.FC<ImageUploaderProps> = ({
+  onUpload,
+  image,
+  defaultValue,
+}) => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setSelectedImage(null);
+      onUpload(defaultValue);
+    }
+  }, [defaultValue, onUpload]);
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
       setSelectedImage(file);
-      onUpload(file);
+      const imageUrl = URL.createObjectURL(file);
+      onUpload(imageUrl);
     }
   };
 
@@ -25,10 +39,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, image }) => {
 
   return (
     <div className="w-[200px]">
-      {selectedImage ? (
+      {selectedImage || image ? (
         <div className="relative flex">
           <img
-            src={URL.createObjectURL(selectedImage)}
+            src={
+              selectedImage ? URL.createObjectURL(selectedImage) : image || "" // Добавляем || '' для обработки случая, когда image === null
+            }
             alt="Uploaded Image"
             className="w-[200px] h-[200px] rounded-md"
           />

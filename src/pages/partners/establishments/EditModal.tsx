@@ -25,13 +25,7 @@ const EditModal: React.FC<EditModalProps> = ({
   onClose,
   establishmentId,
 }) => {
-  const establishment = useSelector((state: RootState) =>
-    state.establishments.establishments.filter(
-      (establishment) => establishment.id === establishmentId
-    )
-  );
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
@@ -39,8 +33,15 @@ const EditModal: React.FC<EditModalProps> = ({
   const [longitude, setLongitude] = useState<number | null>(null);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [input, setInput] = useState<string>("");
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+
+  const establishment = useSelector((state: RootState) =>
+    state.establishments.establishments.find(
+      (establishment) => establishment.id === establishmentId
+    )
+  );
+
 
   const handleUpdate = async () => {
     try {
@@ -66,10 +67,7 @@ const EditModal: React.FC<EditModalProps> = ({
         formData.append("logo", uploadedImage);
       }
 
-      const response = await updateEstablishment(
-        establishmentId as any,
-        formData
-      );
+      const response = await updateEstablishment(establishmentId as any, formData);
       console.log("Response:", response);
       message.success("Establishment updated successfully!");
       dispatch(fetchEstablishmentsList());
@@ -96,24 +94,24 @@ const EditModal: React.FC<EditModalProps> = ({
     setLatitude(location.lat);
     setInput(address);
   };
-  const handleImageUploadInModal = (file: File | null) => {
+
+  const handleImageUploadInModal = (file: string | null) => {
     setUploadedImage(file);
-    console.log(file instanceof File);
   };
+
   const handlePhoneChange = (value: string) => {
-    setPhoneNumber(value as any);
+    setPhoneNumber(value);
   };
 
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setDescription(e.target.value as any);
+    setDescription(e.target.value);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
-  console.log(name);
 
   return (
     isEditOpen && (
@@ -133,12 +131,18 @@ const EditModal: React.FC<EditModalProps> = ({
             name="editForm"
             onFinish={handleUpdate}
             encType="multipart/form-data"
+            initialValues={{
+              name: establishment?.name,
+              phone: establishment?.phone_number,
+              description: establishment?.description,
+            }}
           >
             <div className="flex gap-20 ">
               <div>
                 <ImageUploader
                   image={uploadedImage}
                   onUpload={handleImageUploadInModal}
+                  defaultValue={establishment?.logo}
                 />
               </div>
 
@@ -147,37 +151,60 @@ const EditModal: React.FC<EditModalProps> = ({
                   <h1 className="text-xl font-bold mb-2">Name:</h1>
                   <Form.Item
                     name="name"
+                    initialValue={name}
                     rules={[
                       {
                         required: true,
-                        message: "Please enter your name",
+                        message: "Please enter the establishment's name",
                       },
                     ]}
                   >
                     <Input
                       onChange={handleNameChange}
-                      defaultValue={name}
                       className="text-lg w-[350px] h-[46px] border-gray-300 placeholder:text-gray-300"
                       placeholder="Enter establishment's name"
                     />
                   </Form.Item>
-                  <div className="mb-3">
-                    <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
+                </div>
+
+                <div className="mb-3">
+                  <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
+                  <Form.Item
+                    name="phone"
+                    initialValue={phoneNumber}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter a valid phone number",
+                      },
+                    ]}
+                  >
                     <PhoneInput
                       value={phoneNumber}
                       onChange={handlePhoneChange}
                     />
-                  </div>
+                  </Form.Item>
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Time:</div>
                     <TimeRangePickers
                       onStartTimeChange={handleStartTimeChange}
                       onEndTimeChange={handleEndTimeChange}
+                      defaultValue={[
+                        establishment?.happyhours_start ?? null,
+                        establishment?.happyhours_end ?? null,
+                      ]}
                     />
                   </div>
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Location:</div>
-                    <Map onLocationSelect={handleLocationSelect} />
+                    <Map
+                      onLocationSelect={handleLocationSelect}
+                      loc={{
+                        lat: establishment?.location.coordinates[1],
+                        lng: establishment?.location.coordinates[0],
+                        address: establishment?.address,
+                      }}
+                    />
                   </div>
 
                   <div>

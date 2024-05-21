@@ -163,7 +163,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                             />
                             <div>
                               Time: {establishment.happyhours_start.slice(0, 5)}
-                              :{establishment.happyhours_end.slice(0, 5)}
+                              -{establishment.happyhours_end.slice(0, 5)}
                             </div>
                           </div>
                           <Dropdown
