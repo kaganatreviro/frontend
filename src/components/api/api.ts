@@ -82,8 +82,12 @@ export const partnerBlock = async (data: any) => request("/api/v1/user/admin/use
 
 // Partner by admin
 export const getEstablishmentsPartner = async (id: number) => request(`/api/v1/partner/${id}/establishments/`, "GET");
-
 export const editEstablishmentPartner = async (id: number, data: any) => request(`/api/v1/user/admin/partners/${id}/`, "PUT", data);
+// admin categories
+export const fetchCategories = async () => request("/api/v1/beverage/categories/", "GET");
+export const createCategory = async (data: any) => request("/api/v1/beverage/categories/", "POST", data);
+export const deleteCategory = async (id: number) => request(`/api/v1/beverage/categories/${id}/`, "DELETE");
+export const updateCategory = async (id: number, data: any) => request(`/api/v1/beverage/categories/${id}/`, "PUT", data);
 
 // Menu
 export const fetchAllMenu = async () => request("/api/v1/beverage/beverages/", "GET");
