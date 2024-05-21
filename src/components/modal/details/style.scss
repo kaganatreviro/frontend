@@ -1,10 +1,55 @@
 .modal_details_admin {
+  width: 80% !important;
   .ant-modal-content {
     //padding: 0;
 
     .ant-tabs {
-      width: 100%; // Расширяет вкладки на всю ширину модального окна
+      width: 100%;
     }
+//
+    .establishment-card {
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel-container {
+      position: relative;
+      padding: 20px;
+    }
+
+    .carousel-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 20px;
+    }
+
+    .carousel-container .ant-carousel .slick-prev,
+    .carousel-container .ant-carousel .slick-next {
+      width: auto;
+      height: auto;
+      font-size: 16px;
+      background: #1890ff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      z-index: 1;
+    }
+
+    .carousel-container .ant-carousel .slick-prev:hover,
+    .carousel-container .ant-carousel .slick-next:hover {
+      background: #40a9ff;
+    }
+
+.ant-avatar {
+  width: 48px;
+  height: 48px;
+}
   }
 
 
@@ -18,7 +63,7 @@
   }
 
   .title {
-    width: 60px;
+    width: 160px;
     font-weight: 600;
   }
 

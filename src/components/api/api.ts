@@ -80,7 +80,12 @@ export const fetchUsersList = async () => request("/api/v1/user/admin/clients/li
 
 export const partnerBlock = async (data: any) => request("/api/v1/user/admin/users/block", "POST", data);
 
-// MENU
+// Partner by admin
+export const getEstablishmentsPartner = async (id: number) => request(`/api/v1/partner/${id}/establishments/`, "GET");
+
+export const editEstablishmentPartner = async (id: number, data: any) => request(`/api/v1/user/admin/partners/${id}/`, "PUT", data);
+
+// Menu
 export const fetchAllMenu = async () => request("/api/v1/beverage/beverages/", "GET");
 export const fetchMenu = async (id: number) => request(`/api/v1/partner/menu/${id}/`, "GET");
 export const addItemMenu = async (data: any) => request("/api/v1/beverage/beverages/", "POST", data);
