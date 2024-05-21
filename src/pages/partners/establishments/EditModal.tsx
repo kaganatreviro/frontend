@@ -2,17 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import PhoneInput from "./PhoneInput";
-import Map from "./map";
-import { Input, Form, Button, message } from "antd";
-import ImageUploader from "./ImageUploader";
-import TimeRangePickers from "./TimePicker";
-
+import { Input, Form, message } from "antd";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { updateEstablishment } from "../../../components/api/api";
 import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
-import { useSelector } from "react-redux";
 import { RootState } from "store/store";
+import PhoneInput from "./PhoneInput";
+import Map from "./map";
+import ImageUploader from "./ImageUploader";
+import TimeRangePickers from "./TimePicker";
 
 interface EditModalProps {
   isEditOpen: boolean;
@@ -25,28 +24,43 @@ const EditModal: React.FC<EditModalProps> = ({
   onClose,
   establishmentId,
 }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
+  const establishment = useSelector((state: RootState) =>
+    state.establishments.establishments.find(
+      (est) => est.id === establishmentId
+    )
+  );
+
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [input, setInput] = useState<string>("");
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
-
-  const establishment = useSelector((state: RootState) =>
-    state.establishments.establishments.find(
-      (establishment) => establishment.id === establishmentId
-    )
+  const [uploadedImage, setUploadedImage] = useState<File | string | null>(
+    null
   );
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (establishment) {
+      setPhoneNumber(establishment.phone_number || "");
+      setDescription(establishment.description || "");
+      setName(establishment.name || "");
+      setStartTime(establishment.happyhours_start || "");
+      setEndTime(establishment.happyhours_end || "");
+      setLongitude(establishment.location.coordinates[0] || null);
+      setLatitude(establishment.location.coordinates[1] || null);
+      setInput(establishment.address || "");
+      setUploadedImage(establishment.logo || null);
+    }
+  }, [establishment]);
 
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
-
       formData.append("name", name);
       formData.append(
         "location",
@@ -62,12 +76,14 @@ const EditModal: React.FC<EditModalProps> = ({
       if (endTime !== null) {
         formData.append("happyhours_end", endTime);
       }
-
       if (uploadedImage !== null) {
         formData.append("logo", uploadedImage);
       }
 
-      const response = await updateEstablishment(establishmentId as any, formData);
+      const response = await updateEstablishment(
+        establishmentId as number,
+        formData
+      );
       console.log("Response:", response);
       message.success("Establishment updated successfully!");
       dispatch(fetchEstablishmentsList());
@@ -95,7 +111,7 @@ const EditModal: React.FC<EditModalProps> = ({
     setInput(address);
   };
 
-  const handleImageUploadInModal = (file: string | null) => {
+  const handleImageUploadInModal = (file: File | null) => {
     setUploadedImage(file);
   };
 
@@ -112,6 +128,8 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
+
+  if (!isEditOpen) return null;
 
   return (
     isEditOpen && (

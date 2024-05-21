@@ -1,11 +1,11 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { createEstablishment } from "../../../components/api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import PhoneInput from "./PhoneInput";
 import Map from "./map";
-import { Input, Form, Button, message } from "antd";
+import { Input, Form, message } from "antd";
 import ImageUploader from "./ImageUploader";
 import TimeRangePickers from "./TimePicker";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
@@ -19,22 +19,27 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [name, setName] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
-  const [longitude, setLongitude] = React.useState<number | null>(null);
-  const [latitude, setLatitude] = React.useState<number | null>(null);
-  const [input, setInput] = React.useState<string>("");
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [input, setInput] = useState<string>("");
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const dispatch = useAppDispatch();
   const profile = useSelector(
     (state: RootState) => state.partnerProfile.profile
   );
 
+  const [form] = Form.useForm();
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
   };
+    const onFinishFailed = (errorInfo: any) => {
+      console.log("Failed:", errorInfo);
+    };
 
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -46,17 +51,10 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
     setName(e.target.value);
   };
 
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-
-  const handleImageUploadInModal = (file: string | null) => {
+  const handleImageUploadInModal = (file: File | null) => {
     setUploadedImage(file);
   };
 
-  const [form] = Form.useForm();
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   const handleStartTimeChange = (time: string | null) => {
     setStartTime(time);
   };
