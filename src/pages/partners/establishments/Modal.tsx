@@ -98,11 +98,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
 
       const response = await createEstablishment(formData);
       console.log("Response:", response);
-      localStorage.setItem("establishmentId", response.id);
       message.success("Establishment created successfully!");
       dispatch(fetchEstablishmentsList());
       onClose();
-      console.log(localStorage);
     } catch (error) {
       console.error("Failed to create establishment:", error);
       message.error("Failed to create establishment.");
