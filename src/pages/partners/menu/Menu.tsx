@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
 import { getMenu, setCorrectMenuId } from "../../../store/actions/partner/menu";
 import ModalCreateMenu from "../../../components/modal/create-menu/modalCreateMenu";
+import { fetchCategoriesList } from "../../../store/actions/admin/categories/categories";
 import "./style.scss";
 
 function Menu() {
@@ -22,6 +23,7 @@ function Menu() {
 
   useEffect(() => {
     dispatch(getMenu());
+    dispatch(fetchCategoriesList());
   }, []);
 
   const onChange = (id: number, checked: boolean) => {
@@ -134,9 +136,6 @@ function Menu() {
         isVisible={isModalVisible}
         onCancel={handleModalClose}
         onSubmit={handleSubmit}
-        categories={[
-          { label: "Coffee", value: 2 as any },
-        ]}
         initialValues={editingItem || undefined} // Pass initial values for editing
       />
     </div>

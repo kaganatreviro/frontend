@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, Select, Button, message } from "antd";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { addItem, updateItem, getMenu } from "../../../store/actions/partner/menu";
+import { RootState } from "../../../store/store";
 import "./style.scss";
 
 interface Menu {
@@ -18,20 +20,24 @@ interface ModalCreateMenuProps {
   isVisible: boolean;
   onCancel: () => void;
   onSubmit: (values: Menu) => void;
-  categories: Array<{ label: string; value: string }>;
   initialValues?: Menu | null;
 }
 
 // eslint-disable-next-line react/require-default-props
-function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories, initialValues }: ModalCreateMenuProps) {
+function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: ModalCreateMenuProps) {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-
+  const categories = useSelector((state: RootState) => state.category.categories);
+  
   useEffect(() => {
-    if (initialValues) {
-      form.setFieldsValue(initialValues);
+    if (isVisible) {
+      form.resetFields(); // Reset fields on modal open
+      if (initialValues) {
+        const category = categories.find((cat) => cat.name === initialValues.category)?.id;
+        form.setFieldsValue({ ...initialValues, category });
+      }
     }
-  }, [initialValues, form]);
+  }, [isVisible, initialValues, categories, form]);
 
   const handleCancel = () => {
     onCancel();
@@ -39,7 +45,8 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories, initialVal
   };
 
   const handleFinish = async (values: Menu) => {
-    const establishmentId = localStorage.getItem("establishmentId");
+    // const establishmentId = localStorage.getItem("establishmentId");
+    const establishmentId = 46;
     const numericEstablishmentId = Number(establishmentId);
     if (establishmentId) {
       values.establishment = numericEstablishmentId;
@@ -105,8 +112,8 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories, initialVal
           >
             <Select placeholder="Choose category">
               {categories.map((category) => (
-                <Select.Option key={category.value} value={category.value}>
-                  {category.label}
+                <Select.Option key={category.id} value={category.id}>
+                  {category.name}
                 </Select.Option>
               ))}
             </Select>
@@ -116,11 +123,12 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, categories, initialVal
             label="Set Price"
             rules={[
               { required: true, message: "Please set the price!" },
-              // { type: "number", min: 50, max: 999, message: "Price must be between 50 and 999!" },
+              { type: "number", min: 50, max: 999, transform: (value) => Number(value), message: "Price must be between 50 and 999!" },
             ]}
           >
             <Input type="number" placeholder="Enter price" />
           </Form.Item>
+
         </div>
 
       </Form>

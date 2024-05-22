@@ -3,7 +3,7 @@ import { Modal, Input } from "antd";
 
 interface ModalAddProps {
   title: string;
-  onOk: (value: string | undefined) => void; // Updated to reflect possible undefined value
+  onOk: (value: string | undefined) => void;
   onCancel: () => void;
   visible: boolean;
 }

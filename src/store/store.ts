@@ -6,6 +6,7 @@ import tokenReducer from "./actions/token/tokenSlice";
 import usersReducer from "./actions/admin/users/usersSlice";
 import menuReducer from "./actions/partner/menu";
 import establishemntsSlice from "./actions/partner/establishemntsSlice";
+import orderReducer from "./actions/partner/orderSlice";
 import categoriesSlice from "./actions/admin/categories/categories";
 
 const store = configureStore({
@@ -17,6 +18,7 @@ const store = configureStore({
     token: tokenReducer,
     auth: authReducer,
     establishments: establishemntsSlice,
+    orders: orderReducer,
     category: categoriesSlice,
   },
 });

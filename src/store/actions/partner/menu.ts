@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addItemMenu, editMenuId, fetchMenu } from "../../../components/api/api";
+import { addItemMenu, editMenuId, fetchMenu, fetchCategories } from "../../../components/api/api";
 
 interface Menu {
   id?: number;
@@ -11,16 +11,23 @@ interface Menu {
   establishment?: number;
 }
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 interface MenuItem {
   items: Menu[];
+  categories: Category[];
   status: "idle" | "loading" | "succeeded" | "failed";
   loading: boolean;
-  correctMenuId: number | null,
+  correctMenuId: number | null;
   error: string | null;
 }
 
 const initialState: MenuItem = {
   items: [],
+  categories: [],
   correctMenuId: null,
   status: "idle",
   error: null,
@@ -28,7 +35,8 @@ const initialState: MenuItem = {
 };
 
 const id = localStorage.getItem("establishmentId");
-const numericId = Number(id);
+// const numericId = Number(id);
+const numericId = 46;
 
 export const getMenu = createAsyncThunk(
   "menu/fetchMenu",
@@ -72,6 +80,18 @@ export const updateItem = createAsyncThunk(
         return rejectWithValue(error.message);
       }
       return rejectWithValue("Unknown error occurred");
+    }
+  },
+);
+
+export const getCategories = createAsyncThunk(
+  "menu/fetchCategories",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchCategories();
+      return response;
+    } catch (error: any) {
+      return rejectWithValue((error.response?.data?.message || "Неизвестная ошибка") as string);
     }
   },
 );
@@ -121,9 +141,19 @@ const menuSlice = createSlice({
       .addCase(updateItem.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
+      })
+      .addCase(getCategories.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCategories.fulfilled, (state, action) => {
+        state.categories = action.payload;
+        state.loading = false;
+      })
+      .addCase(getCategories.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = false;
       });
   },
-
 });
 
 export const { setCorrectMenuId } = menuSlice.actions;
