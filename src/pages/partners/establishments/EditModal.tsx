@@ -76,8 +76,11 @@ const EditModal: React.FC<EditModalProps> = ({
       if (endTime !== null) {
         formData.append("happyhours_end", endTime);
       }
-      if (uploadedImage !== null) {
+
+      if (uploadedImage instanceof File) {
         formData.append("logo", uploadedImage);
+      } else if (typeof uploadedImage === "string") {
+        formData.append("logoUrl", uploadedImage);
       }
 
       const response = await updateEstablishment(

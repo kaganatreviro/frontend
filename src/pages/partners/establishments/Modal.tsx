@@ -111,7 +111,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   return (
     isModalOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10">
+        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10 h-[820px]">
           <div className="flex justify-between pt-2 mb-10">
             <div className="text-3xl">Establishment's Profile:</div>
             <button
@@ -139,61 +139,63 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
 
               <div>
                 <div className="mb-3">
-                  <h1 className="text-xl font-bold mb-2">Name:</h1>
-                  <Form.Item
-                    name="name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please enter your name",
-                      },
-                    ]}
-                  >
-                    <Input
-                      onChange={handleNameChange}
-                      className="text-lg w-[350px] h-[46px] border-gray-300 placeholder:text-gray-300"
-                      placeholder="Enter establishment's name"
-                    />
-                  </Form.Item>
-                  <div className="mb-3">
-                    <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
-                    <PhoneInput
-                      value={phoneNumber}
-                      onChange={handlePhoneChange}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <div className="mb-2 text-lg font-bold">Time:</div>
-                    <TimeRangePickers
-                      onStartTimeChange={handleStartTimeChange}
-                      onEndTimeChange={handleEndTimeChange}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <div className="mb-2 text-lg font-bold">Location:</div>
-                    <Map onLocationSelect={handleLocationSelect} />
-                  </div>
-
-                  <div>
-                    <h1 className="mb-2 text-lg font-bold">Description:</h1>
+                  <div className="h-[600px]">
+                    <h1 className="text-xl font-bold mb-2">Name:</h1>
                     <Form.Item
-                      name="description"
+                      name="name"
                       rules={[
                         {
                           required: true,
-                          message: "Please enter your description",
+                          message: "Please enter your name",
                         },
                       ]}
                     >
-                      <Input.TextArea
-                        value={description}
-                        onChange={handleDescriptionChange}
-                        placeholder="Enter description"
-                        maxLength={1000}
-                        className="w-[350px] border-gray-300 placeholder-gray-300 text-lg"
-                        style={{ height: "100px" }}
+                      <Input
+                        onChange={handleNameChange}
+                        className="text-lg w-[350px] h-[46px] border-gray-300 placeholder:text-gray-300"
+                        placeholder="Enter establishment's name"
                       />
                     </Form.Item>
+                    <div className="mb-3">
+                      <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
+                      <PhoneInput
+                        value={phoneNumber}
+                        onChange={handlePhoneChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <div className="mb-2 text-lg font-bold">Time:</div>
+                      <TimeRangePickers
+                        onStartTimeChange={handleStartTimeChange}
+                        onEndTimeChange={handleEndTimeChange}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <div className="mb-2 text-lg font-bold">Location:</div>
+                      <Map onLocationSelect={handleLocationSelect} />
+                    </div>
+
+                    <div>
+                      <h1 className="mb-2 text-lg font-bold">Description:</h1>
+                      <Form.Item
+                        name="description"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please enter your description",
+                          },
+                        ]}
+                      >
+                        <Input.TextArea
+                          value={description}
+                          onChange={handleDescriptionChange}
+                          placeholder="Enter description"
+                          maxLength={1000}
+                          className="w-[350px] border-gray-300 placeholder-gray-300 text-lg"
+                          style={{ height: "100px" }}
+                        />
+                      </Form.Item>
+                    </div>
                   </div>
                   <div className=" mt-8 flex justify-end">
                     <Form.Item>
