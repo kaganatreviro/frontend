@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { Button, Modal, Input, Form, message } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"; // Import edit icon
+import { faPlus, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { createCategory, deleteCategory, updateCategory } from "../../../components/api/api";
+import "./style.scss"
 
 const CategoryCard: React.FC<{
   category: any;
   onDelete: (id: number) => void;
-  onEdit: (id: number, newName: string) => void; // Define onEdit prop
+  onEdit: (id: number, newName: string) => void;
 }> = ({ category, onDelete, onEdit }) => {
   const [editMode, setEditMode] = useState(false);
   const [editedName, setEditedName] = useState(category.name);
@@ -32,30 +33,141 @@ const CategoryCard: React.FC<{
     onEdit(category.id, editedName);
     setEditMode(false);
   };
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deletingCategoryId, setDeletingCategoryId] = useState<number | null>(
+    null
+  );
+
+  const showDeleteModal = (categoryId: number) => {
+    setDeletingCategoryId(categoryId);
+    setDeleteModalVisible(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModalVisible(false);
+    setDeletingCategoryId(null);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deletingCategoryId !== null) {
+      onDelete(deletingCategoryId);
+      setDeleteModalVisible(false);
+      setDeletingCategoryId(null);
+    }
+  };
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+
+  const showEditModal = () => {
+    setEditedCategoryName(category.name);
+    setEditModalVisible(true);
+  };
+
+  const handleEditCancel = () => {
+    setEditModalVisible(false);
+  };
+
+const handleEditConfirm = async () => {
+  if (editedCategoryName.trim() === "") {
+    message.error("Category name cannot be empty");
+    return;
+  }
+
+  onEdit(category.id, editedCategoryName);
+  setEditModalVisible(false);
+};
+    const [form] = Form.useForm();
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 mb-4">
-      {editMode ? (
-        <div>
-          <Input
-            value={editedName}
-            onChange={(e) => setEditedName(e.target.value)}
-          />
-          <Button onClick={handleSaveEdit}>Save</Button>
-          <Button onClick={handleCancelEdit}>Cancel</Button>
+    <div className="bg-white shadow-md rounded-lg p-4 w-[240px] border border-gray-300 ">
+      <div>
+        <h2 className="text-xl font-semibold mb-2">{category.name}</h2>
+        <div className="text-gray-600 mb-4">
+          Beverages: {category.beverages.length}
         </div>
-      ) : (
-        <div>
-          <h2 className="text-xl font-semibold mb-2">{category.name}</h2>
-          <div className="text-gray-600">Beverages: {category.beverages.length}</div>
-          <Button type="link" onClick={() => onDelete(category.id)} className="text-red-500">
-            <FontAwesomeIcon icon={faTrash} /> Delete
-          </Button>
-          <Button type="link" onClick={handleEdit} className="text-blue-500">
+        <div className="flex justify-between">
+          <button onClick={showEditModal} className="text-[#FF9328]">
             <FontAwesomeIcon icon={faEdit} /> Edit
-          </Button>
+          </button>
+          <button
+            onClick={() => showDeleteModal(category.id)}
+            className="text-red-600"
+          >
+            <FontAwesomeIcon icon={faTrash} /> Delete
+          </button>
         </div>
-      )}
+        <Modal
+          title="Delete Category"
+          visible={deleteModalVisible}
+          onCancel={handleDeleteCancel}
+          centered={true}
+          width={300}
+          footer={null}
+        >
+          <p className="text-lg my-10 text-center">
+            Are you sure you want to delete this category?
+          </p>
+          <div className="flex justify-between">
+            <Button
+              key="cancel"
+              className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+              onClick={handleDeleteCancel}
+            >
+              No
+            </Button>
+            <Button
+              key="delete"
+              className="bg-[#FB7E00] text-white hover:bg-[#df8226]  py-1 rounded-md ml-4 w-[100px]"
+              onClick={handleDeleteConfirm}
+            >
+              Yes
+            </Button>
+          </div>
+        </Modal>
+        <Modal
+          title="Edit Category"
+          visible={editModalVisible}
+          onCancel={handleEditCancel}
+          centered={true}
+          width={300}
+          footer={null}
+        >
+          <Form
+            form={form}
+            onFinish={handleEditConfirm}
+            initialValues={{ name: editedCategoryName }}
+          >
+            <Form.Item
+              className="text-lg mt-10 mb-12"
+              name="name"
+              rules={[
+                { required: true, message: "Please enter a category name" },
+              ]}
+            >
+              <Input
+                placeholder="Category Name"
+                onChange={(e) => setEditedCategoryName(e.target.value)}
+              />
+            </Form.Item>
+            <div className="flex justify-between">
+              <Button
+                key="cancel"
+                onClick={handleEditCancel}
+                className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+              >
+                Cancel
+              </Button>
+              <Button
+                key="edit"
+                className="bg-[#FB7E00] text-white hover:bg-[#df8226]  py-1 rounded-md ml-4 w-[100px]"
+                onClick={handleEditConfirm}
+              >
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </Modal>
+      </div>
     </div>
   );
 };
@@ -122,7 +234,7 @@ const Categories: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex bg-[#f4f4f4]">
+    <div className="flex-1 flex bg-[#f4f4f4] categories">
       <div className="flex-1 admin_partners container">
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
           <div className="font-medium text-4xl mb-8">Category Management</div>
@@ -138,14 +250,16 @@ const Categories: React.FC = () => {
               />
               <div className="text-white rounded-lg">Add New</div>
             </Button>
-            {categories.map((category) => (
-              <CategoryCard
-                key={category.id}
-                category={category}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
+            <div className="flex flex-wrap gap-10">
+              {categories.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -154,23 +268,32 @@ const Categories: React.FC = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
+        centered={true}
+        width={300}
       >
         <Form form={form} onFinish={handleSubmit}>
           <Form.Item
+            className="text-lg mt-10 mb-12"
             name="name"
             rules={[
-              { required: true, message: "Please input the category name!" },
+              { required: true, message: "Please enter a category name" },
             ]}
           >
             <Input placeholder="Category Name" />
           </Form.Item>
-          <div className="flex justify-end">
-            <Button type="default" onClick={handleCancel} className="mr-2">
+          <div className="flex justify-between">
+            <button
+              className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+              onClick={handleCancel}
+            >
               Cancel
-            </Button>
-            <Button type="primary" htmlType="submit">
+            </button>
+            <button
+              className="bg-[#FB7E00] text-white hover:bg-[#df8226] w-[100px]  py-1 rounded-md ml-4"
+              type="submit"
+            >
               Submit
-            </Button>
+            </button>
           </div>
         </Form>
       </Modal>
