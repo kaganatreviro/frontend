@@ -36,13 +36,13 @@ const initialState: MenuItem = {
 
 const id = localStorage.getItem("establishmentId");
 // const numericId = Number(id);
-const numericId = 46;
+// const numericId = 46;
 
 export const getMenu = createAsyncThunk(
   "menu/fetchMenu",
-  async (_, { rejectWithValue }) => {
+  async (id:number, { rejectWithValue }) => {
     try {
-      const response = await fetchMenu(numericId);
+      const response = await fetchMenu(id);
       return await response;
     } catch (error: any) {
       return rejectWithValue((error.response?.data?.message || "Неизвестная ошибка") as string);
@@ -55,10 +55,6 @@ export const addItem = createAsyncThunk(
   async (formData: Menu, { rejectWithValue }) => {
     try {
       const response = await addItemMenu(formData);
-      if (!response.ok) {
-        throw new Error("Failed to add menu item");
-      }
-      console.log("Add Item Response:", response);
       return response;
     } catch (error) {
       if (error instanceof Error) {

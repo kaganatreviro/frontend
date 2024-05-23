@@ -86,6 +86,8 @@ export default function Orders() {
         return { color: "#FC5757" };
       case "pending":
         return { color: "#A1A1A1" };
+      case "in_preparation":
+        return { color: "#FF9328" };
       default:
         return {};
     }
@@ -104,9 +106,9 @@ export default function Orders() {
       key: "beverage_name",
     },
     {
-      title: "Client Details",
-      dataIndex: "client_details",
-      key: "client_details",
+      title: "Customer",
+      dataIndex: "client",
+      key: "client",
     },
     {
       title: "Status",

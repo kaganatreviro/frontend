@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Select, Button, notification } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { fetchUsers } from "../../../store/actions/admin/users/usersSlice";
-import { getCategories, getMenu } from "../../../store/actions/partner/menu";
+import { getMenu } from "../../../store/actions/partner/menu";
 import { RootState } from "../../../store/store";
 import { createOrder, fetchOrders } from "../../../store/actions/partner/orderActions";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
@@ -16,10 +17,20 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
   const users = useSelector((state: RootState) => state.users.users);
 
   useEffect(() => {
-    dispatch(getMenu());
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchUsers());
+        const establishments = await dispatch(fetchEstablishmentsList()).unwrap();
+        if (establishments[0]?.id) {
+          await dispatch(getMenu(establishments[0].id));
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
 
+    fetchData();
+  }, [dispatch]);
   const handleCreateOrder = async (values: any) => {
     try {
       await dispatch(createOrder(values)).unwrap();

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Card, Switch, Button } from "antd";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { deleteMenuId } from "../../../components/api/api";
 import ModalDisable from "../../../components/modal/disable/ModalDisable";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
@@ -17,14 +18,27 @@ function Menu() {
   const currentId = useSelector((state: RootState) => state.partnerMenu.correctMenuId);
   const error = useSelector((state: RootState) => state.partnerMenu.error);
   const status = useSelector((state: RootState) => state.partnerMenu.status);
+  const establishments = useSelector((state: RootState) => state.establishments.establishments)
+    || [];
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-
+  console.log("establishments", establishments[0]?.id);
   useEffect(() => {
-    dispatch(getMenu());
-    dispatch(fetchCategoriesList());
-  }, []);
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchCategoriesList());
+        const establishments = await dispatch(fetchEstablishmentsList()).unwrap();
+        if (establishments[0]?.id) {
+          await dispatch(getMenu(establishments[0].id));
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const onChange = (id: number, checked: boolean) => {
     console.log(`Switch for item ${id} is ${checked ? "ON" : "OFF"}`);
@@ -48,14 +62,14 @@ function Menu() {
   const handleSubmit = (values: any) => {
     console.log("Submitted values:", values);
     setModalVisible(false);
-    dispatch(getMenu());
+    dispatch(getMenu(establishments[0].id));
   };
 
   const handleOk = async () => {
     if (currentId) {
       try {
         await deleteMenuId(currentId);
-        dispatch(getMenu());
+        dispatch(getMenu(establishments[0].id));
       } catch (error) {
         console.error("Failed status:", error);
       }

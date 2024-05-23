@@ -3,6 +3,7 @@ import { Modal, Form, Input, Select, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { addItem, updateItem, getMenu } from "../../../store/actions/partner/menu";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { RootState } from "../../../store/store";
 import "./style.scss";
 
@@ -28,7 +29,8 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const categories = useSelector((state: RootState) => state.category.categories);
-  
+  const establishments = useSelector((state: RootState) => state.establishments.establishments)
+    || [];
   useEffect(() => {
     if (isVisible) {
       form.resetFields(); // Reset fields on modal open
@@ -45,29 +47,38 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
   };
 
   const handleFinish = async (values: Menu) => {
-    // const establishmentId = localStorage.getItem("establishmentId");
-    const establishmentId = 46;
-    const numericEstablishmentId = Number(establishmentId);
-    if (establishmentId) {
-      values.establishment = numericEstablishmentId;
-    }
-
     try {
+      const establishmentId = establishments[0]?.id;
+      if (!establishmentId) {
+        throw new Error("No establishment selected");
+      }
+
+      const valuesWithEstablishment = { ...values, establishment: establishmentId };
+
       if (initialValues && initialValues.id) {
         // Editing existing item
-        await dispatch(updateItem({ id: initialValues.id, data: values })).unwrap();
-        message.success("Item successfully updated!");
+        const result = await dispatch(updateItem({ id: initialValues.id, data: valuesWithEstablishment })).unwrap();
+        if (result) {
+          message.success("Item successfully updated!");
+        } else {
+          console.log("result", result);
+          throw new Error("Failed to update item");
+        }
       } else {
         // Adding new item
-        await dispatch(addItem(values));
-        message.success("Item successfully added!");
+        const result = await dispatch(addItem(valuesWithEstablishment)).unwrap();
+        if (result) {
+          message.success("Item successfully added!");
+        } else {
+          throw new Error("Failed to add item");
+        }
       }
 
       form.resetFields();
-      await dispatch(getMenu()).unwrap();
+      await dispatch(getMenu(establishmentId));
       handleCancel();
-    } catch (error) {
-      message.error(`An error occurred: ${error}`);
+    } catch (error: any) {
+      message.error(`An error occurred: ${error.message || error}`);
     }
   };
 
