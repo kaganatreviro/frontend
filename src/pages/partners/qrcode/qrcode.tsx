@@ -29,7 +29,7 @@ const QRCodes: React.FC = () => {
     [];
   console.log(establishments, "aaa");
 
-  // const url = establishments ? `${establishments[0].id}` : "1";
+  const url = establishments ? `${establishments[0].id}` : "1";
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,7 +49,7 @@ const QRCodes: React.FC = () => {
           <div className="flex justify-center items-center flex-col h-full">
             <div className="w-[500px] flex flex-col items-center">
               <div className="qr-frames">
-                <QRCode value={"url"} size={300} />
+                <QRCode value={url} size={300} />
               </div>
               <div className="text-gray-400 text-3xl pt-12">
                 Scan QR code to view the menu
