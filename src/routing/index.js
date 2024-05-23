@@ -3,7 +3,7 @@ import Partners from "../pages/admin/partners/Partners";
 import Feedback from "../pages/admin/feedback/feedback";
 import Login from "../pages/login/Login";
 import Categories from "../pages/admin/categories/categories";
-import QRCode from "../pages/partners/qrcode/qrcode";
+import QRCodes from "../pages/partners/qrcode/qrcode";
 import Establishments from "../pages/partners/establishments/establishments";
 import Orders from "../pages/partners/orders/Order";
 import Menu from "../pages/partners/menu/Menu";
@@ -25,7 +25,7 @@ export default {
 
   QRCode: {
     path: "/qrcode",
-    element: <QRCode />,
+    element: <QRCodes />,
     protected: false,
     role: "all",
   },

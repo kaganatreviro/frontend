@@ -10,7 +10,7 @@ import { Form, Input } from "antd";
 
 const containerStyle = {
   width: "650px",
-  height: "620px",
+  height: "560px",
 };
 
 interface ModalProps {
@@ -133,7 +133,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     transform: "translate(-50%, -50%)",
     backgroundColor: "#ffffff",
     width: "750px",
-    height: "828px",
+    height: "760px",
     zIndex: 100,
     paddingTop: "30px",
   };
@@ -168,7 +168,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
         </Form.Item>
 
         <div
-          className="ml-2 text-[#FB7E00] text-xl flex cursor-pointer mt-[-20px]"
+          className="ml-2 text-[#FB7E00] text-xl flex cursor-pointer mt-[-10px]"
           onClick={openMapModal}
         >
           <div>or choose it from the map</div>
