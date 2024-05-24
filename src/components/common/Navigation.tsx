@@ -31,6 +31,8 @@ function Navigation() {
   const menuItems = userType === "admin" ? adminMenuItems : partnerMenuItems;
 
   const handleLogout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
     if (userType === "admin") {
       navigate("/admin/login");
     } else {

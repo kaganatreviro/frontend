@@ -6,6 +6,7 @@ import { fetchEstablishmentsList } from "../../../store/actions/partner/establis
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { fetchEstablishments } from "../../../components/api/api";
 import { Card, Skeleton } from "antd";
 
@@ -44,7 +45,7 @@ const QRCodes: React.FC = () => {
         </Card>
       ) : (
         <div className="container flex-1 p-12">
-          <div className="font-medium text-4xl mb-8 ml-6 absolute">QR Code</div>
+          <EstablishmentSwitcher title="QR Code" />
           <div className="flex justify-center items-center flex-col h-full">
             <div className="w-[500px] flex flex-col items-center">
               <div className="qr-frames">

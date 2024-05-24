@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Switch, Button } from "antd";
+import { Card, Switch, Button, Spin, Skeleton } from "antd";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { deleteMenuId } from "../../../components/api/api";
 import ModalDisable from "../../../components/modal/disable/ModalDisable";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
 import { getMenu, setCorrectMenuId } from "../../../store/actions/partner/menu";
 import ModalCreateMenu from "../../../components/modal/create-menu/modalCreateMenu";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { fetchCategoriesList } from "../../../store/actions/admin/categories/categories";
 import "./style.scss";
 
@@ -16,21 +16,19 @@ function Menu() {
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.partnerMenu.items);
   const currentId = useSelector((state: RootState) => state.partnerMenu.correctMenuId);
-  const error = useSelector((state: RootState) => state.partnerMenu.error);
   const status = useSelector((state: RootState) => state.partnerMenu.status);
-  const establishments = useSelector((state: RootState) => state.establishments.establishments)
-    || [];
+  const loading = useSelector((state: RootState) => state.establishments.loading);
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  console.log("establishments", establishments[0]?.id);
+  console.log("currentEstablishment id", currentEstablishment?.id);
   useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(fetchCategoriesList());
-        const establishments = await dispatch(fetchEstablishmentsList()).unwrap();
-        if (establishments[0]?.id) {
-          await dispatch(getMenu(establishments[0].id));
+        if (currentEstablishment?.id) {
+          await dispatch(getMenu(currentEstablishment?.id));
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -38,7 +36,7 @@ function Menu() {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [currentEstablishment?.id]);
 
   const onChange = (id: number, checked: boolean) => {
     console.log(`Switch for item ${id} is ${checked ? "ON" : "OFF"}`);
@@ -46,12 +44,12 @@ function Menu() {
   };
 
   const handleAddItem = () => {
-    setEditingItem(null); // Clear editing item
+    setEditingItem(null);
     setModalVisible(true);
   };
 
   const handleEditItem = (item: any) => {
-    setEditingItem(item); // Set current item for editing
+    setEditingItem(item);
     setModalVisible(true);
   };
 
@@ -62,14 +60,18 @@ function Menu() {
   const handleSubmit = (values: any) => {
     console.log("Submitted values:", values);
     setModalVisible(false);
-    dispatch(getMenu(establishments[0].id));
+    if (currentEstablishment?.id) {
+      dispatch(getMenu(currentEstablishment.id));
+    }
   };
 
   const handleOk = async () => {
     if (currentId) {
       try {
         await deleteMenuId(currentId);
-        dispatch(getMenu(establishments[0].id));
+        if (currentEstablishment?.id) {
+          dispatch(getMenu(currentEstablishment.id));
+        }
       } catch (error) {
         console.error("Failed status:", error);
       }
@@ -86,15 +88,24 @@ function Menu() {
     setIsModalVisibleBlock(true);
   };
 
+  if (loading) {
+    return <Spin size="large" />;
+  }
+
   return (
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 partner_menu container">
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
-          <div className="font-medium text-4xl mb-8">Menu Manager</div>
+          <EstablishmentSwitcher title="Menu Manager" />
           <div className="text-sm text-gray-400 mb-6">Manage your menu easily with adding, editing, and removing beverages.</div>
           <Button type="primary" icon={<PlusOutlined />} className="modal-confirm-btn" onClick={handleAddItem} style={{ marginBottom: 16 }}>
             Add New
           </Button>
+          {/* { loading ? ( */}
+          {/*   <Card bordered={false} className="w-full"> */}
+          {/*     <Skeleton active paragraph={{ rows: 4 }} /> */}
+          {/*   </Card> */}
+          {/* ) : <div>iska</div> } */}
           {status === "failed" ? (<div className="font-medium text-3xl">Empty menu</div>) : (
             <div className="cards_container">
               {data.map((item: any) => (
@@ -150,7 +161,7 @@ function Menu() {
         isVisible={isModalVisible}
         onCancel={handleModalClose}
         onSubmit={handleSubmit}
-        initialValues={editingItem || undefined} // Pass initial values for editing
+        initialValues={editingItem || undefined}
       />
     </div>
   );

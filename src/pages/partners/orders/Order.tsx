@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Card, Skeleton, Table, Dropdown, Menu } from "antd";
+import { Button, Card, Skeleton, Table, Dropdown } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -10,6 +10,7 @@ import { RootState } from "../../../store/store";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import ModalCreateOrder from "../../../components/modal/create-order/ModalCreateOrder";
 import "./style.scss";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 
 export default function Orders() {
   const dispatch = useAppDispatch();
@@ -152,16 +153,11 @@ export default function Orders() {
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 order_partners admin_partners container">
         <div className="flex flex-col content h-full items-start p-12 bg-gray-100 flex-1">
-          <div className="font-medium text-4xl mb-8">Orders</div>
+          <EstablishmentSwitcher title="Orders" />
           {loading ? (
             <Card bordered={false} className="w-full">
               <Skeleton active paragraph={{ rows: 4 }} />
             </Card>
-          ) : error ? (
-            <div>
-              Error:
-              {error}
-            </div>
           ) : (
             <>
               <Button

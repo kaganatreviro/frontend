@@ -15,14 +15,14 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.partnerMenu.items);
   const users = useSelector((state: RootState) => state.users.users);
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(fetchUsers());
-        const establishments = await dispatch(fetchEstablishmentsList()).unwrap();
-        if (establishments[0]?.id) {
-          await dispatch(getMenu(establishments[0].id));
+        if (currentEstablishment) {
+          await dispatch(getMenu(currentEstablishment?.id));
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);

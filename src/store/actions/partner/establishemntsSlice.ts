@@ -6,18 +6,19 @@ export interface Establishment {
   name: string;
   location: {
     type: "Point";
-    coordinates: [12.9721, 77.5933];
+    coordinates: [number, number];
   };
-  description: "string";
-  phone_number: "string";
-  logo: "string";
-  address: "string";
-  happyhours_start: "string";
-  happyhours_end: "string";
+  description: string;
+  phone_number: string;
+  logo: string;
+  address: string;
+  happyhours_start: string;
+  happyhours_end: string;
 }
 
 interface EstablishmentState {
   establishments: Establishment[];
+  currentEstablishment: Establishment | null;
   loading: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -25,6 +26,7 @@ interface EstablishmentState {
 
 const initialState: EstablishmentState = {
   establishments: [],
+  currentEstablishment: null,
   error: null,
   loading: false,
   status: "idle",
@@ -45,7 +47,11 @@ export const fetchEstablishmentsList = createAsyncThunk(
 const EstablishmentsSlice = createSlice({
   name: "establishments",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentEstablishment(state, action: PayloadAction<Establishment>) {
+      state.currentEstablishment = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchEstablishmentsList.pending, (state) => {
@@ -65,4 +71,5 @@ const EstablishmentsSlice = createSlice({
   },
 });
 
+export const { setCurrentEstablishment } = EstablishmentsSlice.actions;
 export default EstablishmentsSlice.reducer;

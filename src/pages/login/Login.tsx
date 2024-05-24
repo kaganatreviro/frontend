@@ -31,7 +31,6 @@ function Login() {
         dispatch(setTokens({ refresh: response.refresh, access: response.access}));
       }
       localStorage.setItem("userType", location.pathname.startsWith("/admin/login") ? "admin" : "partner");
-      console.log("Logged in successfully!", response);
       navigate(location.pathname.startsWith("/admin/login") ? "/users" : "/profile");
     } catch (error: any) {
       console.log("Failed:", error);

@@ -19,6 +19,7 @@ import Modal from "./Modal";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { useSelector } from "react-redux";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { RootState } from "store/store";
 import EstablishmentDetails from "./ViewDetails";
 import EditModal from "./EditModal";
@@ -118,9 +119,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   return (
     <div className="flex-1 flex partner_establishments bg-[#f4f4f4]">
       <div className=" flex-1 p-12">
-        <div className="flex justify-between">
-          <div className="font-medium text-4xl mb-8">Establishments</div>
-        </div>
+          <EstablishmentSwitcher title="Establishments" />
         {loading ? (
           <Card bordered={false} className="w-full">
             <Skeleton active paragraph={{ rows: 4 }} />

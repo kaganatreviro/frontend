@@ -3,7 +3,6 @@ import { Modal, Form, Input, Select, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { addItem, updateItem, getMenu } from "../../../store/actions/partner/menu";
-import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { RootState } from "../../../store/store";
 import "./style.scss";
 
@@ -29,8 +28,8 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const categories = useSelector((state: RootState) => state.category.categories);
-  const establishments = useSelector((state: RootState) => state.establishments.establishments)
-    || [];
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
+
   useEffect(() => {
     if (isVisible) {
       form.resetFields(); // Reset fields on modal open
@@ -48,12 +47,11 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
 
   const handleFinish = async (values: Menu) => {
     try {
-      const establishmentId = establishments[0]?.id;
-      if (!establishmentId) {
+      if (!currentEstablishment?.id) {
         throw new Error("No establishment selected");
       }
 
-      const valuesWithEstablishment = { ...values, establishment: establishmentId };
+      const valuesWithEstablishment = { ...values, establishment: currentEstablishment?.id };
 
       if (initialValues && initialValues.id) {
         // Editing existing item
@@ -75,7 +73,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       }
 
       form.resetFields();
-      await dispatch(getMenu(establishmentId));
+      await dispatch(getMenu(currentEstablishment.id));
       handleCancel();
     } catch (error: any) {
       message.error(`An error occurred: ${error.message || error}`);

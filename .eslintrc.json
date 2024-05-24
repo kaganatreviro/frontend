@@ -111,6 +111,7 @@
     "lines-between-class-members": "off",
     "object-curly-newline": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/order": ["off"]
   }
 }
