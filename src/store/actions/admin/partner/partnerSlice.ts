@@ -22,7 +22,7 @@ export interface Partner {
   id: number;
   name: string;
   email: string;
-  isBlocked: boolean;
+  is_blocked: boolean;
   max_establishments: number;
   phone_number: string | null;
 }

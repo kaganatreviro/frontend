@@ -30,14 +30,10 @@ export default function Profile() {
       });
   };
 
-  if (error) {
-    return <Alert message="Error" description={error} type="error" showIcon />;
-  }
-
   return (
     <div className="flex-1 partner_profile flex bg-[#f4f4f4]">
       <div className="container justify-start items-start flex-1 p-12">
-        <EstablishmentSwitcher title="Partner Management" />
+        <EstablishmentSwitcher title="Profile Information" />
         {isLoading ? (
           <Card bordered={false} className="w-full max-w-3xl">
             <Skeleton active paragraph={{ rows: 4 }} />

@@ -131,7 +131,7 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
             <Divider />
             <div className="flex gap-8">
               <div className="title">Status:</div>
-              <div>{partner?.isBlocked ? "Blocked" : "Active"}</div>
+              <div>{partner?.is_blocked ? "Blocked" : "Active"}</div>
             </div>
             <Divider />
             <div className="flex gap-8">

@@ -182,7 +182,8 @@ function Partners() {
           )}
         </div>
         <ModalDisable
-          title={"Are you sure you want \n to block this partner?"}
+          title={selectedPartner?.is_blocked ? "Are you sure you want \n to unblock this partner?" : "Are you sure you want \n to block this partner?"}
+          text="This action cannot be undone."
           onOk={handleOkBlock}
           onCancel={handleCancelBlock}
           visible={isModalVisibleBlock}

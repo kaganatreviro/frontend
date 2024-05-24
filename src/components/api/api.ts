@@ -78,7 +78,7 @@ export const fetchMeEdit = async (data: any) => request("/api/v1/user/users/prof
 
 export const fetchUsersList = async () => request("/api/v1/user/admin/clients/list/", "GET");
 
-export const partnerBlock = async (data: any) => request("/api/v1/user/admin/users/block", "POST", data);
+export const partnerBlock = async (data: any) => request("/api/v1/user/admin/users/block/", "POST", data);
 
 // Partner by admin
 export const getEstablishmentsPartner = async (id: number) => request(`/api/v1/partner/${id}/establishments/`, "GET");
