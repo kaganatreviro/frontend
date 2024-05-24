@@ -16,9 +16,9 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
     try {
       setLoading(true);
       const values = await form.validateFields();
-      console.log("Form Values:", values);
+      // console.log("Form Values:", values);
       const response = await createPartner(values);
-      console.log("Response:", response);
+      // console.log("Response:", response);
       form.resetFields();
       setLoading(false);
       onCancel();
@@ -62,7 +62,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           label="Name"
           rules={[{ required: true, message: "Please enter a name" }]}
         >
-          <Input placeholder="Name" />
+          <Input placeholder="Name" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
@@ -82,7 +82,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
             },
           ]}
         >
-          <Input placeholder="hello@example.com" />
+          <Input placeholder="hello@example.com" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
@@ -90,7 +90,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           label="Max establishments"
           rules={[{ required: true, message: "Please enter max establishments" }]}
         >
-          <Input placeholder="1" />
+          <Input placeholder="1" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
@@ -99,7 +99,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           rules={[{ required: true, message: "Please enter your password" },
             { min: 8, message: "Password must be at least 8 characters long" }]}
         >
-          <Input.Password placeholder="Enter your password" />
+          <Input.Password placeholder="Enter your password" autoComplete="off" />
         </Form.Item>
 
         <Form.Item
@@ -119,7 +119,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
             }),
           ]}
         >
-          <Input.Password placeholder="Confirm your password" />
+          <Input.Password placeholder="Confirm your password" autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>
