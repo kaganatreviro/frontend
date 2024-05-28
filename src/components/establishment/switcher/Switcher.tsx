@@ -1,24 +1,22 @@
-/* eslint-disable */
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
-import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
-import { Select, Avatar } from "antd";
+import { fetchEstablishmentsList, setCurrentEstablishment } from "../../../store/actions/partner/establishemntsSlice";
+import { Select, Typography, Avatar } from "antd";
 import "./style.scss";
 
 const { Option } = Select;
+const { Title } = Typography;
 
 interface EstablishmentSwitcherProps {
   title: string;
-  currentEstablishment?: any;
-  onEstablishmentChange?: (establishment: any) => void;
 }
 
-function EstablishmentSwitcher({ title, currentEstablishment, onEstablishmentChange }: EstablishmentSwitcherProps) {
+function EstablishmentSwitcher({ title }: EstablishmentSwitcherProps) {
   const dispatch = useAppDispatch();
   const establishments = useSelector((state: RootState) => state.establishments.establishments);
-
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
   useEffect(() => {
     dispatch(fetchEstablishmentsList()).then((action) => {
       if (fetchEstablishmentsList.fulfilled.match(action)) {
@@ -27,23 +25,23 @@ function EstablishmentSwitcher({ title, currentEstablishment, onEstablishmentCha
         if (savedEstablishmentId) {
           const savedEstablishment = action.payload.find((est: any) => est.id === Number(savedEstablishmentId));
           if (savedEstablishment) {
-            onEstablishmentChange?.(savedEstablishment);
+            dispatch(setCurrentEstablishment(savedEstablishment));
           } else if (defaultEstablishment) {
-            onEstablishmentChange?.(defaultEstablishment);
+            dispatch(setCurrentEstablishment(defaultEstablishment));
             localStorage.setItem("currentEstablishmentId", defaultEstablishment.id.toString());
           }
         } else if (defaultEstablishment) {
-          onEstablishmentChange?.(defaultEstablishment);
+          dispatch(setCurrentEstablishment(defaultEstablishment));
           localStorage.setItem("currentEstablishmentId", defaultEstablishment.id.toString());
         }
       }
     });
-  }, [dispatch, onEstablishmentChange]);
+  }, [dispatch]);
 
   const handleSelectChange = (value: number) => {
     const selectedEstablishment = establishments.find((est) => est.id === value);
     if (selectedEstablishment) {
-      onEstablishmentChange?.(selectedEstablishment);
+      dispatch(setCurrentEstablishment(selectedEstablishment));
       localStorage.setItem("currentEstablishmentId", value.toString());
     }
   };
@@ -52,7 +50,7 @@ function EstablishmentSwitcher({ title, currentEstablishment, onEstablishmentCha
     <div className="switcher">
       <div className="font-medium text-4xl">{title}</div>
       <Select
-        style={{ width: 300, height: 48 }}
+        className="select"
         placeholder="Select an establishment"
         value={currentEstablishment?.id}
         onChange={handleSelectChange}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Card, Skeleton, Table, Dropdown } from "antd";
+import { Button, Card, Skeleton, Table, Dropdown, Statistic } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -11,17 +11,34 @@ import { useAppDispatch } from "../../../helpers/hooks/hook";
 import ModalCreateOrder from "../../../components/modal/create-order/ModalCreateOrder";
 import "./style.scss";
 import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
+import { fetchCategoriesList } from "store/actions/admin/categories/categories";
+import { getMenu } from "store/actions/partner/menu";
+
+const { Countdown } = Statistic;
 
 export default function Orders() {
   const dispatch = useAppDispatch();
-  const { orders, loading, error } = useSelector((state: RootState) => state.orders);
+  const { orders, loading } = useSelector((state: RootState) => state.orders);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const ws = useRef<WebSocket | null>(null);
   const token = useRef<string | null>(sessionStorage.getItem("accessToken"));
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
 
   useEffect(() => {
-    dispatch(fetchOrders());
-  }, [dispatch]);
+    if (!currentEstablishment?.id) return;
+
+    fetchData();
+  }, [currentEstablishment?.id]);
+
+  const fetchData = async () => {
+    try {
+      if (currentEstablishment?.id) {
+        await dispatch(fetchOrders(currentEstablishment?.id));
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
 
   useEffect(() => {
     if (token.current) {
@@ -47,7 +64,9 @@ export default function Orders() {
       console.log("event", event);
       console.log("message", message);
       if (message) {
-        dispatch(fetchOrders());
+        if (!currentEstablishment?.id) return;
+
+        fetchData();
       }
     };
 
@@ -149,6 +168,12 @@ export default function Orders() {
     setIsModalVisible(false);
   };
 
+  const happyHoursStart = moment(currentEstablishment?.happyhours_start, "HH:mm:ss");
+  const currentTime = moment();
+  const timeUntilHappyHours = happyHoursStart.isAfter(currentTime)
+    ? happyHoursStart.diff(currentTime)
+    : moment.duration(1, "days").add(happyHoursStart.diff(currentTime)).asMilliseconds();
+
   return (
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 order_partners admin_partners container">
@@ -160,24 +185,14 @@ export default function Orders() {
             </Card>
           ) : (
             <>
-              <Button
-                className="modal-confirm-btn"
-                type="primary"
-                onClick={showModal}
-              >
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className="self-center mr-2 w-4 h-4"
-                />
-                <div className="text-white rounded-lg">Make order</div>
-              </Button>
-              <Table
-                columns={columns}
-                dataSource={orders}
-                pagination={{ pageSize: 10 }}
-                rowKey="id"
-                className="w-full h-full"
-              />
+              <div className="flex items-center justify-between w-full">
+                <Button className="modal-confirm-btn" type="primary" onClick={showModal}>
+                  <FontAwesomeIcon icon={faPlus} className="self-center mr-2 w-4 h-4" />
+                  <div className="text-white rounded-lg">Make order</div>
+                </Button>
+                <Countdown title="До счастливых часов" value={Date.now() + timeUntilHappyHours} format="HH:mm:ss" />
+              </div>
+              <Table columns={columns} dataSource={orders} pagination={{ pageSize: 10 }} rowKey="id" className="w-full h-full" />
               <ModalCreateOrder visible={isModalVisible} onClose={hideModal} />
             </>
           )}

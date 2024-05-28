@@ -41,8 +41,6 @@ const QRCodes: React.FC = () => {
       <div className="container flex-1 p-12">
         <EstablishmentSwitcher
           title="QR Code"
-          currentEstablishment={currentEstablishment}
-          onEstablishmentChange={setCurrentEstablishment}
         />
         {loading ? (
           <Card bordered={false} className="w-full">

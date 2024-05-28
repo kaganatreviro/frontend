@@ -26,8 +26,8 @@ const tokenSlice = createSlice({
     clearTokens(state) {
       state.refresh = "";
       state.access = "";
-      sessionStorage.removeItem("refreshToken");
-      sessionStorage.removeItem("accessToken");
+      sessionStorage.clear();
+      localStorage.clear();
     },
   },
 });

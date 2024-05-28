@@ -5,4 +5,22 @@
   gap: 10px;
   margin-bottom: 2rem;
   width: 100% ;
+
+
+  .select {
+    width: 300px;
+    height: 48px;
+
+
+
+    .ant-select-selector {
+      border-color: #fb7e00;
+      border-radius: 10px;
+      color: #fb7e00;
+    }
+
+    .ant-select-arrow {
+      color: #fb7e00 !important;
+    }
+  }
 }

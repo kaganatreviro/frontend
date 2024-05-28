@@ -23,20 +23,23 @@ function Menu() {
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   console.log("currentEstablishment id", currentEstablishment?.id);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(fetchCategoriesList());
-        if (currentEstablishment?.id) {
-          await dispatch(getMenu(currentEstablishment?.id));
-        }
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+    if (!currentEstablishment?.id) return;
 
     fetchData();
   }, [currentEstablishment?.id]);
+
+  const fetchData = async () => {
+    try {
+      await dispatch(fetchCategoriesList());
+      if (currentEstablishment?.id) {
+        await dispatch(getMenu(currentEstablishment?.id));
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
 
   const onChange = (id: number, checked: boolean) => {
     console.log(`Switch for item ${id} is ${checked ? "ON" : "OFF"}`);
@@ -140,7 +143,7 @@ function Menu() {
                       <Switch
                         className="custom-switch"
                         defaultChecked={item.availability_status}
-                        onChange={(checked) => onChange(item.id, checked)}
+                        onChange={(checked: boolean) => onChange(item.id, checked)}
                       />
                     </div>
                   </div>

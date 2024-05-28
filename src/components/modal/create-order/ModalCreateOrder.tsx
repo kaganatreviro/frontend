@@ -18,30 +18,32 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
   const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(fetchUsers());
-        if (currentEstablishment) {
-          await dispatch(getMenu(currentEstablishment?.id));
-        }
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-
+    if (!currentEstablishment?.id) return;
     fetchData();
-  }, [dispatch]);
+  }, [currentEstablishment?.id]);
+  const fetchData = async () => {
+    try {
+      await dispatch(fetchUsers());
+      if (currentEstablishment) {
+        await dispatch(getMenu(currentEstablishment?.id));
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
   const handleCreateOrder = async (values: any) => {
     try {
       await dispatch(createOrder(values)).unwrap();
-      await dispatch(fetchOrders()).unwrap();
+      if (currentEstablishment) {
+        await dispatch(fetchOrders(currentEstablishment?.id)).unwrap();
+      }
       form.resetFields();
       onClose();
     } catch (error: any) {
       console.error("Failed to create order:", error);
       notification.error({
         message: "Error",
-        description: error.non_field_errors[0],
+        description: error.non_field_errors,
       });
     }
   };
