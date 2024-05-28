@@ -49,7 +49,9 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const markerRef = useRef<google.maps.Marker | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  console.log(API_KEY)
+
   const handlePlaceSelect = () => {
     if (searchValue.trim() === "") {
       setError("Please enter your location");

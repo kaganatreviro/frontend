@@ -1,22 +1,23 @@
+/* eslint-disable */
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
-import { fetchEstablishmentsList, setCurrentEstablishment } from "../../../store/actions/partner/establishemntsSlice";
-import { Select, Typography, Avatar } from "antd";
+import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
+import { Select, Avatar } from "antd";
 import "./style.scss";
 
 const { Option } = Select;
-const { Title } = Typography;
 
 interface EstablishmentSwitcherProps {
   title: string;
+  currentEstablishment?: any;
+  onEstablishmentChange?: (establishment: any) => void;
 }
 
-function EstablishmentSwitcher({ title }: EstablishmentSwitcherProps) {
+function EstablishmentSwitcher({ title, currentEstablishment, onEstablishmentChange }: EstablishmentSwitcherProps) {
   const dispatch = useAppDispatch();
   const establishments = useSelector((state: RootState) => state.establishments.establishments);
-  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
 
   useEffect(() => {
     dispatch(fetchEstablishmentsList()).then((action) => {
@@ -26,23 +27,23 @@ function EstablishmentSwitcher({ title }: EstablishmentSwitcherProps) {
         if (savedEstablishmentId) {
           const savedEstablishment = action.payload.find((est: any) => est.id === Number(savedEstablishmentId));
           if (savedEstablishment) {
-            dispatch(setCurrentEstablishment(savedEstablishment));
+            onEstablishmentChange?.(savedEstablishment);
           } else if (defaultEstablishment) {
-            dispatch(setCurrentEstablishment(defaultEstablishment));
+            onEstablishmentChange?.(defaultEstablishment);
             localStorage.setItem("currentEstablishmentId", defaultEstablishment.id.toString());
           }
         } else if (defaultEstablishment) {
-          dispatch(setCurrentEstablishment(defaultEstablishment));
+          onEstablishmentChange?.(defaultEstablishment);
           localStorage.setItem("currentEstablishmentId", defaultEstablishment.id.toString());
         }
       }
     });
-  }, [dispatch]);
+  }, [dispatch, onEstablishmentChange]);
 
   const handleSelectChange = (value: number) => {
     const selectedEstablishment = establishments.find((est) => est.id === value);
     if (selectedEstablishment) {
-      dispatch(setCurrentEstablishment(selectedEstablishment));
+      onEstablishmentChange?.(selectedEstablishment);
       localStorage.setItem("currentEstablishmentId", value.toString());
     }
   };
