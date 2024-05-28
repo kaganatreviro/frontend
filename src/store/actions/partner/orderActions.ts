@@ -1,15 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchOrderData,
-  createOrderData,
+  createOrderData, getOrderById,
 } from "../../../components/api/api";
 import { Order } from "./orderSlice";
 
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
-  async (_, { rejectWithValue }) => {
+  async (orderId: number, { rejectWithValue }) => {
     try {
-      const response = await fetchOrderData();
+      const response = await fetchOrderData(orderId);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -17,18 +17,18 @@ export const fetchOrders = createAsyncThunk(
   },
 );
 
-// export const fetchOrderById = createAsyncThunk(
-//   "orders/fetchOrderById",
-//   async (orderId: number, { rejectWithValue }) => {
-//     try {
-//       const data = await fetchOrderByIdApi(orderId);
-//       return data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   },
-// );
-//
+export const fetchHistoryById = createAsyncThunk(
+  "orders/fetchOrderById",
+  async (orderId: number, { rejectWithValue }) => {
+    try {
+      const data = await getOrderById(orderId);
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (order: Omit<Order, "id">, { rejectWithValue }) => {

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchOrders } from "./orderActions";
+import { fetchHistoryById, fetchOrders } from "./orderActions";
 
 export interface Order {
   id: number;
@@ -46,18 +46,18 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(fetchHistoryById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchHistoryById.fulfilled, (state, action) => {
+        state.currentOrderDetails = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchHistoryById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
-    // .addCase(fetchOrderById.pending, (state) => {
-    //   state.loading = true;
-    // })
-    // .addCase(fetchOrderById.fulfilled, (state, action) => {
-    //   state.currentOrderDetails = action.payload;
-    //   state.loading = false;
-    // })
-    // .addCase(fetchOrderById.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload as string;
-    // })
     // .addCase(createOrder.pending, (state) => {
     //   state.loading = true;
     // })

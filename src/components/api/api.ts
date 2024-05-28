@@ -8,8 +8,13 @@ export async function refreshToken() {
       refresh: refreshToken,
     });
     const { access, refresh } = response.data;
+    console.log("response", response);
     sessionStorage.setItem("accessToken", access);
     sessionStorage.setItem("refreshToken", refresh);
+    // if (response) {
+    //   sessionStorage.setItem("accessToken", access);
+    //   sessionStorage.setItem("refreshToken", refresh);
+    // }
     return access;
   } catch (error) {
     console.error("Failed to refresh token:", error);
@@ -52,6 +57,7 @@ export const request = async (
   } catch (error: any) {
     if (error.response?.status === 401 && !error.retryFlag) {
       const newToken = await refreshToken();
+      console.log("newToken", newToken);
       if (newToken) {
         config.headers.Authorization = `Bearer ${newToken}`;
         const result = await makeRequest(config);
@@ -84,7 +90,10 @@ export const partnerBlock = async (data: any) => request("/api/v1/user/admin/use
 export const getEstablishmentsPartner = async (id: number) => request(`/api/v1/partner/${id}/establishments/`, "GET");
 export const editEstablishmentPartner = async (id: number, data: any) => request(`/api/v1/user/admin/partners/${id}/`, "PUT", data);
 // Order
-export const fetchOrderData = async () => request("/api/v1/order/orders/", "GET");
+export const fetchOrderData = async (id: number) => request(`/api/v1/order/orders/${id}/`, "GET");
+
+export const getOrderById = async (id: number) => request(`/api/v1/order/partner-order-history/${id}/`, "GET");
+
 export const createOrderData = async (data: any) => request("/api/v1/order/partner-place-order/", "POST", data);
 // admin categories
 export const fetchCategories = async () => request("/api/v1/beverage/categories/", "GET");

@@ -99,7 +99,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           rules={[{ required: true, message: "Please enter your password" },
             { min: 8, message: "Password must be at least 8 characters long" }]}
         >
-          <Input.Password placeholder="Enter your password" autoComplete="off" />
+          <Input.Password placeholder="Enter your password" autoComplete="new-password" />
         </Form.Item>
 
         <Form.Item
@@ -119,7 +119,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
             }),
           ]}
         >
-          <Input.Password placeholder="Confirm your password" autoComplete="off" />
+          <Input.Password placeholder="Confirm your password" autoComplete="new-password" />
         </Form.Item>
       </Form>
     </Modal>
