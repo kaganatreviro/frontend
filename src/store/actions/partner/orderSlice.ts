@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHistoryById, fetchOrders } from "./orderActions";
+import { fetchHistoryById, fetchOrders, fetchStatisticsById } from "./orderActions";
 
 export interface Order {
   id: number;
@@ -9,10 +9,22 @@ export interface Order {
   client_details: string;
 }
 
+interface OrderCategoryStatistic {
+  category: string;
+  total_orders: number;
+}
+
+interface OrderStatistics {
+  total_orders: number;
+  orders_by_category: OrderCategoryStatistic[];
+}
+
 interface OrderState {
   orders: Order[];
   selectedOrderId: number | null;
   currentOrderDetails: Order | null;
+  orderHistory: Order[];
+  orderStatistics: OrderStatistics | null; // Обновлено
   loading: boolean;
   error: string | null;
 }
@@ -21,6 +33,8 @@ const initialState: OrderState = {
   orders: [],
   selectedOrderId: null,
   currentOrderDetails: null,
+  orderHistory: [],
+  orderStatistics: null,
   loading: false,
   error: null,
 };
@@ -51,54 +65,24 @@ const orderSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchHistoryById.fulfilled, (state, action) => {
-        state.currentOrderDetails = action.payload;
+        state.orderHistory = action.payload;
         state.loading = false;
       })
       .addCase(fetchHistoryById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(fetchStatisticsById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchStatisticsById.fulfilled, (state, action) => {
+        state.orderStatistics = action.payload; // Обновлено
+        state.loading = false;
+      })
+      .addCase(fetchStatisticsById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
-    // .addCase(createOrder.pending, (state) => {
-    //   state.loading = true;
-    // })
-    // .addCase(createOrder.fulfilled, (state, action) => {
-    //   state.orders.push(action.payload);
-    //   state.loading = false;
-    // })
-    // .addCase(createOrder.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload as string;
-    // })
-    // .addCase(updateOrder.pending, (state) => {
-    //   state.loading = true;
-    // })
-    // .addCase(updateOrder.fulfilled, (state, action) => {
-    //   const updatedOrder = action.payload;
-    //   const index = state.orders.findIndex((order) => order.id === updatedOrder.id);
-    //   if (index !== -1) {
-    //     state.orders[index] = updatedOrder;
-    //   }
-    //   if (state.currentOrderDetails && state.currentOrderDetails.id === updatedOrder.id) {
-    //     state.currentOrderDetails = updatedOrder;
-    //   }
-    //   state.loading = false;
-    // })
-    // .addCase(updateOrder.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload as string;
-    // })
-    // .addCase(deleteOrder.pending, (state) => {
-    //   state.loading = true;
-    // })
-    // .addCase(deleteOrder.fulfilled, (state, action) => {
-    //   const deletedOrderId = action.payload;
-    //   state.orders = state.orders.filter((order) => order.id !== deletedOrderId);
-    //   state.loading = false;
-    // })
-    // .addCase(deleteOrder.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload as string;
-    // });
   },
 });
 

@@ -3,12 +3,14 @@ import { BASE_API_URL } from "../../helpers/constants/Constants";
 
 export async function refreshToken() {
   const refreshToken = sessionStorage.getItem("refreshToken");
+  // console.log("api get refreshToken", refreshToken);
   try {
     const response = await axios.post(`${BASE_API_URL}/api/v1/user/auth/token/refresh/`, {
       refresh: refreshToken,
     });
     const { access, refresh } = response.data;
-    console.log("response", response);
+    // console.log("const { access, refresh } = response.data;", refresh);
+    // console.log("response", response);
     sessionStorage.setItem("accessToken", access);
     sessionStorage.setItem("refreshToken", refresh);
     // if (response) {
@@ -23,6 +25,7 @@ export async function refreshToken() {
 }
 
 async function makeRequest(config: any) {
+  // console.log("api config", config);
   try {
     const response = await axios(config);
     // console.log(`Response from ${config.url}:`, response.data);
@@ -37,7 +40,7 @@ export const request = async (
   url: string,
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   payload?: any,
-  formData?: boolean,
+  formData?: boolean | null,
   params?: any,
 ) => {
   const token = sessionStorage.getItem("accessToken");
@@ -89,12 +92,13 @@ export const partnerBlock = async (data: any) => request("/api/v1/user/admin/use
 // Partner by admin
 export const getEstablishmentsPartner = async (id: number) => request(`/api/v1/partner/${id}/establishments/`, "GET");
 export const editEstablishmentPartner = async (id: number, data: any) => request(`/api/v1/user/admin/partners/${id}/`, "PUT", data);
+
 // Order
 export const fetchOrderData = async (id: number) => request(`/api/v1/order/orders/${id}/`, "GET");
-
-export const getOrderById = async (id: number) => request(`/api/v1/order/partner-order-history/${id}/`, "GET");
-
+export const getOrderById = async (id: number) => request(`/api/v1/order/${id}/partner-order-history/`, "GET");
+export const getOrderStatisticsById = async (id: number, filter?: any) => request(`/api/v1/order/statistics/${id}/`, "GET", null, null, filter);
 export const createOrderData = async (data: any) => request("/api/v1/order/partner-place-order/", "POST", data);
+
 // admin categories
 export const fetchCategories = async () => request("/api/v1/beverage/categories/", "GET");
 export const createCategory = async (data: any) => request("/api/v1/beverage/categories/", "POST", data);

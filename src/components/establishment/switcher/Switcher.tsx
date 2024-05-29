@@ -13,7 +13,7 @@ interface EstablishmentSwitcherProps {
   title: string;
 }
 
-const EstablishmentSwitcher: React.FC<EstablishmentSwitcherProps> = ({ title }) => {
+function EstablishmentSwitcher({ title }: EstablishmentSwitcherProps) {
   const dispatch = useAppDispatch();
   const establishments = useSelector((state: RootState) => state.establishments.establishments);
   const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
@@ -67,6 +67,6 @@ const EstablishmentSwitcher: React.FC<EstablishmentSwitcherProps> = ({ title }) 
       ) : null}
     </div>
   );
-};
+}
 
 export default EstablishmentSwitcher;
