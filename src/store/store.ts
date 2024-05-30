@@ -8,6 +8,8 @@ import menuReducer from "./actions/partner/menu";
 import establishemntsSlice from "./actions/partner/establishemntsSlice";
 import orderReducer from "./actions/partner/orderSlice";
 import categoriesSlice from "./actions/admin/categories/categories";
+import feedbacksSlice from "./actions/admin/feedback/feedbacksSlice";
+import answersSlice from "./actions/admin/feedback/answersSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ const store = configureStore({
     establishments: establishemntsSlice,
     orders: orderReducer,
     category: categoriesSlice,
+    feedback: feedbacksSlice,
+    answers: answersSlice,
   },
 });
 

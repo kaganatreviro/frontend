@@ -14,7 +14,6 @@ import routing from "./routing";
 import Navigation from "./components/common/Navigation";
 import { RootState } from "./store/store";
 import "antd/dist/reset.css";
-import "./antd.less";
 
 function App() {
   const location = useLocation();

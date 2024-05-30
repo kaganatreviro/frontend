@@ -42,7 +42,7 @@ function Navigation() {
 
   return (
     <div className="sticky top-0 flex flex-col items-center w-[280px] py-8 h-screen bg-white z-10">
-      <div className="text-[#B2C1C0] text-2xl">{ userType === "admin" ? "Admin Dashboard" : "Partner Dashboard"}</div>
+      <div className="text-[#B2C1C0] text-2xl">{userType === "admin" ? "Admin Dashboard" : "Partner Dashboard"}</div>
       <hr className="border-1 border-[#ADADAD] mt-2 w-full" />
       <div className="pt-6 flex flex-col h-full w-full">
         <div className="flex items-center pl-8">
@@ -51,25 +51,15 @@ function Navigation() {
         </div>
         <div className="pt-10">
           {menuItems.map((item, i) => (
-            <NavLink
-              to={item.path}
-              key={item.path}
-              className="block  text-2xl "
-            >
+            <NavLink to={item.path} key={item.path} className="block text-2xl">
               <div
-                className={` pl-8 flex text-[#B2C1C0] my-6 py-4
-              ${
-                location.pathname === item.path
-                  ? "bg-[#FFE4C3] text-[#FB7E00] border-r-4 border-[#FB7E00]"
-                  : ""
-              }
-              `}
+                className={`pl-8 flex text-[#B2C1C0] my-6 py-4
+      ${location.pathname.startsWith(item.path) ? "bg-[#FFE4C3] text-[#FB7E00] border-r-4 border-[#FB7E00]" : ""}
+      `}
               >
                 <FontAwesomeIcon
                   icon={NavigationIcons[item.name].icon}
-                  className={`self-center mr-3
-                  ${location.pathname === item.path ? "text-[#FB7E00]" : ""}
-                `}
+                  className={`self-center mr-3 ${location.pathname.startsWith(item.path) ? "text-[#FB7E00]" : ""}`}
                 />
                 <div>{item.name}</div>
               </div>

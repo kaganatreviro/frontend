@@ -8,12 +8,14 @@ export interface Establishment {
     type: "Point";
     coordinates: [number, number];
   };
+  owner: number;
   description: string;
   phone_number: string;
   logo: string;
   address: string;
   happyhours_start: string;
   happyhours_end: string;
+  feedback_count: "string"
 }
 
 interface EstablishmentState {

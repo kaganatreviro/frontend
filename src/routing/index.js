@@ -8,6 +8,7 @@ import Establishments from "../pages/partners/establishments/establishments";
 import Orders from "../pages/partners/orders/Order";
 import Menu from "../pages/partners/menu/Menu";
 import Profile from "../pages/partners/profile/Profile";
+import EstablishmentSelection from "../pages/admin/feedback/EstablishmentChoose";
 
 export default {
   Main: {
@@ -81,8 +82,14 @@ export default {
   },
 
   Feedback: {
-    path: "/feedback",
+    path: "/feedback/establishment",
     element: <Feedback />,
+    protected: false,
+    role: "all",
+  },
+  EstablishmentSelection: {
+    path: "/feedback",
+    element: <EstablishmentSelection />,
     protected: false,
     role: "all",
   },

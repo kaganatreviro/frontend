@@ -114,3 +114,11 @@ export const fetchEstablishments = async () => request("/api/v1/partner/establis
 export const createEstablishment = async (data: any) => request("/api/v1/partner/establishments/", "POST", data);
 export const updateEstablishment = async (id: number, data: any) => request(`/api/v1/partner/establishments/${id}/`, "PUT", data);
 export const deleteEstablishment = async (id: number) => request(`/api/v1/partner/establishments/${id}/`, "DELETE");
+
+// Feedback
+export const fetchFeedbacksList = async (id: number) => request(`/api/v1/feedback/feedbacks/list/${id}`, "GET");
+export const createFeedback = async (data: any) => request(`/api/v1/feedback/answers/create/`, "POST", data);
+export const updateAnswer = async (id: number, data: any) => request(`/api/v1/feedback/answers/${id}/`, "PUT", data);
+export const deleteAnswer = async (id: number) => request(`/api/v1/feedback/answers/${id}/`, "DELETE");
+export const deleteFeedback = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/`, "DELETE");
+export const fetchAnswersList = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/answers/list`, "GET");
