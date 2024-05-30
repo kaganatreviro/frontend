@@ -31,7 +31,7 @@ const EstablishmentSelection: React.FC = () => {
       dispatch(setCurrentEstablishment(selectedEstablishment));
       localStorage.setItem("currentEstablishmentId", value.toString());
       localStorage.setItem("currentEstablishmentName", selectedEstablishment.name.toString());
-      navigate("/feedback/establishment");
+      navigate("/admin/feedback/establishment");
     }
   };
   const partnersWithEstablishments = partners.filter((partner) =>

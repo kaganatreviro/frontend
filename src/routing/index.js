@@ -30,6 +30,12 @@ export default {
     protected: false,
     role: "all",
   },
+  Feedback: {
+    path: "/feedback/",
+    element: <Feedback />,
+    protected: false,
+    role: "all",
+  },
   Establishments: {
     path: "/establishments",
     element: <Establishments />,
@@ -81,14 +87,14 @@ export default {
     role: "all",
   },
 
-  Feedback: {
-    path: "/feedback/establishment",
+  AdminFeedback: {
+    path: "/admin/feedback/establishment",
     element: <Feedback />,
     protected: false,
     role: "all",
   },
   EstablishmentSelection: {
-    path: "/feedback",
+    path: "/admin/feedback",
     element: <EstablishmentSelection />,
     protected: false,
     role: "all",

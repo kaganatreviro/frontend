@@ -17,7 +17,7 @@ function Navigation() {
     { name: "Users", path: "/users" },
     { name: "Partners", path: "/partners" },
     { name: "Categories", path: "/categories" },
-    { name: "Feedback", path: "/feedback" },
+    { name: "Feedback", path: "/admin/feedback" },
   ];
 
   const partnerMenuItems = [
@@ -26,6 +26,7 @@ function Navigation() {
     { name: "Orders", path: "/orders" },
     { name: "Establishments", path: "/establishments" },
     { name: "QR", path: "/qrcode" },
+    { name: "Feedback", path: "/feedback" },
   ];
 
   const menuItems = userType === "admin" ? adminMenuItems : partnerMenuItems;

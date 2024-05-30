@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply, faComments, faSpinner, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../../store/store";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { fetchFeedbacks } from "../../../store/actions/admin/feedback/feedbacksSlice";
 import { fetchAnswers, } from "../../../store/actions/admin/feedback/answersSlice";
 import { createFeedback, updateAnswer, deleteAnswer, deleteFeedback } from "../../../components/api/api";
@@ -27,7 +28,7 @@ const Feedback: React.FC = () => {
       try {
         await deleteAnswer(deletingAnswerkId);
         if (currentEstablishment) {
-          dispatch(fetchFeedbacks(currentEstablishment))
+          dispatch(fetchFeedbacks(currentEstablishment.id))
             .then(() => {
               dispatch(fetchAnswers(deletingFeedbackId));
             })
@@ -42,9 +43,11 @@ const Feedback: React.FC = () => {
       setDeletingFeedbackId(null);
     }
   };
-  const localestablishem = localStorage.getItem("currentEstablishmentId");
+
   const feedbacks = useSelector((state: RootState) => state.feedback.feedbacks);
   const answers = useSelector((state: RootState) => state.answers.answers);
+  const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
+
   const [loading, setLoading] = useState(true);
   const [replyFeedbackId, setReplyFeedbackId] = useState<number | null>(null);
   const [openCommentId, setOpenCommentId] = useState<number | null>(null);
@@ -53,15 +56,16 @@ const Feedback: React.FC = () => {
   const [newFeedbackText, setNewFeedbackText] = useState("");
   const [newText, setNewText] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
-  const currentEstablishment = localestablishem ? parseInt(localestablishem) : null;
-  const localestablishmentName = localStorage.getItem("currentEstablishmentName");
-  const currentEstablishmentName = localestablishmentName ? localestablishmentName : null;
+  const currentEstablishmentName = currentEstablishment?.name || null;
+  const [isAdmin, setIsAdmin] = useState<boolean>(true)
 
   useEffect(() => {
-    console.log(currentEstablishment)
+    if(window.location.hash == "#/feedback"){
+      setIsAdmin(false);
+    }
     if (currentEstablishment) {
-      console.log(currentEstablishment)
-      dispatch(fetchFeedbacks(currentEstablishment))
+      setLoading(true);
+      dispatch(fetchFeedbacks(currentEstablishment.id))
         .then(() => setLoading(false))
         .catch((error) => console.error("Error fetching feedbacks:", error));
     }
@@ -92,7 +96,7 @@ const Feedback: React.FC = () => {
       formData.append("text", newText);
       await updateAnswer(id, formData);
       if (currentEstablishment) {
-        dispatch(fetchFeedbacks(currentEstablishment))
+        dispatch(fetchFeedbacks(currentEstablishment.id))
           .then(() => {
             dispatch(fetchAnswers(feedbackId));
           })
@@ -164,158 +168,165 @@ const Feedback: React.FC = () => {
       setReplyFeedbackId(null);
 
       if (currentEstablishment) {
-        dispatch(fetchFeedbacks(currentEstablishment)) .then(() => {
-          dispatch(fetchAnswers(id));
-        })
-        .catch((error) => console.error("Error fetching feedbacks:", error));
+        dispatch(fetchFeedbacks(currentEstablishment.id))
+          .then(() => {
+            dispatch(fetchAnswers(id));
+          })
+          .catch((error) => console.error("Error fetching feedbacks:", error));
+      }
+      setNewFeedbackText("");
+    } catch (error) {
+      console.error("Failed to submit feedback:", error);
+      message.error("Failed to submit feedback.");
     }
-    setNewFeedbackText("");
-  } catch (error) {
-    console.error("Failed to submit feedback:", error);
-    message.error("Failed to submit feedback.");
-  }
-};
-console.log(feedbacks)
+  };
 
-return (
-  <div className="flex flex-1 select-none">
-    <div className="bg-[#f4f4f4] flex-1 p-12">
-      <div className="font-medium text-4xl mb-8">Feedback</div>
+  return (
+    <div className="flex flex-1 select-none">
+      <div className="bg-[#f4f4f4] flex-1 flex flex-col p-12">
+        {!isAdmin ? (<EstablishmentSwitcher title="Feedback" />) : (<div className="font-medium text-4xl mb-8">Feedback</div>)}
 
-      {loading ? (
-        <Skeleton active />
-      ) : feedbacks && feedbacks.length > 0 ? (
-        <div>
-          <div className="text-3xl mb-6 text-start"> {currentEstablishmentName}</div>
-          {feedbacks.map((feedback) => (
-            <div key={feedback.id}>
-              <div className="mb-4 p-4 bg-white shadow flex flex-col rounded-lg">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <div className="font-bold">{feedback.display_user} ● </div>
-                    <div className="font-bold text-gray-400 ml-1">{feedback.user}</div>
+        {loading ? (
+          <Skeleton active />
+        ) : feedbacks && feedbacks.length > 0 ? (
+          <div>
+            <div className="text-3xl mb-6 text-start"> {currentEstablishmentName}</div>
+            {feedbacks.map((feedback) => (
+              <div key={feedback.id}>
+                <div className="mb-4 p-4 bg-white shadow flex flex-col rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <div className="font-bold">{feedback.display_user} ● </div>
+                      <div className="font-bold text-gray-400 ml-1">{feedback.user}</div>
+                    </div>
+                    <div className="mt-2 text-gray-500">{formatDate(feedback.created_at)}</div>
                   </div>
-                  <div className="mt-2 text-gray-500">{formatDate(feedback.created_at)}</div>
+                  <div className="mt-2">{feedback.text}</div>
+                  <div className="flex self-end mt-2">
+                    <button
+                      className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 self-end mt-2 pr-3"
+                      onClick={() => handleCommentClick(feedback.id)}
+                    >
+                      <FontAwesomeIcon icon={faComments} />
+                      <div>{commentsVisible[feedback.id] ? "Hide" : feedback.answers ? "Comments" : "0 Comments"}</div>
+                    </button>
+                    <button
+                      className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                      onClick={() => handleReplyClick(feedback.id)}
+                    >
+                      <FontAwesomeIcon icon={faReply} />
+                      <div>Reply</div>
+                    </button>
+                  </div>
                 </div>
-                <div className="mt-2">{feedback.text}</div>
-                <div className="flex self-end mt-2">
-                  <button
-                    className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 self-end mt-2 pr-3"
-                    onClick={() => handleCommentClick(feedback.id)}
-                  >
-                    <FontAwesomeIcon icon={faComments} />
-                    <div>{commentsVisible[feedback.id] ? "Hide" : feedback.answers ? "Comments" : "0 Comments"}</div>
-                  </button>
-                  <button
-                    className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
-                    onClick={() => handleReplyClick(feedback.id)}
-                  >
-                    <FontAwesomeIcon icon={faReply} />
-                    <div>Reply</div>
-                  </button>
-                </div>
-              </div>
-              {replyFeedbackId === feedback.id && (
-                <div className="mb-4 ml-12 p-4 bg-white shadow flex gap-4 items-center rounded-lg">
-                  <Input.TextArea
-                    rows={2}
-                    placeholder="Write your feedback here..."
-                    value={newFeedbackText}
-                    onChange={(e) => setNewFeedbackText(e.target.value)}
-                  />
-                  <button
-                    className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
-                    onClick={() => handleNewFeedbackSubmit(feedback.id)}
-                  >
-                    Submit
-                  </button>
-                </div>
-              )}
-              {commentsVisible[feedback.id] && (
-                <div className="mb-4 ml-6 gap-10 flex flex-col rounded-lg">
-                  {loadingComments[feedback.id] ? (
-                    <div className="flex items-center justify-center ml-6 py-4 shadow bg-white  rounded-lg">
-                      <FontAwesomeIcon icon={faSpinner} spin={true} />
-                      <span className="ml-2 ">Loading comments...</span>
-                    </div>
-                  ) : (
-                    <div>
-                      {openCommentId === feedback.id ? (
-                        <div className="flex gap-4 flex-col">
-                          {answers.filter(answer => answer.feedback === feedback.id).length > 0 ? (
-                            answers.filter(answer => answer.feedback === feedback.id).map((answer) => (
-                              <div key={answer.id} className=" p-4 ml-6 bg-white shadow flex flex-col rounded-lg">
-                                <div className="mb-2 flex justify-between items-center">
-                                  <div className="font-bold">{answer.user_role === 'partner' ? `${currentEstablishmentName}` : answer.user_role === 'admin' ? 'Admin' : answer.user}</div>
-                                  <div className="text-gray-500">{formatDate(answer.created_at)}</div>
-                                </div>
-                                {editingCommentId === answer.id ? (
-                                  <div className="flex justify-between items-center gap-4">
-                                    <Input.TextArea
-                                      rows={2}
-                                      defaultValue={answer.text}
-                                      onChange={(e) => setNewText(e.target.value)}
-                                    />
-                                    <div className="flex gap-2">
-                                      <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 pr-3"
-                                        onClick={() => handleUpdateComment(answer.id, feedback.id)}
-                                      >
-                                        Update
-                                      </button>
-                                      <button className="bg-[#b1b1b1] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 pr-3" onClick={() => setEditingCommentId(null)}>Cancel</button>
-                                    </div>
+                {replyFeedbackId === feedback.id && (
+                  <div className="mb-4 ml-12 p-4 bg-white shadow flex gap-4 items-center rounded-lg">
+                    <Input.TextArea
+                      rows={2}
+                      placeholder="Write your feedback here..."
+                      value={newFeedbackText}
+                      onChange={(e) => setNewFeedbackText(e.target.value)}
+                    />
+                    <button
+                      className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                      onClick={() => handleNewFeedbackSubmit(feedback.id)}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                )}
+                {commentsVisible[feedback.id] && (
+                  <div className="mb-4 ml-6 gap-10 flex flex-col rounded-lg">
+                    {loadingComments[feedback.id] ? (
+                      <div className="flex items-center justify-center ml-6 py-4 shadow bg-white  rounded-lg">
+                        <FontAwesomeIcon icon={faSpinner} spin={true} />
+                        <span className="ml-2 ">Loading comments...</span>
+                      </div>
+                    ) : (
+                      <div>
+                        {openCommentId === feedback.id ? (
+                          <div className="flex gap-4 flex-col">
+                            {answers.filter(answer => answer.feedback === feedback.id).length > 0 ? (
+                              answers.filter(answer => answer.feedback === feedback.id).map((answer) => (
+                                <div key={answer.id} className=" p-4 ml-6 bg-white shadow flex flex-col rounded-lg">
+                                  <div className="mb-2 flex justify-between items-center">
+                                    <div className="font-bold">{answer.user_role === 'partner' ? `${currentEstablishmentName} - Establishment` : answer.user_role === 'admin' ? 'Admin' : answer.user}</div>
+                                    <div className="text-gray-500">{formatDate(answer.created_at)}</div>
                                   </div>
-                                ) : (
-                                  <div className="flex justify-between">
-                                    <div>{answer.text}</div>
-                                    {answer.user_role === 'admin' && (
+                                  {editingCommentId === answer.id ? (
+                                    <div className="flex justify-between items-center gap-4">
+                                      <Input.TextArea
+                                        rows={2}
+                                        defaultValue={answer.text}
+                                        onChange={(e) => setNewText(e.target.value)}
+                                      />
                                       <div className="flex gap-2">
-                                        <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
-                                          onClick={() => handleEditComment(answer.id)}>Edit</button>
-                                        <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
-                                          onClick={() => handleDeleteComment(answer.id, feedback.id)}>Delete</button>
+                                        <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 pr-3"
+                                          onClick={() => handleUpdateComment(answer.id, feedback.id)}
+                                        >
+                                          Update
+                                        </button>
+                                        <button className="bg-[#b1b1b1] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 pr-3" onClick={() => setEditingCommentId(null)}>Cancel</button>
                                       </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <div>No comments yet</div>
-                          )}
-                        </div>
-                      ) : (
-                        <div>
-                          <FontAwesomeIcon icon={faSpinner} spin={true} />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="ml-6">No feedbacks available.</div>
-      )}
+                                    </div>
+                                  ) : (
+                                    <div className="flex justify-between">
+                                      <div>{answer.text}</div>
+                                      { isAdmin && answer.user_role === 'admin' ? (
+                                        <div className="flex gap-2">
+                                          <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                                            onClick={() => handleEditComment(answer.id)}>Edit</button>
+                                          <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                                            onClick={() => handleDeleteComment(answer.id, feedback.id)}>Delete</button>
+                                        </div>
+                                      ): !isAdmin && answer.user_role === 'partner' && currentEstablishment?.name==answer.display_user  ? ((
+                                        <div className="flex gap-2">
+                                          <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                                            onClick={() => handleEditComment(answer.id)}>Edit</button>
+                                          <button className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"
+                                            onClick={() => handleDeleteComment(answer.id, feedback.id)}>Delete</button>
+                                        </div>
+                                      )):("")}
+                                    </div>
+                                  )}
+                                </div>
+                              ))
+                            ) : (
+                              <div className="p-4 ml-6 bg-white shadow flex flex-col rounded-lg items-center">No comments yet</div>
+                            )}
+                          </div>
+                        ) : (
+                          <div>
+                            <FontAwesomeIcon icon={faSpinner} spin={true} />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-3xl flex flex-1 items-center justify-center">No feedbacks for this establishment</div>
+        )}
+      </div>
+      <Modal
+        title="Delete Feedback"
+        visible={deleteModalVisible}
+        onCancel={handleDeleteCancel}
+        onOk={handleDeleteConfirm}
+        centered={true}
+        width={300}
+        okText="Yes"
+        cancelText="No"
+      >
+        <p className="text-lg my-10 text-center">
+          Are you sure you want to delete this feedback?
+        </p>
+      </Modal>
     </div>
-    <Modal
-      title="Delete Feedback"
-      visible={deleteModalVisible}
-      onCancel={handleDeleteCancel}
-      onOk={handleDeleteConfirm}
-      centered={true}
-      width={300}
-      okText="Yes"
-      cancelText="No"
-    >
-      <p className="text-lg my-10 text-center">
-        Are you sure you want to delete this feedback?
-      </p>
-    </Modal>
-  </div>
-);
+  );
 };
 
 export default Feedback;
