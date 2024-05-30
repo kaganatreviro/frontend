@@ -22,7 +22,6 @@ function Menu() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleBlock, setIsModalVisibleBlock] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  console.log("currentEstablishment id", currentEstablishment?.id);
 
   useEffect(() => {
     if (!currentEstablishment?.id) return;

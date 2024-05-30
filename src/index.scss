@@ -25,6 +25,8 @@ body {
   //font-size: 20px;
   &:hover {
     background-color: darken(#FB7E00, 10%) !important;
+    border: unset !important;
+    color: white !important;
   }
 }
 
@@ -37,6 +39,25 @@ th {
   background: #fb7e00 !important;
   color: #ffffff !important;
 }
+}
+
+
+.ant-tabs-nav .ant-tabs-tab-active {
+  color: #fb7e00 !important;
+}
+
+.ant-tabs-tab-btn:active {
+  color: #fb7e00 !important;
+}
+
+.order_partners .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #fb7e00 !important;
+  text-shadow: 0 0 0.25px #fb7e00 !important;
+}
+
+
+.ant-tabs-ink-bar {
+  background-color: #fb7e00 !important;
 }
 
 

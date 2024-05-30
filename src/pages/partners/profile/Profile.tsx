@@ -5,8 +5,8 @@ import PhoneInput from "react-phone-input-2";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import { editProfile, fetchProfile } from "../../../store/actions/partner/profileSlice";
-import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
+import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import "./style.scss";
 
 export default function Profile() {
@@ -33,6 +33,7 @@ export default function Profile() {
   return (
     <div className="flex-1 partner_profile flex bg-[#f4f4f4]">
       <div className="container justify-start items-start flex-1 p-12">
+        <EstablishmentSwitcher title="Profile Management" />
         {isLoading ? (
           <Card bordered={false} className="w-full max-w-3xl">
             <Skeleton active paragraph={{ rows: 4 }} />
@@ -60,24 +61,6 @@ export default function Profile() {
               >
                 <Input placeholder="Name" />
               </Form.Item>
-
-              {/* <Form.Item */}
-              {/*   label="Phone Number" */}
-              {/*   name="phone_number" */}
-              {/*   rules={[ */}
-              {/*     { required: true, message: "Please input your phone number!" }, */}
-              {/*     { */}
-              {/*       // pattern: /^(?:\+996)?(?:\s*\d\s*){9}$/, */}
-              {/*       message: "Phone number must have exactly 9 digits!", */}
-              {/*     }, */}
-              {/*   ]} */}
-              {/* > */}
-              {/*   <Input */}
-              {/*     type="number" */}
-              {/*     addonBefore="+996" */}
-              {/*     placeholder="700 123 456" */}
-              {/*   /> */}
-              {/* </Form.Item> */}
 
               <Form.Item
                 name="phone_number"
