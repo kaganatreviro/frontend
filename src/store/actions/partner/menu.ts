@@ -7,7 +7,7 @@ interface Menu {
   price: number;
   description: string;
   availability_status?: boolean;
-  category: string;
+  category: number;
   establishment?: number;
 }
 

@@ -11,7 +11,7 @@ interface ModalDisableProps {
 
 function ModalDisable({
   title = "Default Title",
-  text = "Default text",
+  text = "",
   onOk,
   onCancel,
   visible,

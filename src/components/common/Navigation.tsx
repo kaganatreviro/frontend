@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import ModalDisable from "../modal/disable/ModalDisable";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
@@ -12,6 +12,8 @@ function Navigation() {
   const location = useLocation();
   const navigate = useNavigate();
   const userType = localStorage.getItem("userType");
+
+  const [isModalVisible, setIsModalVisible] = useState(false); // State to control modal visibility
 
   const adminMenuItems = [
     { name: "Users", path: "/users" },
@@ -32,6 +34,10 @@ function Navigation() {
   const menuItems = userType === "admin" ? adminMenuItems : partnerMenuItems;
 
   const handleLogout = () => {
+    setIsModalVisible(true);
+  };
+
+  const confirmLogout = () => {
     sessionStorage.clear();
     localStorage.clear();
     if (userType === "admin") {
@@ -39,6 +45,10 @@ function Navigation() {
     } else {
       navigate("/login");
     }
+  };
+
+  const cancelLogout = () => {
+    setIsModalVisible(false);
   };
 
   return (
@@ -55,8 +65,8 @@ function Navigation() {
             <NavLink to={item.path} key={item.path} className="block text-2xl">
               <div
                 className={`pl-8 flex text-[#B2C1C0] my-6 py-4
-      ${location.pathname.startsWith(item.path) ? "bg-[#FFE4C3] text-[#FB7E00] border-r-4 border-[#FB7E00]" : ""}
-      `}
+                ${location.pathname.startsWith(item.path) ? "bg-[#FFE4C3] text-[#FB7E00] border-r-4 border-[#FB7E00]" : ""}
+                `}
               >
                 <FontAwesomeIcon
                   icon={NavigationIcons[item.name].icon}
@@ -76,6 +86,14 @@ function Navigation() {
         <FontAwesomeIcon icon={faArrowRightFromBracket} />
         <div>Log Out</div>
       </button>
+
+      <ModalDisable
+        visible={isModalVisible}
+        onOk={confirmLogout}
+        onCancel={cancelLogout}
+        title="Are you sure you want
+to Log Out?"
+      />
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Switch, Button, Spin, Skeleton } from "antd";
+import { Card, Switch, Button, Spin, Skeleton, message } from "antd";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { deleteMenuId } from "../../../components/api/api";
 import ModalDisable from "../../../components/modal/disable/ModalDisable";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { RootState } from "../../../store/store";
-import { getMenu, setCorrectMenuId } from "../../../store/actions/partner/menu";
+import { getMenu, setCorrectMenuId, updateItem } from "../../../store/actions/partner/menu";
 import ModalCreateMenu from "../../../components/modal/create-menu/modalCreateMenu";
 import EstablishmentSwitcher from "../../../components/establishment/switcher/Switcher";
 import { fetchCategoriesList } from "../../../store/actions/admin/categories/categories";
@@ -40,9 +40,32 @@ function Menu() {
     }
   };
 
-  const onChange = (id: number, checked: boolean) => {
-    console.log(`Switch for item ${id} is ${checked ? "ON" : "OFF"}`);
-    // Here you can handle the update to the availability status
+  const onChange = async (id: number, checked: boolean) => {
+    try {
+      const item = data.find((item) => item.id === id);
+      console.log("item", item);
+      if (!item) throw new Error("Item not found");
+
+      const updatedItem = {
+        name: item.name,
+        price: Number(item.price),
+        description: item.description,
+        availability_status: checked,
+        category: 19,
+        establishment: currentEstablishment?.id,
+      };
+
+      console.log(`Switch for item ${id} is ${checked ? "ON" : "OFF"}`);
+      await dispatch(updateItem({ id, data: updatedItem })).unwrap();
+      message.success("Status updated successfully");
+      // Optionally fetch the menu again to reflect the changes
+      if (currentEstablishment?.id) {
+        dispatch(getMenu(currentEstablishment.id));
+      }
+    } catch (error) {
+      message.error("Failed to update status");
+      console.error("Failed to update status:", error);
+    }
   };
 
   const handleAddItem = () => {

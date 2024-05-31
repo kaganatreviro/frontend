@@ -1,6 +1,8 @@
-import { Modal, Button, Form, Input, notification } from "antd";
+import { Modal, Button, Form, Input, message } from "antd";
 import { useState } from "react";
 import { createPartner } from "../../api/api";
+import { fetchPartner } from "../../../store/actions/admin/partner/partnerActions";
+import { useAppDispatch } from "../../../helpers/hooks/hook";
 import "./style.scss";
 
 interface ModalCreateProps {
@@ -11,6 +13,7 @@ interface ModalCreateProps {
 function ModalCreate({ onCancel, visible }: ModalCreateProps) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleOk = async () => {
     try {
@@ -18,15 +21,16 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
       const values = await form.validateFields();
       // console.log("Form Values:", values);
       const response = await createPartner(values);
+      dispatch(fetchPartner());
       // console.log("Response:", response);
       form.resetFields();
       setLoading(false);
       onCancel();
-      notification.success({ message: "Partner created successfully!" });
+      message.success("Partner created successfully!"); // Use message.success
     } catch (error: any) {
       console.error("Failed to create partner:", error);
       setLoading(false);
-      notification.error({ message: "Failed to create partner", description: error.message || "Unexpected error" });
+      message.error(`Failed to create partner: ${error.message || "Unexpected error"}`); // Use message.error
     }
   };
 

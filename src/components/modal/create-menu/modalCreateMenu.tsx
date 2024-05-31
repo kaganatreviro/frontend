@@ -35,7 +35,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       form.resetFields(); // Reset fields on modal open
       if (initialValues) {
         const category = categories.find((cat) => cat.name === initialValues.category)?.id;
-        form.setFieldsValue({ ...initialValues, category });
+        form.setFieldsValue({ ...initialValues, category, price: Math.round(initialValues.price) });
       }
     }
   }, [isVisible, initialValues, categories, form]);
@@ -52,7 +52,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       }
 
       const valuesWithEstablishment = { ...values, establishment: currentEstablishment?.id };
-
+      console.log("valuesWithEstablishment", valuesWithEstablishment);
       if (initialValues && initialValues.id) {
         // Editing existing item
         const result = await dispatch(updateItem({ id: initialValues.id, data: valuesWithEstablishment })).unwrap();
@@ -111,6 +111,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
         <Form.Item
           name="description"
           label="Description"
+          rules={[{ required: true, message: "Please input the description of the item!" }]}
         >
           <Input.TextArea placeholder="Enter description" />
         </Form.Item>
@@ -118,6 +119,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
           <Form.Item
             name="category"
             label="Set Category"
+            rules={[{ required: true, message: "Please choose a category!" }]}
           >
             <Select placeholder="Choose category">
               {categories.map((category) => (
@@ -131,11 +133,10 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
             name="price"
             label="Set Price"
             rules={[
-              { required: true, message: "Please set the price!" },
               { type: "number", min: 50, max: 999, transform: (value) => Number(value), message: "Price must be between 50 and 999!" },
             ]}
           >
-            <Input type="number" placeholder="Enter price" />
+            <Input type="number" className="price" placeholder="Enter price" />
           </Form.Item>
 
         </div>

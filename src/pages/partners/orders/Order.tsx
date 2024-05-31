@@ -20,7 +20,6 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 
 const { Countdown } = Statistic;
-const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
 export default function Orders() {
@@ -34,22 +33,23 @@ export default function Orders() {
   const [filterType, setFilterType] = useState("all");
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
+  console.log("id", currentEstablishment?.id);
 
   useEffect(() => {
-    if (!currentEstablishment?.id) return;
-
-    fetchData();
-    // dispatch(fetchHistoryById(currentEstablishment.id));
-    // fetchStatistics(currentEstablishment.id);
-    currentEstablishmentRef.current = currentEstablishment;
+    if (currentEstablishment?.id) {
+      currentEstablishmentRef.current = currentEstablishment;
+      console.log("useEffect");
+      fetchData();
+    }
   }, [currentEstablishment?.id]);
 
   const fetchData = async () => {
     try {
-      if (currentEstablishment?.id) {
-        await dispatch(fetchOrders(currentEstablishment?.id));
-        await dispatch(fetchHistoryById(currentEstablishment?.id));
-        fetchStatistics(currentEstablishment?.id);
+      if (currentEstablishmentRef.current?.id) {
+        console.log("fetchData");
+        await dispatch(fetchOrders(currentEstablishmentRef.current.id));
+        await dispatch(fetchHistoryById(currentEstablishmentRef.current.id));
+        fetchStatistics(currentEstablishmentRef.current.id);
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -87,7 +87,6 @@ export default function Orders() {
       }
     };
   }, []);
-  console.log("id", currentEstablishment?.id);
   const connectWebSocket = (accessToken: string) => {
     ws.current = new WebSocket(`wss://happyhours.zapto.org/ws/orders/?token=${accessToken}`);
 
@@ -105,9 +104,7 @@ export default function Orders() {
       //   console.log("currentEstablishment?.id 123", currentEstablishment?.id);
       //   fetchData();
       // }
-      console.log("currentEstablishment?.id", currentEstablishment?.id);
       if (message && currentEstablishmentRef.current?.id) {
-        console.log("currentEstablishmentRef.current.id 123", currentEstablishmentRef.current?.id);
         fetchData();
       }
     };

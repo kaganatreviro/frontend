@@ -54,6 +54,7 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
       open={visible}
       onCancel={onClose}
       footer={null}
+      // centered
     >
       <Form
         form={form}
