@@ -73,7 +73,7 @@ export const request = async (
 
 export const loginAdmin = async (data: any) => request("/api/v1/user/admin/auth/token/", "POST", data);
 
-export const loginPartner = async (data: any) => request("/api/v1/user/auth/token/", "POST", data);
+export const loginPartner = async (data: any) => request("/api/v1/user/partner/auth/token/", "POST", data);
 
 export const createPartner = async (data: any) => request("/api/v1/user/admin/partners/create/", "POST", data);
 

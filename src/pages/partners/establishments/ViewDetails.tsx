@@ -44,6 +44,10 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
               alt=""
             />
             <div className="w-[250px]">
+            <div className="mb-2">
+                <p className="font-bold">Email:</p>
+                <p>{establishments[0].email}</p>
+              </div>
               <div className="mb-2">
                 <p className="font-bold">Name:</p>
                 <p>{establishments[0].name}</p>

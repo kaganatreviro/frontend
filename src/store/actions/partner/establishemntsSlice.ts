@@ -15,7 +15,9 @@ export interface Establishment {
   address: string;
   happyhours_start: string;
   happyhours_end: string;
-  feedback_count: "string"
+  feedback_count: string;
+  email: string;
+
 }
 
 interface EstablishmentState {
