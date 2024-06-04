@@ -9,13 +9,13 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, Menu, Card, Skeleton } from "antd";
+import { Dropdown, Menu, Card, Skeleton, Modal, Button } from "antd";
 import {
   deleteEstablishment,
   fetchEstablishments,
 } from "../../../components/api/api";
 import "./style.scss";
-import Modal from "./Modal";
+import CreateModal from "./Modal";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { fetchEstablishmentsList } from "../../../store/actions/partner/establishemntsSlice";
 import { useSelector } from "react-redux";
@@ -29,16 +29,18 @@ interface EstablishmentProps {
 }
 
 const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isViewDetailsModalOpen, setIsViewDetailsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedEst, setSelectedEst] = useState<number | null>(null);
   const dispatch = useAppDispatch();
   const [isEditDetailsModalOpen, setIsEditDetailsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchEstablishmentsList());
   }, [dispatch]);
+
   const establishments =
     useSelector((state: RootState) => state.establishments.establishments) ||
     [];
@@ -48,27 +50,37 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
       setLoading(false);
     }, 2000);
   }, []);
+
   useEffect(() => {
     fetchEstablishments()
       .then((data) => console.log("Establishments fetched:", data))
       .catch((error) => console.error("Error fetching establishments:", error));
   }, []);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const toggleCreateModal = () => {
+    setIsCreateModalOpen(!isCreateModalOpen);
   };
+
   const handleMenuClick = (e: any) => {
     if (e.key === "delete") {
     } else if (e.key === "edit") {
     }
   };
 
-  const handleDelete = async (estId: number) => {
-    try {
-      await deleteEstablishment(estId);
-      dispatch(fetchEstablishmentsList());
-    } catch (error) {
-      console.error("Error deleting establishment:", error);
+  const confirmDelete = (estId: number) => {
+    setSelectedEst(estId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (selectedEst !== null) {
+      try {
+        await deleteEstablishment(selectedEst);
+        dispatch(fetchEstablishmentsList());
+        setIsDeleteModalOpen(false);
+      } catch (error) {
+        console.error("Error deleting establishment:", error);
+      }
     }
   };
 
@@ -77,15 +89,14 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   };
 
   const toggleEditDetailsModal = () => {
-    console.log("edit details");
     setIsEditDetailsModalOpen(!isEditDetailsModalOpen);
   };
+
   const menu = (estId: number) => (
     <Menu onClick={handleMenuClick} className="text-md">
       <Menu.Item
         key="edit"
         onClick={() => {
-          console.log("edit")
           setSelectedEst(estId);
           toggleEditDetailsModal();
         }}
@@ -107,7 +118,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
           <div>View details</div>
         </div>
       </Menu.Item>
-      <Menu.Item key="delete" onClick={() => handleDelete(estId)}>
+      <Menu.Item key="delete" onClick={() => confirmDelete(estId)}>
         <div className="flex items-center">
           <FontAwesomeIcon icon={faXmark} className="w-4 h-4 mr-2" />
           <div>Delete item</div>
@@ -119,7 +130,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   return (
     <div className="flex-1 flex partner_establishments bg-[#f4f4f4]">
       <div className=" flex-1 p-12">
-          <EstablishmentSwitcher title="Establishments" />
+        <EstablishmentSwitcher title="Establishments" />
         {loading ? (
           <Card bordered={false} className="w-full">
             <Skeleton active paragraph={{ rows: 4 }} />
@@ -127,11 +138,12 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
         ) : (
           <>
             <div>
-              <button className="bg-[#FB7E00] hover:bg-[#D56A00] text-white rounded-lg py-2 px-6 text-2xl flex items-center">
+              <button
+                className="bg-[#FB7E00] hover:bg-[#D56A00] text-white rounded-lg py-2 px-6 text-2xl flex items-center"
+                onClick={toggleCreateModal}
+              >
                 <FontAwesomeIcon icon={faPlus} />
-                <div className="ml-2" onClick={toggleModal}>
-                  Create New
-                </div>
+                <div className="ml-2">Create New</div>
               </button>
             </div>
 
@@ -182,7 +194,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
                 </>
               )}
             </div>
-            <Modal isModalOpen={isModalOpen} onClose={toggleModal} />
+            <CreateModal isModalOpen={isCreateModalOpen} onClose={toggleCreateModal} />
             <EstablishmentDetails
               isOpen={isViewDetailsModalOpen}
               onClose={toggleViewDetailsModal}
@@ -193,6 +205,27 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
               onClose={toggleEditDetailsModal}
               establishmentId={selectedEst}
             />
+            <Modal
+              title="Confirm Deletion"
+              visible={isDeleteModalOpen}
+              onOk={handleDelete}
+              onCancel={() => setIsDeleteModalOpen(false)}
+              footer={[
+                <Button key="back" onClick={() => setIsDeleteModalOpen(false)}>
+                  Cancel
+                </Button>,
+                <Button
+                  key="submit"
+                  type="primary"
+                  danger
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>,
+              ]}
+            >
+              <p>Are you sure you want to delete this establishment?</p>
+            </Modal>
           </>
         )}
       </div>

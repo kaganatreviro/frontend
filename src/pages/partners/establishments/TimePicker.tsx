@@ -23,10 +23,6 @@ const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
     }
   }, [props.defaultValue]);
 
-  useEffect(() => {
-    validateTimes(startTime, endTime);
-  }, [startTime, endTime]);
-
   const handleChange = (type: "start" | "end", value: string) => {
     let newStartTime = startTime;
     let newEndTime = endTime;
@@ -54,23 +50,7 @@ const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
     }
   };
 
-  const validateTimes = (start: string | null, end: string | null) => {
-    if (!start || !end) {
-      setError("Both start and end times are required.");
-      return false;
-    }
 
-    const startTime = dayjs(start, "HH:mm");
-    const endTime = dayjs(end, "HH:mm");
-
-    if (endTime.isBefore(startTime) || endTime.isSame(startTime)) {
-      setError("End time must be after start time!");
-      return false;
-    }
-
-    setError(null);
-    return true;
-  };
 
   return (
     <div>
