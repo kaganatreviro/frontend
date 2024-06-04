@@ -37,45 +37,53 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
     >
       <div className="bg-white p-8 rounded-lg shadow-lg">
         {establishments.length > 0 && (
-          <div className="flex gap-10 items-start">
-            <img
-              src={establishments[0].logo}
-              className="w-[150px] h-[150px]"
-              alt=""
-            />
-            <div className="w-[250px]">
-            <div className="mb-2">
-                <p className="font-bold">Email:</p>
-                <p>{establishments[0].email}</p>
-              </div>
-              <div className="mb-2">
-                <p className="font-bold">Name:</p>
-                <p>{establishments[0].name}</p>
+          <div>
+            <div className="flex justify-between items-center">
+              <div className="font-medium text-4xl mb-8">View Details:</div>
+
+              <button onClick={onClose} className="self-start">
+                <FontAwesomeIcon icon={faTimes} className="w-8 h-8 " />
+              </button>
+            </div>
+            <div className="flex gap-10 items-start text-lg">
+              <img
+                src={establishments[0].logo}
+                className="w-[200px] h-[200px]"
+                alt=""
+              />
+              <div className="w-[300px]">
+
+                <div className="mb-2">
+                  <p className="font-bold">Email:</p>
+                  <p>{establishments[0].email}</p>
+                </div>
+                <div className="mb-2">
+                  <p className="font-bold">Name:</p>
+                  <p>{establishments[0].name}</p>
+                </div>
+
+                <div className="mb-2">
+                  <p className="font-bold">Number:</p>
+                  <p>+{establishments[0].phone_number}</p>
+                </div>
+                <div className="mb-2">
+                  <p className="font-bold">Time:</p>
+                  <p>
+                    {establishments[0].happyhours_start.slice(0, 5)}-
+                    {establishments[0].happyhours_end.slice(0, 5)}
+                  </p>
+                </div>
+                <div className="mb-2">
+                  <p className="font-bold">Address:</p>
+                  <p>{establishments[0].address}</p>
+                </div>
+                <div className="mb-4">
+                  <p className="font-bold">Description:</p>
+                  <p>{establishments[0].description}</p>
+                </div>
               </div>
 
-              <div className="mb-2">
-                <p className="font-bold">Number:</p>
-                <p>+{establishments[0].phone_number}</p>
-              </div>
-              <div className="mb-2">
-                <p className="font-bold">Time:</p>
-                <p>
-                  {establishments[0].happyhours_start.slice(0, 5)}- 
-                  {establishments[0].happyhours_end.slice(0, 5)}
-                </p>
-              </div>
-              <div className="mb-2">
-                <p className="font-bold">Address:</p>
-                <p>{establishments[0].address}</p>
-              </div>
-              <div className="">
-                <p className="font-bold">Description:</p>
-                <p>{establishments[0].description}</p>
-              </div>
             </div>
-            <button onClick={onClose} className="">
-              <FontAwesomeIcon icon={faTimes} className="w-4 h-4 mr-2" />
-            </button>
           </div>
         )}
       </div>
