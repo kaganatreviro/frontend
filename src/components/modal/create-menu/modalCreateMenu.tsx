@@ -113,7 +113,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
           label="Description"
           rules={[{ required: true, message: "Please input the description of the item!" }]}
         >
-          <Input.TextArea placeholder="Enter description" />
+          <Input.TextArea className="description" placeholder="Enter description" />
         </Form.Item>
         <div className="content">
           <Form.Item

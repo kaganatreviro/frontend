@@ -9,6 +9,7 @@ import {
   faUtensils,
   faUser,
   faStore,
+  faChartBar,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface NavigationIcon {
@@ -17,6 +18,7 @@ interface NavigationIcon {
 
 const NavigationIcons: { [key: string]: NavigationIcon } = {
   Users: { icon: faUserGroup },
+  Dashboard: { icon: faChartBar },
   Partners: { icon: faHandshakeSimple },
   Categories: { icon: faLayerGroup },
   Feedback: { icon: faComments },

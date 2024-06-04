@@ -9,6 +9,7 @@ import Orders from "../pages/partners/orders/Order";
 import Menu from "../pages/partners/menu/Menu";
 import Profile from "../pages/partners/profile/Profile";
 import EstablishmentSelection from "../pages/admin/feedback/EstablishmentChoose";
+import Dashboard from "../pages/partners/dashboard/Dashboard";
 
 export default {
   Main: {
@@ -96,6 +97,13 @@ export default {
   EstablishmentSelection: {
     path: "/admin/feedback",
     element: <EstablishmentSelection />,
+    protected: false,
+    role: "all",
+  },
+
+  Dashboard: {
+    path: "/dashboard",
+    element: <Dashboard />,
     protected: false,
     role: "all",
   },

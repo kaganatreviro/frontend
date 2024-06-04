@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Card, Skeleton, Table, Dropdown, Statistic, Tabs, DatePicker, Space } from "antd";
+import { Button, Card, Skeleton, Table, Dropdown, Statistic, Tabs, DatePicker } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import isBetween from "dayjs/plugin/isBetween";
 import duration from "dayjs/plugin/duration";
 import { useSelector } from "react-redux";
-import { fetchHistoryById, fetchOrders, fetchStatisticsById } from "../../../store/actions/partner/orderActions";
+import { fetchHistoryById, fetchOrders } from "../../../store/actions/partner/orderActions";
 import { refreshToken } from "../../../components/api/api";
 import { RootState } from "../../../store/store";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
@@ -20,25 +20,20 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 
 const { Countdown } = Statistic;
-const { RangePicker } = DatePicker;
 
 export default function Orders() {
   const dispatch = useAppDispatch();
-  const { orders, loading, orderHistory, orderStatistics } = useSelector((state: RootState) => state.orders);
+  const { orders, loading, orderHistory } = useSelector((state: RootState) => state.orders);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const ws = useRef<WebSocket | null>(null);
   const token = useRef<string | null>(sessionStorage.getItem("accessToken"));
   const currentEstablishment = useSelector((state: RootState) => state.establishments.currentEstablishment);
   const currentEstablishmentRef = useRef(currentEstablishment);
-  const [filterType, setFilterType] = useState("all");
   const [activeTabKey, setActiveTabKey] = useState("1");
-  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
-  console.log("id", currentEstablishment?.id);
 
   useEffect(() => {
     if (currentEstablishment?.id) {
       currentEstablishmentRef.current = currentEstablishment;
-      console.log("useEffect");
       fetchData();
     }
   }, [currentEstablishment?.id]);
@@ -49,30 +44,9 @@ export default function Orders() {
         console.log("fetchData");
         await dispatch(fetchOrders(currentEstablishmentRef.current.id));
         await dispatch(fetchHistoryById(currentEstablishmentRef.current.id));
-        fetchStatistics(currentEstablishmentRef.current.id);
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
-    }
-  };
-
-  const fetchStatistics = (establishmentId: number, startDate?: string, endDate?: string) => {
-    dispatch(fetchStatisticsById({ establishmentId, startDate, endDate }));
-  };
-
-  const handleDateChange = (dates: [Dayjs | null, Dayjs | null], dateStrings: [string, string]) => {
-    setDateRange(dates);
-    setFilterType("dateRange");
-    if (currentEstablishment?.id) {
-      fetchStatistics(currentEstablishment.id, dateStrings[0], dateStrings[1]);
-    }
-  };
-
-  const handleFilterAllTime = () => {
-    setDateRange([null, null]);
-    setFilterType("all");
-    if (currentEstablishment?.id) {
-      fetchStatistics(currentEstablishment.id);
     }
   };
 
@@ -212,21 +186,21 @@ export default function Orders() {
     setIsModalVisible(false);
   };
 
-  const happyHoursStart = dayjs(currentEstablishment?.happyhours_start, "HH:mm:ss"); // Использование dayjs для парсинга времени
+  const happyHoursStart = dayjs(currentEstablishment?.happyhours_start, "HH:mm:ss");
   const happyHoursEnd = dayjs(currentEstablishment?.happyhours_end, "HH:mm:ss");
   const currentTime = dayjs();
 
   let countdownTime;
   let countdownTitle;
 
-  if (currentTime.isBetween(happyHoursStart, happyHoursEnd)) { // Использование isBetween из dayjs
+  if (currentTime.isBetween(happyHoursStart, happyHoursEnd)) {
     countdownTime = happyHoursEnd.diff(currentTime);
     countdownTitle = "До окончания счастливых часов";
   } else if (currentTime.isBefore(happyHoursStart)) {
     countdownTime = happyHoursStart.diff(currentTime);
     countdownTitle = "До начала счастливых часов";
   } else {
-    countdownTime = dayjs.duration(1, "days").add(happyHoursStart.diff(currentTime)).asMilliseconds(); // Использование duration из dayjs
+    countdownTime = dayjs.duration(1, "days").add(happyHoursStart.diff(currentTime)).asMilliseconds();
     countdownTitle = "До начала счастливых часов";
   }
   const isHappyHours = currentTime.isBetween(happyHoursStart, happyHoursEnd);
@@ -256,39 +230,6 @@ export default function Orders() {
       label: "History",
       children: (
         <Table columns={historyColumns} dataSource={orderHistory} pagination={{ pageSize: 10 }} rowKey="id" className="w-full h-full" />
-      ),
-    },
-    {
-      key: "3",
-      label: "Statistics",
-      children: (
-        <>
-          <div className="filter-container mb-4">
-            <Space direction="vertical" size={12}>
-              <RangePicker onChange={handleDateChange} value={dateRange} />
-              <Button onClick={handleFilterAllTime}>All Time</Button>
-            </Space>
-          </div>
-          {orderStatistics ? (
-            <>
-              <Card bordered={false} className="mb-4">
-                <Statistic title="Total Orders" value={orderStatistics.total_orders} />
-              </Card>
-              <Table
-                columns={[
-                  { title: "Category", dataIndex: "category", key: "category" },
-                  { title: "Total Orders", dataIndex: "total_orders", key: "total_orders" },
-                ]}
-                dataSource={orderStatistics.orders_by_category}
-                pagination={false}
-                rowKey="category"
-                className="w-full h-full"
-              />
-            </>
-          ) : (
-            <Skeleton active paragraph={{ rows: 4 }} />
-          )}
-        </>
       ),
     },
   ];

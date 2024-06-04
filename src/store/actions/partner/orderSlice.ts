@@ -12,10 +12,12 @@ export interface Order {
 interface OrderCategoryStatistic {
   category: string;
   total_orders: number;
+  total_sum_prices: number;
 }
 
 interface OrderStatistics {
   total_orders: number;
+  total_sum_prices: number;
   orders_by_category: OrderCategoryStatistic[];
 }
 

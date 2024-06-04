@@ -51,7 +51,7 @@ function Menu() {
         price: Number(item.price),
         description: item.description,
         availability_status: checked,
-        category: 19,
+        category: item.category_id,
         establishment: currentEstablishment?.id,
       };
 
@@ -121,7 +121,7 @@ function Menu() {
     <div className="flex-1 flex bg-[#f4f4f4]">
       <div className="flex-1 partner_menu container">
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
-          <EstablishmentSwitcher title="Menu Manager" />
+          <EstablishmentSwitcher title="Menu Management" />
           <div className="text-sm text-gray-400 mb-6">Manage your menu easily with adding, editing, and removing beverages.</div>
           <Button type="primary" icon={<PlusOutlined />} className="modal-confirm-btn" onClick={handleAddItem} style={{ marginBottom: 16 }}>
             Add New
