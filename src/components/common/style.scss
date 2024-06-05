@@ -4,19 +4,13 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     font-family: "Roboto", "Arial", sans-serif;
-    font-size: 1.4rem;
     line-height: 2rem;
     font-weight: 400;
     flex: 1;
     flex-basis: 0.000000001px;
   }
 
-  .hover {
-
-  }
-
    .hover:hover {
-    background: #FFE4C3;
-    border-color: #FB7E00;
+    color: #FB7E00;
   }
 }

@@ -35,7 +35,7 @@ export default function Dashboard() {
     dispatch(fetchStatisticsById({ establishmentId, startDate, endDate }));
   };
 
-  const handleDateChange = (dates: [Dayjs | null, Dayjs | null], dateStrings: [string, string]) => {
+  const handleDateChange = (dates: any, dateStrings: any) => {
     setDateRange(dates);
     if (currentEstablishment?.id) {
       fetchStatistics(currentEstablishment.id, dateStrings[0], dateStrings[1]);

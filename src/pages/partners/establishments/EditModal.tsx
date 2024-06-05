@@ -137,9 +137,9 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     isEditOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10">
+        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10 h-[820px]">
           <div className="flex justify-between pt-2 mb-10">
-            <div className="text-xl">Edit Establishment's Profile:</div>
+            <div className="text-3xl">Edit Establishment's Profile:</div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 focus:outline-none"

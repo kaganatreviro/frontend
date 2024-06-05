@@ -1,16 +1,13 @@
 /* eslint-disable */
-import React, { useState, useRef, ReactNode, CSSProperties, useEffect } from "react";
+import React, { useState, useRef, ReactNode, CSSProperties } from "react";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeftLong,
-  faArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeftLong, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Form, Input } from "antd";
 
 const containerStyle = {
   width: "650px",
-  height: "560px",
+  height: "600px",
 };
 
 interface ModalProps {
@@ -27,6 +24,7 @@ const Modal = ({ children, onClose }: ModalProps) => {
     </div>
   );
 };
+
 interface MapProps {
   onLocationSelect: (
     location: { lat: number; lng: number },
@@ -38,9 +36,6 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const defaultLocation = loc || { lat: 42.8746, lng: 74.5698 };
   const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
-  const [longitude, setLongitude] = useState<number | null>(null);
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [input, setInput] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>(loc?.address || "");
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -48,9 +43,9 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const [submitted, setSubmitted] = useState(false);
   const API_KEY = process.env.REACT_APP_API_KEY;
-  console.log(API_KEY)
+
+  const [form] = Form.useForm();
 
   const handlePlaceSelect = () => {
     if (searchValue.trim() === "") {
@@ -58,7 +53,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
       return;
     }
     setError("");
-
+  
     if (autocompleteRef.current) {
       const addressObject = autocompleteRef.current.getPlace();
       if (
@@ -77,6 +72,8 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
           mapRef.current.panTo({ lat, lng });
         }
         onLocationSelect({ lat, lng }, addressObject.formatted_address || "");
+  
+        form.setFieldsValue({ location: addressObject.formatted_address || "" });
       } else {
         setError("Invalid location");
       }
@@ -93,6 +90,8 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     setError("");
+    form.setFieldsValue({ location: e.target.value });
+    form.validateFields(["location"]);
   };
 
   const handleMapClick = (e: google.maps.MapMouseEvent | null) => {
@@ -100,6 +99,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       setSelectedLocation({ lat, lng });
+  
       if (markerRef.current) {
         markerRef.current.setPosition({ lat, lng });
       }
@@ -114,7 +114,12 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
           results.length > 0 &&
           results[0].formatted_address
         ) {
-          setSearchValue(results[0].formatted_address);
+          const address = results[0].formatted_address;
+          console.log(address)
+          setSearchValue(address);
+          onLocationSelect({ lat, lng }, address);
+  
+          form.setFieldsValue({ location: address });
         }
       });
     }
@@ -135,7 +140,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     transform: "translate(-50%, -50%)",
     backgroundColor: "#ffffff",
     width: "750px",
-    height: "760px",
+    height: "800px",
     zIndex: 100,
     paddingTop: "30px",
   };
@@ -145,20 +150,18 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
       <LoadScript googleMapsApiKey={API_KEY || ""} libraries={["places"]}>
         <Form.Item
           name="location"
-          validateStatus={
-            searchValue.trim() === "" && !showMapModal && error ? "error" : ""
-          }
-          help={
-            searchValue.trim() === "" && !showMapModal && error
-              ? "Please enter your location"
-              : ""
-          }
+          rules={[
+            {
+              required: true,
+              message: "This field cannot be empty",
+            },
+          ]}
         >
           <Autocomplete
             onLoad={(ac) => (autocompleteRef.current = ac)}
             onPlaceChanged={handlePlaceSelect}
           >
-            <input
+            <Input
               type="text"
               placeholder="Enter your address"
               className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"

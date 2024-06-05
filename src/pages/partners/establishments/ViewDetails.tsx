@@ -40,7 +40,6 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
           <div>
             <div className="flex justify-between items-center">
               <div className="font-medium text-4xl mb-8">View Details:</div>
-
               <button onClick={onClose} className="self-start">
                 <FontAwesomeIcon icon={faTimes} className="w-8 h-8 " />
               </button>
@@ -52,7 +51,6 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
                 alt=""
               />
               <div className="w-[300px]">
-
                 <div className="mb-2">
                   <p className="font-bold">Email:</p>
                   <p>{establishments[0].email}</p>
@@ -82,7 +80,6 @@ const EstablishmentDetails: React.FC<EstablishmentDetailsProps> = ({
                   <p>{establishments[0].description}</p>
                 </div>
               </div>
-
             </div>
           </div>
         )}
