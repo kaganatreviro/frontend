@@ -21,6 +21,7 @@ function Navigation() {
     { name: "Partners", path: "/partners" },
     { name: "Categories", path: "/categories" },
     { name: "Feedback", path: "/admin/feedback" },
+    { name: "Subscriptions", path: "/subscriptions" },
   ];
 
   const partnerMenuItems = [

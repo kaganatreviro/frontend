@@ -126,3 +126,9 @@ export const updateAnswer = async (id: number, data: any) => request(`/api/v1/fe
 export const deleteAnswer = async (id: number) => request(`/api/v1/feedback/answers/${id}/`, "DELETE");
 export const deleteFeedback = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/`, "DELETE");
 export const fetchAnswersList = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/answers/list`, "GET");
+
+// Subscriptions
+export const fetchSubscriptions = async () => request(`/api/v1/subscription/subscription-plans/`, "GET");
+export const createSubscription = async (data: any) => request(`/api/v1/subscription/subscription-plans/`, "POST", data);
+export const updateSubscription = async (id: number, data: any) => request(`/api/v1/subscription/subscription-plans/${id}/`, "PUT", data);
+export const deleteSubscription = async (id: number) => request(`/api/v1/subscription/subscription-plans/${id}/`, "DELETE");

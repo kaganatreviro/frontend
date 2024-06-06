@@ -10,6 +10,7 @@ import Menu from "../pages/partners/menu/Menu";
 import Profile from "../pages/partners/profile/Profile";
 import EstablishmentSelection from "../pages/admin/feedback/EstablishmentChoose";
 import Dashboard from "../pages/partners/dashboard/Dashboard";
+import Subscriptions from "../pages/admin/subscriptions/Subscriptions";
 
 export default {
   Main: {
@@ -84,6 +85,13 @@ export default {
   Categories: {
     path: "/categories",
     element: <Categories />,
+    protected: false,
+    role: "all",
+  },
+
+  Subscriptions: {
+    path: "/subscriptions",
+    element: <Subscriptions />,
     protected: false,
     role: "all",
   },

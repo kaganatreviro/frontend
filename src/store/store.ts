@@ -10,6 +10,7 @@ import orderReducer from "./actions/partner/orderSlice";
 import categoriesSlice from "./actions/admin/categories/categories";
 import feedbacksSlice from "./actions/admin/feedback/feedbacksSlice";
 import answersSlice from "./actions/admin/feedback/answersSlice";
+import subscriptionsSlice from "./actions/admin/subscriptions/subscription";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     category: categoriesSlice,
     feedback: feedbacksSlice,
     answers: answersSlice,
+    subscription: subscriptionsSlice,
   },
 });
 

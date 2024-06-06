@@ -10,6 +10,7 @@ import {
   faUser,
   faStore,
   faChartBar,
+  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface NavigationIcon {
@@ -27,6 +28,7 @@ const NavigationIcons: { [key: string]: NavigationIcon } = {
   Orders: { icon: faRectangleList },
   QR: { icon: faQrcode },
   Establishments: { icon: faStore },
+  Subscriptions: { icon: faWallet },
 };
 
 export default NavigationIcons;
