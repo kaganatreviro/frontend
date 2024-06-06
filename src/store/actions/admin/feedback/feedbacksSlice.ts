@@ -8,7 +8,7 @@ export interface Feedback {
   created_at: string;
   establishment: number;
   text: string;
-  answers: boolean;
+  answers: number;
 }
 
 interface FeedbacksState {

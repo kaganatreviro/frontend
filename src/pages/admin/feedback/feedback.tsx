@@ -182,7 +182,7 @@ const Feedback: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-1 select-none">
+    <div className="flex flex-1">
       <div className="bg-[#f4f4f4] flex-1 flex flex-col p-12">
         {!isAdmin ? (<EstablishmentSwitcher title="Feedback" />) : (<div className="font-medium text-4xl mb-8">Feedback</div>)}
 
@@ -208,7 +208,7 @@ const Feedback: React.FC = () => {
                       onClick={() => handleCommentClick(feedback.id)}
                     >
                       <FontAwesomeIcon icon={faComments} />
-                      <div>{commentsVisible[feedback.id] ? "Hide" : feedback.answers ? "Comments" : "0 Comments"}</div>
+                      <div>{commentsVisible[feedback.id] ? "Hide" : `${feedback.answers }`}</div>
                     </button>
                     <button
                       className="mr-2 bg-[#dd7d1d] text-white py-1 px-4 rounded-full hover:bg-[#D56A00] flex items-center gap-2 mt-2 pr-3"

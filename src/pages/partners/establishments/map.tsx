@@ -150,12 +150,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
       <LoadScript googleMapsApiKey={API_KEY || ""} libraries={["places"]}>
         <Form.Item
           name="location"
-          rules={[
-            {
-              required: true,
-              message: "This field cannot be empty",
-            },
-          ]}
+          
         >
           <Autocomplete
             onLoad={(ac) => (autocompleteRef.current = ac)}
