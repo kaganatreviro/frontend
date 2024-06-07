@@ -71,15 +71,15 @@ const QRCodes: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex bg-[#f4f4f4]">
-      <div className="container flex-1 p-12">
+    <div className="flex-1 flex bg-[#f4f4f4] items-center justify-center">
+      <div className="container flex-1 p-12 flex flex-col ">
         <EstablishmentSwitcher title="QR Code" />
         {loading ? (
           <Card bordered={false} className="w-full">
             <Skeleton active paragraph={{ rows: 4 }} />
           </Card>
         ) : (
-          <div className="flex justify-center items-center flex-col h-full">
+          <div className="flex justify-center items-center flex-1">
             {establishments.length === 0 ? (
               <div className="text-gray-400 text-3xl pt-12">
                 No establishments
