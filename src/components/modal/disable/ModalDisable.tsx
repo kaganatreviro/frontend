@@ -27,7 +27,7 @@ function ModalDisable({
       footer={[
         <div key="footer" className="content">
           <Button onClick={onCancel} className="modal-cancel-btn">Cancel</Button>
-          <Button type="primary" onClick={onOk} className="modal-confirm-btn">Confirm</Button>
+          <Button type="primary" onClick={onOk} className="btn">Confirm</Button>
         </div>,
       ]}
     >

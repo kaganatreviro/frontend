@@ -11,7 +11,7 @@ body {
   font-family: "Inter", sans-serif;
 }
 
-.modal-confirm-btn {
+.btn {
   //width: 140px;
   //margin: auto;
   display: flex;
@@ -20,6 +20,7 @@ body {
   background-color: #FB7E00;
   color: white;
   border-radius: 10px;
+  border: unset !important;
   padding: 8px 28px;
   //font-weight: 400;
   //font-size: 20px;
@@ -55,11 +56,19 @@ th {
   text-shadow: 0 0 0.25px #fb7e00 !important;
 }
 
-
 .ant-tabs-ink-bar {
   background-color: #fb7e00 !important;
 }
 
+.price::-webkit-outer-spin-button,
+.price::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.price {
+  -moz-appearance: textfield;
+}
 
 /*.custom-form-item .ant-form-item-required::before {*/
 /*  display: none;*/

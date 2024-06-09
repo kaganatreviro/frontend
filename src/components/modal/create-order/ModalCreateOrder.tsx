@@ -92,7 +92,7 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
         </Form.Item>
 
         <Form.Item className="flex justify-center">
-          <Button type="primary" className="modal-confirm-btn" htmlType="submit">
+          <Button type="primary" className="btn" htmlType="submit">
             Create Order
           </Button>
         </Form.Item>

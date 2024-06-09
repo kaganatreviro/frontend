@@ -1,15 +1,14 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
 import { Button, Modal, Input, Form, message } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { RootState } from "store/store";
 import { createSubscription, deleteSubscription, updateSubscription } from "../../../components/api/api";
 import SubscriptionCard from "./SubscriptionCard";
+import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { fetchSubscriptionsList } from "../../../store/actions/admin/subscriptions/subscription";
-import { duration } from "moment";
 
 const Subscriptions: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -128,13 +127,13 @@ const Subscriptions: React.FC = () => {
             </div>
             <Modal
                 title="Add Subscription"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
                 centered={true}
                 width={350}
             >
-                <Form form={form} onFinish={handleSubmit}>
+                <Form form={form} onFinish={handleSubmit} requiredMark={false}>
                     <Form.Item
                         className="text-lg mt-4 mb-6"
                         name="name"
