@@ -25,11 +25,8 @@ function App() {
       navigate("/login");
     }
   }, [tokens.access, navigate, location.pathname]);
-
   const isAdminLoginPage = location.pathname === "/admin/login";
   const isUserLoginPage = location.pathname === "/login";
-  // const userType = localStorage.getItem("userType");
-  // console.log(userType);
 
   return (
     <main className="app flex justify-center">
