@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createEstablishment } from "../../../components/api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -70,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
     setLongitude(location.lng);
     setLatitude(location.lat);
     setInput(address);
-    form.setFieldsValue({ location: address }); // Убедимся, что форма обновляется
+    form.setFieldsValue({ location: address });
   };
 
   const handleSave = async () => {
@@ -110,6 +110,13 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       message.error("Failed to create establishment.");
     }
   };
+  useEffect(() => {
+    if (!isModalOpen) {
+      setInput("");
+      setLatitude(undefined);
+      setLongitude(undefined);
+    }
+  }, [isModalOpen]);
 
   return (
     isModalOpen && (
@@ -184,7 +191,8 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                           },
                         ]}
                       >
-                        <Map onLocationSelect={handleLocationSelect} loc={{address: input, lat: latitude, lng: longitude}} />
+                          <Map onLocationSelect={handleLocationSelect} loc={{address: input, lat: latitude, lng: longitude}} />
+
                       </Form.Item>
                     </div>
 

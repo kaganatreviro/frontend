@@ -41,7 +41,7 @@ const EditModal: React.FC<EditModalProps> = ({
   const [uploadedImage, setUploadedImage] = useState<File | string | null>(
     null
   );
-
+  const [form] = Form.useForm();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -112,6 +112,7 @@ const EditModal: React.FC<EditModalProps> = ({
     setLongitude(location.lng);
     setLatitude(location.lat);
     setInput(address);
+    form.setFieldsValue({ location: address });
   };
 
   const handleImageUploadInModal = (file: File | null) => {
@@ -218,14 +219,20 @@ const EditModal: React.FC<EditModalProps> = ({
                   </div>
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Location:</div>
-                    <Map
-                      onLocationSelect={handleLocationSelect}
-                      loc={{
-                        lat: establishment?.location.coordinates[1],
-                        lng: establishment?.location.coordinates[0],
-                        address: establishment?.address,
-                      }}
-                    />
+
+                    <Form.Item
+                      name="location"
+                    >
+                      <Map
+                        onLocationSelect={handleLocationSelect}
+                        loc={{
+                          lat: establishment?.location.coordinates[1],
+                          lng: establishment?.location.coordinates[0],
+                          address: establishment?.address,
+                        }}
+                      />
+
+                    </Form.Item>
                   </div>
 
                   <div>
