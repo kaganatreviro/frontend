@@ -8,7 +8,6 @@ import { Select, Typography, Avatar } from "antd";
 import "./style.scss";
 
 const { Option } = Select;
-const { Title } = Typography;
 
 interface EstablishmentSwitcherProps {
   title: string;

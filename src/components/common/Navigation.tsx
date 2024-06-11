@@ -7,9 +7,12 @@ import ModalDisable from "../modal/disable/ModalDisable";
 // @ts-expect-error
 import Logo from "../../assets/icons/Happy_Hours_Logo.png";
 import NavigationIcons from "../../utils/NavigationIcons";
+import { useAppDispatch } from "../../helpers/hooks/hook";
+import { clearTokens } from "../../store/actions/token/tokenSlice";
 import "./style.scss";
 
 function Navigation() {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const userType = localStorage.getItem("userType");
@@ -41,8 +44,7 @@ function Navigation() {
   };
 
   const confirmLogout = () => {
-    sessionStorage.clear();
-    localStorage.clear();
+    dispatch(clearTokens());
     if (userType === "admin") {
       navigate("/admin/login");
     } else {

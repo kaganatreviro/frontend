@@ -123,7 +123,7 @@ function Menu() {
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
           <EstablishmentSwitcher title="Menu Management" />
           <div className="text-sm text-gray-400 mb-6">Manage your menu easily with adding, editing, and removing beverages.</div>
-          <Button type="primary" icon={<PlusOutlined />} className="modal-confirm-btn" onClick={handleAddItem} style={{ marginBottom: 16 }}>
+          <Button type="primary" icon={<PlusOutlined />} className="btn" onClick={handleAddItem} style={{ marginBottom: 16 }}>
             Add New
           </Button>
           {/* { loading ? ( */}
@@ -156,7 +156,7 @@ function Menu() {
                     </span>
                   </div>
                   <div className="content">
-                    <div className="flex gap-1 text-[#FB7E00]" onClick={() => handleEditItem(item)}>
+                    <div className="flex gap-1 text-[#FB7E00] icon_edit" onClick={() => handleEditItem(item)}>
                       <EditOutlined className="text-[#FB7E00]" />
                       <div>Edit</div>
                     </div>

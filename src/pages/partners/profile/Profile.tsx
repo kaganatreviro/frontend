@@ -113,7 +113,7 @@ export default function Profile() {
               </Form.Item>
 
               <Form.Item>
-                <Button type="primary" className="modal-confirm-btn" htmlType="submit" block>
+                <Button type="primary" className="btn" htmlType="submit" block>
                   Submit
                 </Button>
               </Form.Item>

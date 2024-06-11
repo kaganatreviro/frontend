@@ -87,10 +87,10 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       onCancel={handleCancel}
       className="partner_modal_menu"
       footer={[
-        <Button key="back" className="modal-confirm-btn grey" onClick={handleCancel}>
+        <Button key="back" className="btn grey" onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key="submit" className="modal-confirm-btn" type="primary" onClick={() => form.submit()}>
+        <Button key="submit" className="btn" type="primary" onClick={() => form.submit()}>
           {initialValues ? "Update" : "Confirm"}
         </Button>,
       ]}

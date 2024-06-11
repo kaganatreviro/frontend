@@ -47,7 +47,7 @@ function ModalCreate({ onCancel, visible }: ModalCreateProps) {
           onClick={handleOk}
           loading={loading}
           block
-          className="modal-confirm-btn"
+          className="btn"
         >
           Create
         </Button>,

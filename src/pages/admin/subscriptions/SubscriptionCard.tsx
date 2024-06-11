@@ -84,7 +84,7 @@ const SubscriptionCard: React.FC<{
                 </div>
                 <Modal
                     title="Delete Subscription"
-                    visible={deleteModalVisible}
+                    open={deleteModalVisible}
                     onCancel={handleDeleteCancel}
                     centered={true}
                     width={300}

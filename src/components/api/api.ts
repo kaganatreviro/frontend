@@ -1,5 +1,7 @@
 import axios from "axios";
 import { BASE_API_URL } from "../../helpers/constants/Constants";
+import { clearTokens } from "../../store/actions/token/tokenSlice";
+import { useAppDispatch } from "../../helpers/hooks/hook";
 
 export async function refreshToken() {
   const refreshToken = sessionStorage.getItem("refreshToken");
@@ -58,6 +60,8 @@ export const request = async (
   try {
     return await makeRequest(config);
   } catch (error: any) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const dispatch = useAppDispatch();
     if (error.response?.status === 401 && !error.retryFlag) {
       const newToken = await refreshToken();
       console.log("newToken", newToken);
@@ -67,6 +71,8 @@ export const request = async (
         return result;
       }
     }
+
+    dispatch(clearTokens());
     throw error;
   }
 };
@@ -121,14 +127,14 @@ export const deleteEstablishment = async (id: number) => request(`/api/v1/partne
 
 // Feedback
 export const fetchFeedbacksList = async (id: number) => request(`/api/v1/feedback/feedbacks/list/${id}`, "GET");
-export const createFeedback = async (data: any) => request(`/api/v1/feedback/answers/create/`, "POST", data);
+export const createFeedback = async (data: any) => request("/api/v1/feedback/answers/create/", "POST", data);
 export const updateAnswer = async (id: number, data: any) => request(`/api/v1/feedback/answers/${id}/`, "PUT", data);
 export const deleteAnswer = async (id: number) => request(`/api/v1/feedback/answers/${id}/`, "DELETE");
 export const deleteFeedback = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/`, "DELETE");
 export const fetchAnswersList = async (id: number) => request(`/api/v1/feedback/feedbacks/${id}/answers/list`, "GET");
 
 // Subscriptions
-export const fetchSubscriptions = async () => request(`/api/v1/subscription/subscription-plans/`, "GET");
-export const createSubscription = async (data: any) => request(`/api/v1/subscription/subscription-plans/`, "POST", data);
+export const fetchSubscriptions = async () => request("/api/v1/subscription/subscription-plans/", "GET");
+export const createSubscription = async (data: any) => request("/api/v1/subscription/subscription-plans/", "POST", data);
 export const updateSubscription = async (id: number, data: any) => request(`/api/v1/subscription/subscription-plans/${id}/`, "PUT", data);
 export const deleteSubscription = async (id: number) => request(`/api/v1/subscription/subscription-plans/${id}/`, "DELETE");

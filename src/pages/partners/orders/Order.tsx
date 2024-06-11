@@ -214,7 +214,7 @@ export default function Orders() {
       children: (
         <>
           <div className="flex items-center justify-between mb-2 w-full">
-            <Button className="modal-confirm-btn" type="primary" onClick={showModal} disabled={!isHappyHours}>
+            <Button className="btn" type="primary" onClick={showModal} disabled={!isHappyHours}>
               <FontAwesomeIcon icon={faPlus} className="self-center mr-2 w-4 h-4" />
               <div className="text-white rounded-lg">Make order</div>
             </Button>
