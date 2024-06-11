@@ -24,8 +24,8 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
-  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | undefined>(undefined);
+  const [latitude, setLatitude] = useState<number | undefined>(undefined);
   const [input, setInput] = useState<string>("");
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const dispatch = useAppDispatch();
@@ -37,9 +37,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
   };
-    const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
 
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -70,21 +70,23 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
     setLongitude(location.lng);
     setLatitude(location.lat);
     setInput(address);
+    form.setFieldsValue({ location: address }); // Убедимся, что форма обновляется
   };
 
   const handleSave = async () => {
     try {
+      const values = await form.validateFields();
       const formData = new FormData();
 
-      formData.append("name", name);
+      formData.append("name", values.name);
       formData.append(
         "location",
         JSON.stringify({ type: "Point", coordinates: [longitude, latitude] })
       );
-      formData.append("description", description);
+      formData.append("description", values.description);
       formData.append("phone_number", phoneNumber);
       formData.append("email", profile?.email || "");
-      formData.append("address", input);
+      formData.append("address", values.location);
       if (startTime !== null) {
         formData.append("happyhours_start", startTime);
       }
@@ -108,6 +110,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       message.error("Failed to create establishment.");
     }
   };
+
   return (
     isModalOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -172,7 +175,17 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                     </div>
                     <div className="mb-3">
                       <div className="mb-2 text-lg font-bold">Location:</div>
-                      <Map onLocationSelect={handleLocationSelect} />
+                      <Form.Item
+                        name="location"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please enter your location",
+                          },
+                        ]}
+                      >
+                        <Map onLocationSelect={handleLocationSelect} loc={{address: input, lat: latitude, lng: longitude}} />
+                      </Form.Item>
                     </div>
 
                     <div>
