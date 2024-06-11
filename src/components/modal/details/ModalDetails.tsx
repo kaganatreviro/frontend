@@ -62,7 +62,7 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 500); // Имитация задержки для демонстрации
+    }, 500);
   };
   const { Panel } = Collapse;
   const renderEstablishmentDetails = (establishment: Establishment) => {
@@ -70,30 +70,45 @@ function ModalDetails({ onClose, visible }: ModalDetailsProps) {
 
     return (
       <Card key={establishment.id} className="establishment-card">
-        <Descriptions
-          title={(
+        <div className="establishment-card">
+          <div className="card_content">
             <div className="flex gap-2 items-center justify-center">
-              <Avatar src={establishment.logo} alt={`${establishment.name} logo`} />
-              <div className="">{establishment.name}</div>
+              <Avatar className="avatar" src={establishment.logo} alt={`${establishment.name} logo`} />
             </div>
-        )}
-          bordered
-        >
-          <Descriptions.Item label="Address">{establishment.address}</Descriptions.Item>
-          <Descriptions.Item label="Phone Number">{establishment.phone_number}</Descriptions.Item>
-          <Descriptions.Item label="Email">{establishment.email}</Descriptions.Item>
-          <Descriptions.Item label="Happy Hours">{happyHours}</Descriptions.Item>
-        </Descriptions>
-        <Collapse bordered={false}>
-          <Panel header="View Description" key="1">
-            {establishment.description}
-          </Panel>
-        </Collapse>
+            <div className="flower">
+              <div>{establishment.name}</div>
+              <div>
+                <span>Address:</span> 
+                {" "}
+                {establishment.address}
+              </div>
+              <div>
+                <span>Phone Number:</span> 
+                {" "}
+                {establishment.phone_number}
+              </div>
+              <div>
+                <span>Email:</span> 
+                {" "}
+                {establishment.email}
+              </div>
+              <div>
+                <span>Happy Hours:</span> 
+                {" "}
+                {happyHours}
+              </div>
+              <Collapse bordered={false}>
+                <Panel header="View Description" key="1">
+                  {establishment.description}
+                </Panel>
+              </Collapse>
+            </div>
+          </div>
+        </div>
+
       </Card>
     );
   };
-
-  // const carouselRef = React.useRef<typeof Carousel>(null);
 
   const handlePrev = () => {
     carouselRef.current?.prev();

@@ -32,7 +32,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
 
   useEffect(() => {
     if (isVisible) {
-      form.resetFields(); // Reset fields on modal open
+      form.resetFields();
       if (initialValues) {
         const category = categories.find((cat) => cat.name === initialValues.category)?.id;
         form.setFieldsValue({ ...initialValues, category, price: Math.round(initialValues.price) });
@@ -52,18 +52,14 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       }
 
       const valuesWithEstablishment = { ...values, establishment: currentEstablishment?.id };
-      console.log("valuesWithEstablishment", valuesWithEstablishment);
       if (initialValues && initialValues.id) {
-        // Editing existing item
         const result = await dispatch(updateItem({ id: initialValues.id, data: valuesWithEstablishment })).unwrap();
         if (result) {
           message.success("Item successfully updated!");
         } else {
-          console.log("result", result);
           throw new Error("Failed to update item");
         }
       } else {
-        // Adding new item
         const result = await dispatch(addItem(valuesWithEstablishment)).unwrap();
         if (result) {
           message.success("Item successfully added!");
@@ -76,6 +72,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
       await dispatch(getMenu(currentEstablishment.id));
       handleCancel();
     } catch (error: any) {
+      console.log("error", error);
       message.error(`An error occurred: ${error.message || error}`);
     }
   };
@@ -104,7 +101,10 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
         <Form.Item
           name="name"
           label="Item Name"
-          rules={[{ required: true, message: "Please input the name of the item!" }]}
+          rules={[
+            { required: true, message: "Please input the name of the item!" },
+            { max: 99, message: "Item name cannot be longer than 99 characters!" },
+          ]}
         >
           <Input placeholder="Enter item name" />
         </Form.Item>
