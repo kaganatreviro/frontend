@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [longitude, setLongitude] = useState<number | undefined>(undefined);
@@ -49,6 +50,10 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handleImageUploadInModal = (file: File | null) => {
@@ -85,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
       );
       formData.append("description", values.description);
       formData.append("phone_number", phoneNumber);
-      formData.append("email", profile?.email || "");
+      formData.append("email", values.email);
       formData.append("address", values.location);
       if (startTime !== null) {
         formData.append("happyhours_start", startTime);
@@ -121,9 +126,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
   return (
     isModalOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10 h-[820px]">
-          <div className="flex justify-between pt-2 mb-10">
-            <div className="text-3xl">Establishment's Profile:</div>
+        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-4 px-10 h-[820px]">
+          <div className="flex justify-between pt-2 mb-4">
+            <div className="text-2xl">Establishment's Profile:</div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -150,7 +155,24 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
               <div>
                 <div className="mb-3">
                   <div className="h-[600px]">
-                    <h1 className="text-xl font-bold mb-2">Name:</h1>
+                    <h1 className="text-md font-bold mb-2">Email:</h1>
+                    <Form.Item
+                      name="email"
+                      rules={[
+                        {
+                          required: true,
+                          type: 'email',
+                          message: "Please enter a valid email address",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleEmailChange}
+                        className="text-lg w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
+                        placeholder="Enter email"
+                      />
+                    </Form.Item>
+                    <h1 className="text-md font-bold mb-2">Name:</h1>
                     <Form.Item
                       name="name"
                       rules={[
@@ -162,26 +184,26 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                     >
                       <Input
                         onChange={handleNameChange}
-                        className="text-lg w-[350px] h-[46px] border-gray-300 placeholder:text-gray-300"
+                        className="text-md w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
                         placeholder="Enter establishment's name"
                       />
                     </Form.Item>
                     <div className="mb-3">
-                      <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
+                      <h1 className="text-md mb-2 font-bold">Phone Number:</h1>
                       <PhoneInput
                         value={phoneNumber}
                         onChange={handlePhoneChange}
                       />
                     </div>
                     <div className="mb-3">
-                      <div className="mb-2 text-lg font-bold">Time:</div>
+                      <div className="mb-2 text-md font-bold">Time:</div>
                       <TimeRangePickers
                         onStartTimeChange={handleStartTimeChange}
                         onEndTimeChange={handleEndTimeChange}
                       />
                     </div>
                     <div className="mb-3">
-                      <div className="mb-2 text-lg font-bold">Location:</div>
+                      <div className="mb-2 text-md font-bold">Location:</div>
                       <Form.Item
                         name="location"
                         rules={[
@@ -197,7 +219,7 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                     </div>
 
                     <div>
-                      <h1 className="mb-2 text-lg font-bold">Description:</h1>
+                      <h1 className="mb-2 text-md font-bold">Description:</h1>
                       <Form.Item
                         name="description"
                         rules={[
@@ -213,12 +235,12 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                           placeholder="Enter description"
                           maxLength={1000}
                           className="w-[350px] border-gray-300 placeholder-gray-300 text-lg"
-                          style={{ height: "100px" }}
+                          style={{ height: "80px" }}
                         />
                       </Form.Item>
                     </div>
                   </div>
-                  <div className=" mt-8 flex justify-end">
+                  <div className=" mt-16 flex justify-end">
                     <Form.Item>
                       <button className="bg-[#FB7E00] hover:bg-[#D56A00] w-[120px] justify-center text-white rounded-lg py-2 px-6 text-xl flex items-center">
                         Save

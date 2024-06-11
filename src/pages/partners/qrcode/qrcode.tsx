@@ -90,7 +90,7 @@ const QRCodes: React.FC = () => {
                   <QRCode value={url} size={300} bgColor="rgba(0,0,0,0)" fgColor="#000000" />
                 </div>
 
-                <div className="text-gray-400 text-3xl pt-12">
+                <div className="text-gray-400 text-2xl pt-12">
                   Scan QR code to view the menu
                 </div>
                 <div className="flex gap-4">

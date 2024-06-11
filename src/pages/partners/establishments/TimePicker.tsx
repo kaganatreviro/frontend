@@ -59,13 +59,13 @@ const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
           type="time"
           value={startTime || ""}
           onChange={(e) => handleChange("start", e.target.value)}
-          className={`w-full h-12 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
+          className={`w-full h-10 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
         />
         <input
           type="time"
           value={endTime || ""}
           onChange={(e) => handleChange("end", e.target.value)}
-          className={`w-full h-12 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
+          className={`w-full h-10 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
         />
       </div>
       {error && <div className="text-red-500 mt-2">{error}</div>}

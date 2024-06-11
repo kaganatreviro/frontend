@@ -190,7 +190,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
                 <Input
                   type="text"
                   placeholder="Enter your address"
-                  className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
+                  className="w-[350px] px-3 border-gray-300 placeholder:text-gray-300 h-10 rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
                   value={searchValue}
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}

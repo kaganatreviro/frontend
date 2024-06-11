@@ -33,6 +33,7 @@ const EditModal: React.FC<EditModalProps> = ({
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
@@ -49,6 +50,7 @@ const EditModal: React.FC<EditModalProps> = ({
       setPhoneNumber(establishment.phone_number || "");
       setDescription(establishment.description || "");
       setName(establishment.name || "");
+      setEmail(establishment.email || "");
       setStartTime(establishment.happyhours_start || "");
       setEndTime(establishment.happyhours_end || "");
       setLongitude(establishment.location.coordinates[0] || null);
@@ -68,7 +70,7 @@ const EditModal: React.FC<EditModalProps> = ({
       );
       formData.append("description", description);
       formData.append("phone_number", phoneNumber);
-      formData.append("email", "Sierra@gmail.com");
+      formData.append("email", email);
       formData.append("address", input);
       if (startTime !== null) {
         formData.append("happyhours_start", startTime);
@@ -133,14 +135,18 @@ const EditModal: React.FC<EditModalProps> = ({
     setName(e.target.value);
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
   if (!isEditOpen) return null;
 
   return (
     isEditOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10 h-[820px]">
-          <div className="flex justify-between pt-2 mb-10">
-            <div className="text-3xl">Edit Establishment's Profile:</div>
+          <div className="flex justify-between pt-2 mb-4">
+            <div className="text-2xl">Edit Establishment's Profile:</div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -155,6 +161,7 @@ const EditModal: React.FC<EditModalProps> = ({
             encType="multipart/form-data"
             initialValues={{
               name: establishment?.name,
+              email: establishment?.email,
               phone: establishment?.phone_number,
               description: establishment?.description,
             }}
@@ -190,6 +197,30 @@ const EditModal: React.FC<EditModalProps> = ({
                 </div>
 
                 <div className="mb-3">
+                  <h1 className="text-xl font-bold mb-2">Email:</h1>
+                  <Form.Item
+                    name="email"
+                    initialValue={email}
+                    rules={[
+                      {
+                        type: "email",
+                        message: "The input is not valid E-mail!",
+                      },
+                      {
+                        required: true,
+                        message: "Please enter the email",
+                      },
+                    ]}
+                  >
+                    <Input
+                      onChange={handleEmailChange}
+                      className="text-lg w-[350px] h-[46px] border-gray-300 placeholder:text-gray-300"
+                      placeholder="Enter email"
+                    />
+                  </Form.Item>
+                </div>
+
+                <div className="mb-3">
                   <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
                   <Form.Item
                     name="phone"
@@ -220,9 +251,7 @@ const EditModal: React.FC<EditModalProps> = ({
                   <div className="mb-3">
                     <div className="mb-2 text-lg font-bold">Location:</div>
 
-                    <Form.Item
-                      name="location"
-                    >
+                    <Form.Item name="location">
                       <Map
                         onLocationSelect={handleLocationSelect}
                         loc={{
@@ -231,7 +260,6 @@ const EditModal: React.FC<EditModalProps> = ({
                           address: establishment?.address,
                         }}
                       />
-
                     </Form.Item>
                   </div>
 
@@ -256,7 +284,7 @@ const EditModal: React.FC<EditModalProps> = ({
                       />
                     </Form.Item>
                   </div>
-                  <div className=" mt-8 flex justify-end">
+                  <div className="mt-8 flex justify-end">
                     <Form.Item>
                       <button className="bg-[#FB7E00] hover:bg-[#D56A00] w-[120px] justify-center text-white rounded-lg py-2 px-6 text-xl flex items-center">
                         Save
