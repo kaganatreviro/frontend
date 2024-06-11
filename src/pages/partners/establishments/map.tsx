@@ -15,7 +15,7 @@ interface ModalProps {
   onClose: () => void;
 }
 
-const Modal = ({ children, onClose }: ModalProps) => {
+function Modal({ children, onClose }: ModalProps) {
   return (
     <div className="modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -23,7 +23,7 @@ const Modal = ({ children, onClose }: ModalProps) => {
       </div>
     </div>
   );
-};
+}
 
 interface MapProps {
   onLocationSelect: (
@@ -48,10 +48,15 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    console.log("useEffect - searchValue changed:", searchValue);
     form.setFieldsValue({ location: searchValue });
+    console.log("Form values after setFieldsValue:", form.getFieldsValue());
+    form.validateFields(["location"]); // Добавить эту строку
   }, [searchValue, form]);
 
+
   const handlePlaceSelect = () => {
+    console.log("handlePlaceSelect called with searchValue:", searchValue);
     if (searchValue.trim() === "") {
       setError("Please enter your location");
       return;
@@ -78,12 +83,14 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
         onLocationSelect({ lat, lng }, addressObject.formatted_address || "");
 
         form.setFieldsValue({ location: addressObject.formatted_address || "" });
-        form.validateFields(["location"]); // Validate the form field
+        console.log("Form values after setFieldsValue in handlePlaceSelect:", form.getFieldsValue());
+        form.validateFields(["location"]); // Добавить эту строку
       } else {
         setError("Invalid location");
       }
     }
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -93,16 +100,20 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleInputChange - new value:", e.target.value);
     setSearchValue(e.target.value);
     setError("");
     form.setFieldsValue({ location: e.target.value });
-    form.validateFields(["location"]); // Validate the form field
+    console.log("Form values after setFieldsValue in handleInputChange:", form.getFieldsValue());
+    form.validateFields(["location"]); // Добавить эту строку
   };
+
 
   const handleMapClick = (e: google.maps.MapMouseEvent | null) => {
     if (e && e.latLng) {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
+      console.log("handleMapClick - new location:", { lat, lng });
       setSelectedLocation({ lat, lng });
 
       if (markerRef.current) {
@@ -120,21 +131,26 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
           results[0].formatted_address
         ) {
           const address = results[0].formatted_address;
+          console.log("geocoder result - address:", address);
           setSearchValue(address);
           onLocationSelect({ lat, lng }, address);
 
           form.setFieldsValue({ location: address });
-          form.validateFields(["location"]);
+          console.log("Form values after setFieldsValue in handleMapClick:", form.getFieldsValue());
+          form.validateFields(["location"]); // Добавить эту строку
         }
       });
     }
   };
 
+
   const openMapModal = () => {
+    console.log("openMapModal called");
     setShowMapModal(true);
   };
 
   const closeMapModal = () => {
+    console.log("closeMapModal called");
     setShowMapModal(false);
   };
 
@@ -149,37 +165,40 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     zIndex: 100,
     paddingTop: "30px",
   };
-console.log(searchValue)
 
   return (
     <div>
       <LoadScript googleMapsApiKey={API_KEY || ""} libraries={["places"]}>
-        <Form.Item
-          name="location"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your address",
-            },
-          ]}
-        >
-          <div>
-            <Autocomplete
-              onLoad={(ac) => (autocompleteRef.current = ac)}
-              onPlaceChanged={handlePlaceSelect}
-            >
-              <Input
-                type="text"
-                placeholder="Enter your address"
-                className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
-                value={searchValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-              />
-            </Autocomplete>
-          </div>
-
-        </Form.Item>
+        <Form form={form} initialValues={{ location: searchValue }}>
+          <Form.Item
+            name="location"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your address",
+              },
+            ]}
+          >
+            <div>
+              <Autocomplete
+                onLoad={(ac) => {
+                  console.log("Autocomplete onLoad - autocomplete instance:", ac);
+                  autocompleteRef.current = ac;
+                }}
+                onPlaceChanged={handlePlaceSelect}
+              >
+                <Input
+                  type="text"
+                  placeholder="Enter your address"
+                  className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
+                  value={searchValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                />
+              </Autocomplete>
+            </div>
+          </Form.Item>
+        </Form>
 
         <div
           className="ml-2 text-[#FB7E00] text-xl flex cursor-pointer mt-[-10px]"
@@ -204,13 +223,14 @@ console.log(searchValue)
                   zoom={13}
                   onClick={handleMapClick}
                   onLoad={(map) => {
+                    console.log("GoogleMap onLoad - map instance:", map);
                     mapRef.current = map;
                     const marker = new window.google.maps.Marker({
                       position: {
                         lat: selectedLocation.lat || 42.8746,
                         lng: selectedLocation.lng || 74.5698,
                       },
-                      map: map,
+                      map,
                     });
                     markerRef.current = marker;
                   }}
