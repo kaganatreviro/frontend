@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useRef, ReactNode, CSSProperties } from "react";
+import React, { useState, useRef, ReactNode, CSSProperties, useEffect } from "react";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -47,13 +47,17 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
 
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    form.setFieldsValue({ location: searchValue });
+  }, [searchValue, form]);
+
   const handlePlaceSelect = () => {
     if (searchValue.trim() === "") {
       setError("Please enter your location");
       return;
     }
     setError("");
-  
+
     if (autocompleteRef.current) {
       const addressObject = autocompleteRef.current.getPlace();
       if (
@@ -72,8 +76,9 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
           mapRef.current.panTo({ lat, lng });
         }
         onLocationSelect({ lat, lng }, addressObject.formatted_address || "");
-  
+
         form.setFieldsValue({ location: addressObject.formatted_address || "" });
+        form.validateFields(["location"]); // Validate the form field
       } else {
         setError("Invalid location");
       }
@@ -91,7 +96,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     setSearchValue(e.target.value);
     setError("");
     form.setFieldsValue({ location: e.target.value });
-    form.validateFields(["location"]);
+    form.validateFields(["location"]); // Validate the form field
   };
 
   const handleMapClick = (e: google.maps.MapMouseEvent | null) => {
@@ -99,7 +104,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       setSelectedLocation({ lat, lng });
-  
+
       if (markerRef.current) {
         markerRef.current.setPosition({ lat, lng });
       }
@@ -115,11 +120,11 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
           results[0].formatted_address
         ) {
           const address = results[0].formatted_address;
-          console.log(address)
           setSearchValue(address);
           onLocationSelect({ lat, lng }, address);
-  
+
           form.setFieldsValue({ location: address });
+          form.validateFields(["location"]);
         }
       });
     }
@@ -144,27 +149,36 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     zIndex: 100,
     paddingTop: "30px",
   };
+console.log(searchValue)
 
   return (
     <div>
       <LoadScript googleMapsApiKey={API_KEY || ""} libraries={["places"]}>
         <Form.Item
           name="location"
-          
+          rules={[
+            {
+              required: true,
+              message: "Please enter your address",
+            },
+          ]}
         >
-          <Autocomplete
-            onLoad={(ac) => (autocompleteRef.current = ac)}
-            onPlaceChanged={handlePlaceSelect}
-          >
-            <Input
-              type="text"
-              placeholder="Enter your address"
-              className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
-              value={searchValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-            />
-          </Autocomplete>
+          <div>
+            <Autocomplete
+              onLoad={(ac) => (autocompleteRef.current = ac)}
+              onPlaceChanged={handlePlaceSelect}
+            >
+              <Input
+                type="text"
+                placeholder="Enter your address"
+                className="w-[350px] py-2 px-3 border-gray-300 placeholder:text-gray-300 h-[46px] rounded-lg border focus:outline-none focus:border-blue-500 hover:border-blue-500 transition ease-in-out delay-150"
+                value={searchValue}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+              />
+            </Autocomplete>
+          </div>
+
         </Form.Item>
 
         <div
