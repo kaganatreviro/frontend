@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useRef, ReactNode, CSSProperties, useEffect } from "react";
+import React, { useState, useRef, ReactNode, CSSProperties } from "react";
 import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -38,7 +38,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
   const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
   const [searchValue, setSearchValue] = useState<string>(loc?.address || "");
   const [showMapModal, setShowMapModal] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<boolean>(false); // Состояние ошибки
 
   const mapRef = useRef<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
@@ -47,16 +47,12 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    form.setFieldsValue({ location: searchValue });
-  }, [searchValue, form]);
-
   const handlePlaceSelect = () => {
     if (searchValue.trim() === "") {
-      setError("Please enter your location");
+      setError(true); // Устанавливаем ошибку в true
       return;
     }
-    setError("");
+    setError(false); // Сбрасываем ошибку при успешном выборе местоположения
 
     if (autocompleteRef.current) {
       const addressObject = autocompleteRef.current.getPlace();
@@ -80,7 +76,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
         form.setFieldsValue({ location: addressObject.formatted_address || "" });
         form.validateFields(["location"]); // Validate the form field
       } else {
-        setError("Invalid location");
+        setError(true); // Устанавливаем ошибку в true при неверном выборе местоположения
       }
     }
   };
@@ -94,7 +90,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-    setError("");
+    setError(false); // Сбрасываем ошибку при изменении значения в поле ввода
     form.setFieldsValue({ location: e.target.value });
     form.validateFields(["location"]); // Validate the form field
   };
@@ -128,6 +124,7 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
         }
       });
     }
+    setError(false); // Сбрасываем ошибку при выборе местоположения на карте
   };
 
   const openMapModal = () => {
@@ -149,7 +146,6 @@ const Map: React.FC<MapProps> = ({ onLocationSelect, loc }) => {
     zIndex: 100,
     paddingTop: "30px",
   };
-console.log(searchValue)
 
   return (
     <div>
@@ -162,6 +158,8 @@ console.log(searchValue)
               message: "Please enter your address",
             },
           ]}
+          validateStatus={error ? "error" : ""} // Устанавливаем статус валидации в 'error' при наличии ошибки
+          help={error ? "Please select a valid location" : undefined} // Выводим сообщение об ошибке при наличии ошибки
         >
           <div>
             <Autocomplete
@@ -178,7 +176,6 @@ console.log(searchValue)
               />
             </Autocomplete>
           </div>
-
         </Form.Item>
 
         <div
@@ -186,7 +183,7 @@ console.log(searchValue)
           onClick={openMapModal}
         >
           <div>or choose it from the map</div>
-          <FontAwesomeIcon icon={faArrowRight} className="w-6 h-6 ml-1 mt-1" />
+          <FontAwesomeIcon icon={faArrowRight} className="w-6 h- ml-1 mt-1" />
         </div>
         {showMapModal && (
           <Modal onClose={closeMapModal}>
