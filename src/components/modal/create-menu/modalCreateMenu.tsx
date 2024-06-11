@@ -88,7 +88,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
           Cancel
         </Button>,
         <Button key="submit" className="btn" type="primary" onClick={() => form.submit()}>
-          {initialValues ? "Update" : "Confirm"}
+          {initialValues ? "Update" : "Submit"}
         </Button>,
       ]}
     >
