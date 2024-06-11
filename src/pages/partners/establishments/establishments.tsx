@@ -9,7 +9,7 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown, Menu, Card, Skeleton, Modal, Button } from "antd";
+import { Dropdown, Menu, Card, Skeleton, Modal, Button, message } from "antd";
 import {
   deleteEstablishment,
   fetchEstablishments,
@@ -70,6 +70,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   const confirmDelete = (estId: number) => {
     setSelectedEst(estId);
     setIsDeleteModalOpen(true);
+    
   };
 
   const handleDelete = async () => {
@@ -78,6 +79,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
         await deleteEstablishment(selectedEst);
         dispatch(fetchEstablishmentsList());
         setIsDeleteModalOpen(false);
+        message.success("Establishment deleted successfully!");
       } catch (error) {
         console.error("Error deleting establishment:", error);
       }
