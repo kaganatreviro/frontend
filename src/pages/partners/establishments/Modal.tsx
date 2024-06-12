@@ -155,6 +155,23 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
               <div>
                 <div className="mb-3">
                   <div className="h-[600px]">
+                    
+                    <h1 className="text-md font-bold mb-2">Name:</h1>
+                    <Form.Item
+                      name="name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter your name",
+                        },
+                      ]}
+                    >
+                      <Input
+                        onChange={handleNameChange}
+                        className="text-md w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
+                        placeholder="Enter establishment's name"
+                      />
+                    </Form.Item>
                     <h1 className="text-md font-bold mb-2">Email:</h1>
                     <Form.Item
                       name="email"
@@ -170,22 +187,6 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                         onChange={handleEmailChange}
                         className="text-lg w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
                         placeholder="Enter email"
-                      />
-                    </Form.Item>
-                    <h1 className="text-md font-bold mb-2">Name:</h1>
-                    <Form.Item
-                      name="name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter your name",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleNameChange}
-                        className="text-md w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
-                        placeholder="Enter establishment's name"
                       />
                     </Form.Item>
                     <div className="mb-3">
