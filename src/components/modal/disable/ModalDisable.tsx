@@ -21,13 +21,13 @@ function ModalDisable({
       open={visible}
       onOk={onOk}
       onCancel={onCancel}
-      okText="Confirm"
+      okText="Submit"
       cancelText="Cancel"
       className="modal-disable"
       footer={[
         <div key="footer" className="content">
           <Button onClick={onCancel} className="modal-cancel-btn">Cancel</Button>
-          <Button type="primary" onClick={onOk} className="btn">Confirm</Button>
+          <Button type="primary" onClick={onOk} className="btn">Submit</Button>
         </div>,
       ]}
     >

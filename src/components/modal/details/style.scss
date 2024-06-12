@@ -1,20 +1,54 @@
 .modal_details_admin {
-  width: 80% !important;
   .ant-modal-content {
-    //padding: 0;
 
     .ant-tabs {
       width: 100%;
     }
-//
     .establishment-card {
-      background: #fff;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      .card_content {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+
+        .flex {
+          margin-bottom: 16px;
+
+          .avatar {
+            border-radius: 50%;
+            border: 2px solid #ddd;
+          }
+        }
+
+        .flower {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          gap: 6px;
+        }
+
+        div {
+          &:first-child {
+            font-weight: bold;
+          }
+
+          &:not(:first-child) {
+            font-size: 1em;
+            color: #555;
+
+            span {
+              font-weight: bold;
+              margin-right: 8px;
+              color: #333;
+            }
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
+
 
     .carousel-container {
       position: relative;
@@ -46,12 +80,11 @@
       background: #40a9ff;
     }
 
-.ant-avatar {
-  width: 48px;
-  height: 48px;
-}
+    .ant-avatar {
+      width: 48px;
+      height: 48px;
+    }
   }
-
 
   .tab .ant-tabs-nav {
     width: 100%;
@@ -66,5 +99,4 @@
     width: 160px;
     font-weight: 600;
   }
-
 }
