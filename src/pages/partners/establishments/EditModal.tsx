@@ -144,7 +144,7 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     isEditOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-8 px-10 h-[820px]">
+        <div className="bg-white w-[750px] rounded-md overflow-hidden shadow-lg pt-4 px-10 h-[820px]">
           <div className="flex justify-between pt-2 mb-4">
             <div className="text-2xl">Edit Establishment's Profile:</div>
             <button
@@ -176,8 +176,8 @@ const EditModal: React.FC<EditModalProps> = ({
               </div>
 
               <div>
-                <div className="mb-3">
-                  <h1 className="text-xl font-bold mb-2">Name:</h1>
+                <div className="mb-3 h-[90px]">
+                  <h1 className="text-md font-bold mb-2">Name:</h1>
                   <Form.Item
                     name="name"
                     initialValue={name}
@@ -196,8 +196,8 @@ const EditModal: React.FC<EditModalProps> = ({
                   </Form.Item>
                 </div>
 
-                <div className="mb-3">
-                  <h1 className="text-xl font-bold mb-2">Email:</h1>
+                <div className="mb-3 h-[90px]">
+                  <h1 className="text-md font-bold mb-2">Email:</h1>
                   <Form.Item
                     name="email"
                     initialValue={email}
@@ -220,8 +220,9 @@ const EditModal: React.FC<EditModalProps> = ({
                   </Form.Item>
                 </div>
 
-                <div className="mb-3">
-                  <h1 className="text-lg mb-2 font-bold">Phone Number:</h1>
+                <div>
+                  <div className="mb-3 h-[75px]">
+                  <h1 className="text-md mb-2 font-bold">Phone Number:</h1>
                   <Form.Item
                     name="phone"
                     initialValue={phoneNumber}
@@ -237,8 +238,9 @@ const EditModal: React.FC<EditModalProps> = ({
                       onChange={handlePhoneChange}
                     />
                   </Form.Item>
-                  <div className="mb-3">
-                    <div className="mb-2 text-lg font-bold">Time:</div>
+                  </div>
+                  <div className="mb-3 h-[75px]">
+                    <div className="mb-2 text-md font-bold">Time:</div>
                     <TimeRangePickers
                       onStartTimeChange={handleStartTimeChange}
                       onEndTimeChange={handleEndTimeChange}
@@ -248,8 +250,8 @@ const EditModal: React.FC<EditModalProps> = ({
                       ]}
                     />
                   </div>
-                  <div className="mb-3">
-                    <div className="mb-2 text-lg font-bold">Location:</div>
+                  <div className="mb-3 h-[105px]">
+                    <div className="mb-2 text-md font-bold">Location:</div>
 
                     <Form.Item name="location">
                       <Map
@@ -263,8 +265,8 @@ const EditModal: React.FC<EditModalProps> = ({
                     </Form.Item>
                   </div>
 
-                  <div>
-                    <h1 className="mb-2 text-lg font-bold">Description:</h1>
+                  <div className="h-[125px]">
+                    <h1 className="mb-2 text-md font-bold">Description:</h1>
                     <Form.Item
                       name="description"
                       rules={[
