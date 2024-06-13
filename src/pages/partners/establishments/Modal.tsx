@@ -58,6 +58,9 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
 
   const handleImageUploadInModal = (file: File | null) => {
     setUploadedImage(file);
+    form.setFieldsValue({ logo: file });
+  
+    form.validateFields(['logo']);
   };
 
   const handleStartTimeChange = (time: string | null) => {
@@ -146,64 +149,78 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
           >
             <div className="flex gap-20 ">
               <div>
-                <ImageUploader
-                  image={uploadedImage}
-                  onUpload={handleImageUploadInModal}
-                />
+                <Form.Item
+                  name="logo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please upload an image",
+                    },
+                  ]}
+                >
+                  <ImageUploader
+                    image={uploadedImage}
+                    onUpload={handleImageUploadInModal}
+                  />
+                </Form.Item>
               </div>
 
               <div>
                 <div className="mb-3">
                   <div className="h-[600px]">
-                    
-                    <h1 className="text-md font-bold mb-2">Name:</h1>
-                    <Form.Item
-                      name="name"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter your name",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleNameChange}
-                        className="text-md w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
-                        placeholder="Enter establishment's name"
-                      />
-                    </Form.Item>
-                    <h1 className="text-md font-bold mb-2">Email:</h1>
-                    <Form.Item
-                      name="email"
-                      rules={[
-                        {
-                          required: true,
-                          type: 'email',
-                          message: "Please enter a valid email address",
-                        },
-                      ]}
-                    >
-                      <Input
-                        onChange={handleEmailChange}
-                        className="text-lg w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
-                        placeholder="Enter email"
-                      />
-                    </Form.Item>
-                    <div className="mb-3">
+
+                    <div className="h-[90px]">
+                      <h1 className="text-md font-bold mb-2">Name:</h1>
+                      <Form.Item
+                        name="name"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please enter your name",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleNameChange}
+                          className="text-md w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
+                          placeholder="Enter establishment's name"
+                        />
+                      </Form.Item>
+                    </div>
+                    <div className="h-[90px]">
+                      <h1 className="text-md font-bold mb-2">Email:</h1>
+                      <Form.Item
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            type: 'email',
+                            message: "Please enter a valid email address",
+                          },
+                        ]}
+                      >
+                        <Input
+                          onChange={handleEmailChange}
+                          className="text-lg w-[350px] h-10 border-gray-300 placeholder:text-gray-300"
+                          placeholder="Enter email"
+                        />
+                      </Form.Item>
+                    </div>
+                    <div className="mb-3 h-[75px]">
                       <h1 className="text-md mb-2 font-bold">Phone Number:</h1>
                       <PhoneInput
                         value={phoneNumber}
                         onChange={handlePhoneChange}
                       />
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-3 h-[75px]">
                       <div className="mb-2 text-md font-bold">Time:</div>
                       <TimeRangePickers
                         onStartTimeChange={handleStartTimeChange}
                         onEndTimeChange={handleEndTimeChange}
                       />
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-3 h-[105px]">
                       <div className="mb-2 text-md font-bold">Location:</div>
                       <Form.Item
                         name="location"
@@ -214,12 +231,12 @@ const Modal: React.FC<ModalProps> = ({ isModalOpen, onClose }) => {
                           },
                         ]}
                       >
-                          <Map onLocationSelect={handleLocationSelect} loc={{address: input, lat: latitude, lng: longitude}} />
+                        <Map onLocationSelect={handleLocationSelect} loc={{ address: input, lat: latitude, lng: longitude }} />
 
                       </Form.Item>
                     </div>
 
-                    <div>
+                    <div className="h-[125px]">
                       <h1 className="mb-2 text-md font-bold">Description:</h1>
                       <Form.Item
                         name="description"
