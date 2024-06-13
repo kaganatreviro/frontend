@@ -23,6 +23,7 @@ import EstablishmentSwitcher from "../../../components/establishment/switcher/Sw
 import { RootState } from "store/store";
 import EstablishmentDetails from "./ViewDetails";
 import EditModal from "./EditModal";
+import ModalDisable from "../../../components/modal/disable/ModalDisable";
 
 interface EstablishmentProps {
   name: string;
@@ -70,7 +71,7 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
   const confirmDelete = (estId: number) => {
     setSelectedEst(estId);
     setIsDeleteModalOpen(true);
-    
+
   };
 
   const handleDelete = async () => {
@@ -207,27 +208,12 @@ const Establishment: React.FC<EstablishmentProps> = ({ name }) => {
               onClose={toggleEditDetailsModal}
               establishmentId={selectedEst}
             />
-            <Modal
-              title="Confirm Deletion"
-              visible={isDeleteModalOpen}
+            <ModalDisable
+              title={"Are you sure you want \n to delete this beverage?"}
               onOk={handleDelete}
               onCancel={() => setIsDeleteModalOpen(false)}
-              footer={[
-                <Button key="back" onClick={() => setIsDeleteModalOpen(false)}>
-                  Cancel
-                </Button>,
-                <Button
-                  key="submit"
-                  type="primary"
-                  danger
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>,
-              ]}
-            >
-              <p>Are you sure you want to delete this establishment?</p>
-            </Modal>
+              visible={isDeleteModalOpen}
+            />
           </>
         )}
       </div>
