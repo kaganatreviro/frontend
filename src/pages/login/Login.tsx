@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-  // email: "happyadmin@mail.com"
-  //   password: "kaganat1"
+// email: "happyadmin@mail.com"
+//   password: "kaganat1"
 
 import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
@@ -27,27 +27,25 @@ function Login() {
       await form.validateFields(values);
       const response = await (location.pathname.startsWith("/admin/login") ? loginAdmin(values) : loginPartner(values));
       if (response) {
+        console.log('aaaaaaaaa')
         // sessionStorage.setItem("authToken", response.access);
-        dispatch(setTokens({ refresh: response.refresh, access: response.access}));
+        dispatch(setTokens({ refresh: response.refresh, access: response.access }));
       }
       localStorage.setItem("userType", location.pathname.startsWith("/admin/login") ? "admin" : "partner");
       navigate(location.pathname.startsWith("/admin/login") ? "/partners" : "/dashboard");
     } catch (error: any) {
       console.log("Failed:", error);
-      if (error.response && error.response.status) {
-        form.setFields([
-          {
-            name: "email",
-            errors: ["Invalid email or password"],
-          },
-          {
-            name: "password",
-            errors: ["Invalid email or password"],
-          },
-        ]);
-      } else {
-        console.error("An unexpected error occurred:", error);
-      }
+      form.setFields([
+        {
+          name: "email",
+          errors: ["Invalid email or password"],
+        },
+        {
+          name: "password",
+          errors: ["Invalid email or password"],
+        },
+      ]);
+
     }
   };
 
