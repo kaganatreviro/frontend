@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { Form } from "antd";
 
 interface TimeRangePickersProps {
   onStartTimeChange: (time: string | null) => void;
@@ -50,26 +51,48 @@ const TimeRangePickers: React.FC<TimeRangePickersProps> = (props) => {
     }
   };
 
-
+  const validateTime = (rule: any, value: any, callback: any) => {
+    if (!startTime || !endTime) {
+      setError("Please enter a valid time range.");
+      callback("Please enter a valid time range.");
+    } else {
+      setError(null);
+      callback();
+    }
+  };
 
   return (
-    <div>
-      <div className="flex gap-4">
-        <input
-          type="time"
-          value={startTime || ""}
-          onChange={(e) => handleChange("start", e.target.value)}
-          className={`w-full h-10 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
-        />
-        <input
-          type="time"
-          value={endTime || ""}
-          onChange={(e) => handleChange("end", e.target.value)}
-          className={`w-full h-10 border ${error ? "border-red-500" : "border-gray-300"} rounded-md p-2`}
-        />
+    <Form.Item
+      name="timeRange"
+      validateStatus={error ? "error" : ""}
+      help={error}
+      rules={[
+        {
+          validator: validateTime,
+        },
+      ]}
+    >
+      <div>
+        <div className="flex gap-4">
+          <input
+            type="time"
+            value={startTime || ""}
+            onChange={(e) => handleChange("start", e.target.value)}
+            className={`w-full h-10 border ${
+              error ? "border-red-500" : "border-gray-300"
+            } rounded-md p-2`}
+          />
+          <input
+            type="time"
+            value={endTime || ""}
+            onChange={(e) => handleChange("end", e.target.value)}
+            className={`w-full h-10 border ${
+              error ? "border-red-500" : "border-gray-300"
+            } rounded-md p-2`}
+          />
+        </div>
       </div>
-      {error && <div className="text-red-500 mt-2">{error}</div>}
-    </div>
+    </Form.Item>
   );
 };
 
