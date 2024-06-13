@@ -11,6 +11,7 @@ import Profile from "../pages/partners/profile/Profile";
 import EstablishmentSelection from "../pages/admin/feedback/EstablishmentChoose";
 import Dashboard from "../pages/partners/dashboard/Dashboard";
 import Subscriptions from "../pages/admin/subscriptions/Subscriptions";
+import SubscriptionStatistics from "../pages/admin/Statistics/SubscriptionStatistics";
 
 export default {
   Main: {
@@ -29,6 +30,12 @@ export default {
   QRCode: {
     path: "/qrcode",
     element: <QRCodes />,
+    protected: false,
+    role: "all",
+  },
+  SubscriptionStatistics: {
+    path: "/subscription/statistics",
+    element: <SubscriptionStatistics />,
     protected: false,
     role: "all",
   },

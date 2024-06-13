@@ -29,6 +29,7 @@ const NavigationIcons: { [key: string]: NavigationIcon } = {
   QR: { icon: faQrcode },
   Establishments: { icon: faStore },
   Subscriptions: { icon: faWallet },
+  Statistics: { icon: faChartBar },
 };
 
 export default NavigationIcons;
