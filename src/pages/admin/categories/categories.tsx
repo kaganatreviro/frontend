@@ -17,22 +17,7 @@ const CategoryCard: React.FC<{
   onDelete: (id: number) => void;
   onEdit: (id: number, newName: string) => void;
 }> = ({ category, onDelete, onEdit }) => {
-  const [editMode, setEditMode] = useState(false);
-  const [editedName, setEditedName] = useState(category.name);
 
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleCancelEdit = () => {
-    setEditMode(false);
-    setEditedName(category.name);
-  };
-
-  const handleSaveEdit = () => {
-    onEdit(category.id, editedName);
-    setEditMode(false);
-  };
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletingCategoryId, setDeletingCategoryId] = useState<number | null>(
     null
@@ -100,7 +85,6 @@ const handleEditConfirm = async () => {
           title="Delete Category"
           visible={deleteModalVisible}
           onCancel={handleDeleteCancel}
-          centered={true}
           width={300}
           footer={null}
         >
@@ -108,16 +92,16 @@ const handleEditConfirm = async () => {
             Are you sure you want to delete this category?
           </p>
           <div className="flex justify-between">
-            <Button
+            <button
               key="cancel"
-              className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+              className="cancel-btn w-[100px]"
               onClick={handleDeleteCancel}
             >
               No
-            </Button>
+            </button>
             <Button
               key="delete"
-              className="bg-[#FB7E00] text-white hover:bg-[#df8226]  py-1 rounded-md ml-4 w-[100px]"
+              className="btn w-[100px]"
               onClick={handleDeleteConfirm}
             >
               Yes
@@ -128,7 +112,6 @@ const handleEditConfirm = async () => {
           title="Edit Category"
           visible={editModalVisible}
           onCancel={handleEditCancel}
-          centered={true}
           width={300}
           footer={null}
         >
@@ -153,13 +136,13 @@ const handleEditConfirm = async () => {
               <Button
                 key="cancel"
                 onClick={handleEditCancel}
-                className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+                className="cancel-btn w-[100px]"
               >
                 Cancel
               </Button>
               <Button
                 key="edit"
-                className="bg-[#FB7E00] text-white hover:bg-[#df8226]  py-1 rounded-md ml-4 w-[100px]"
+                className="btn"
                 onClick={handleEditConfirm}
               >
                 Submit
@@ -268,7 +251,6 @@ const Categories: React.FC = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
-        centered={true}
         width={300}
       >
         <Form form={form} onFinish={handleSubmit}>
@@ -283,13 +265,13 @@ const Categories: React.FC = () => {
           </Form.Item>
           <div className="flex justify-between">
             <button
-              className="bg-gray-400 text-white w-[100px]  py-1 rounded-md"
+              className="cancel-btn w-[100px]"
               onClick={handleCancel}
             >
               Cancel
             </button>
             <button
-              className="bg-[#FB7E00] text-white hover:bg-[#df8226] w-[100px]  py-1 rounded-md ml-4"
+              className="btn  w-[100px]"
               type="submit"
             >
               Submit

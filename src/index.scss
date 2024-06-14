@@ -31,6 +31,21 @@ body {
   }
 }
 
+.cancel-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(156, 163, 175);
+  color: white;
+  border-radius: 10px;
+  border: unset !important;
+  &:hover {
+    background-color: darken(rgb(144, 144, 144), 10%) !important;
+    border: unset !important;
+    color: white !important;
+  }
+}
+
 //.ant-form-item-required::before {
 //  display: none !important;
 //}
