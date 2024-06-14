@@ -57,6 +57,10 @@ const CategoryCard: React.FC<{
       message.error("Category name cannot be empty");
       return;
     }
+    if (editedCategoryName.length > 30) {
+      message.error("Category name cannot exceed 30 characters");
+      return;
+    }
 
     onEdit(category.id, editedCategoryName);
     setEditModalVisible(false);
@@ -66,7 +70,9 @@ const CategoryCard: React.FC<{
   return (
     <div className="bg-white shadow-md rounded-lg p-4 w-[240px] border border-gray-300 ">
       <div>
-        <h2 className="text-xl font-semibold mb-2">{category.name}</h2>
+        <h2 className="text-xl font-semibold mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {category.name}
+        </h2>
         <div className="text-gray-600 mb-4">
           Beverages: {category.beverages.length}
         </div>
@@ -125,6 +131,7 @@ const CategoryCard: React.FC<{
               name="name"
               rules={[
                 { required: true, message: "Please enter a category name" },
+                { max: 30, message: "Category name cannot exceed 30 characters" }
               ]}
             >
               <Input
@@ -154,6 +161,7 @@ const CategoryCard: React.FC<{
     </div>
   );
 };
+
 
 const Categories: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -263,6 +271,7 @@ const Categories: React.FC = () => {
             name="name"
             rules={[
               { required: true, message: "Please enter a category name" },
+              { max: 30, message: "Category name cannot exceed 30 characters" }
             ]}
           >
             <Input placeholder="Category Name" />
