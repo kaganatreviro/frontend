@@ -47,38 +47,49 @@ const SubscriptionCard: React.FC<{
         const { name, value } = e.target;
         setEditedSubscription({ ...editedSubscription, [name]: value });
     };
+    const truncateText = (text: string, maxLength: number) => {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength - 3) + "...";
+        } else {
+            return text;
+        }
+    };
 
     return (
         <div className="bg-white shadow-xl rounded-xl p-8 w-[290px] border border-gray-300">
             <div>
-                <div className="flex items-center flex-col mb-4">
-                    <div className="uppercase text-2xl font-semibold mb-4">{subscription.name}</div>
-                    <div className="flex mb-4">
-                        <div className="self-start font-semibold text-xl ">KGS</div>
-                        <div className="text-5xl font-semibold">{parseInt(subscription.price)}</div>
-                        <div className="font-semibold self-center mt-3">
-                            /
-                            {subscription.duration === "FT"
-                                ? `${subscription.free_trial_days} days`
-                                : subscription.duration === "1M"
-                                ? "1 month"
-                                : subscription.duration === "3M"
-                                ? "3 months"
-                                : subscription.duration === "6M"
-                                ? "6 months"
-                                : subscription.duration}
+                <div className="flex flex-col justify-between h-[270px]">
+                    <div className="flex items-center flex-col mb-4">
+                        <div className="uppercase text-2xl font-semibold mb-4 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                            {truncateText(subscription.name, 12)}
                         </div>
+                        <div className="flex mb-4">
+                            <div className="self-start font-semibold text-xl ">KGS</div>
+                            <div className="text-5xl font-semibold">{parseInt(subscription.price)}</div>
+                            <div className="font-semibold self-center mt-3">
+                                /
+                                {subscription.duration === "FT"
+                                    ? `${subscription.free_trial_days} days`
+                                    : subscription.duration === "1M"
+                                        ? "1 month"
+                                        : subscription.duration === "3M"
+                                            ? "3 months"
+                                            : subscription.duration === "6M"
+                                                ? "6 months"
+                                                : subscription.duration}
+                            </div>
+                        </div>
+                        <hr className="border w-[290px] border-gray-300" />
+                        <div className="text-center mt-4">{truncateText(subscription.description, 100)}</div>
                     </div>
-                    <hr className="border w-[290px] border-gray-300" />
-                    <div className="text-center mt-4">{subscription.description}</div>
-                </div>
-                <div className="flex justify-between">
-                    <button onClick={showEditModal} className="text-[#FF9328]">
-                        <FontAwesomeIcon icon={faEdit} /> Edit
-                    </button>
-                    <button onClick={() => onDelete(subscription.id)} className="text-red-600">
-                        <FontAwesomeIcon icon={faTrash} /> Delete
-                    </button>
+                    <div className="flex justify-between ">
+                        <button onClick={showEditModal} className="text-[#FF9328]">
+                            <FontAwesomeIcon icon={faEdit} /> Edit
+                        </button>
+                        <button onClick={() => onDelete(subscription.id)} className="text-red-600">
+                            <FontAwesomeIcon icon={faTrash} /> Delete
+                        </button>
+                    </div>
                 </div>
                 <Modal
                     title="Edit Subscription"
@@ -142,7 +153,10 @@ const SubscriptionCard: React.FC<{
                         <Form.Item
                             name="price"
                             label="Price:"
-                            rules={[{ required: true, message: "Please enter a price" }]}
+                            rules={[
+                                { required: true, message: "Please enter a price" },
+                                { pattern: /^\d{1,5}(\.\d{1,2})?$/, message: "Please enter a valid price" },
+                            ]}
                         >
                             <Input
                                 placeholder="Price"
@@ -152,7 +166,7 @@ const SubscriptionCard: React.FC<{
                                 disabled={editedSubscription.duration === "FT"}
                             />
                         </Form.Item>
-                        
+
                         <Form.Item
                             name="description"
                             label="Description:"

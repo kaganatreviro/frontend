@@ -16,6 +16,8 @@ const Subscriptions: React.FC = () => {
     const [form] = Form.useForm();
     const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
     const [isPriceDisabled, setIsPriceDisabled] = useState(false);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [selectedSubscriptionId, setSelectedSubscriptionId] = useState<number | null>(null);
     const [isFreeTrialDaysDisabled, setIsFreeTrialDaysDisabled] = useState(false);
 
     useEffect(() => {
@@ -55,16 +57,32 @@ const Subscriptions: React.FC = () => {
         }
     };
 
-    const handleDelete = async (subscriptionId: number) => {
-        try {
-            await deleteSubscription(subscriptionId);
-            dispatch(fetchSubscriptionsList());
-            message.success("Subscription deleted successfully!");
-        } catch (error) {
-            console.error("Error deleting subscription:", error);
-            message.error("Failed to delete subscription.");
+    const handleDelete = (subscriptionId: number) => {
+        setSelectedSubscriptionId(subscriptionId);
+        setDeleteModalVisible(true);
+    };
+
+    const handleDeleteCancel = () => {
+        setDeleteModalVisible(false);
+        setSelectedSubscriptionId(null);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (selectedSubscriptionId) {
+            try {
+                await deleteSubscription(selectedSubscriptionId);
+                dispatch(fetchSubscriptionsList());
+                message.success("Subscription deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting subscription:", error);
+                message.error("Failed to delete subscription.");
+            } finally {
+                setDeleteModalVisible(false);
+                setSelectedSubscriptionId(null);
+            }
         }
     };
+
 
     const handleEdit = async (subscriptionId: number, updatedSubscription: any) => {
         try {
@@ -142,6 +160,7 @@ const Subscriptions: React.FC = () => {
                         colon={false}
                         rules={[
                             { required: true, message: "Please enter a subscription name" },
+                            { max: 30, message: "Subscription name cannot exceed 30 characters" }
                         ]}
                     >
                         <Input placeholder="Subscription Name" />
@@ -191,6 +210,7 @@ const Subscriptions: React.FC = () => {
                         colon={false}
                         rules={[
                             { required: true, message: "Please enter a price" },
+                            { pattern: /^(\d{1,5})$/, message: "Please enter a valid price" },
                         ]}
                     >
                         <Input placeholder="Price" type="number" min="0" disabled={isPriceDisabled} />
@@ -234,6 +254,31 @@ const Subscriptions: React.FC = () => {
                         </button>
                     </div>
                 </Form>
+            </Modal>
+            <Modal
+                title="Delete Subscription"
+                visible={deleteModalVisible}
+                onCancel={handleDeleteCancel}
+                footer={null}
+                width={300}
+            >
+                <p className="text-lg my-10 text-center">
+                    Are you sure you want to delete this subscription?
+                </p>
+                <div className="flex justify-between">
+                    <button
+                        className="cancel-btn w-[100px]"
+                        onClick={handleDeleteCancel}
+                    >
+                        No
+                    </button>
+                    <Button
+                        className="btn w-[100px]"
+                        onClick={handleDeleteConfirm}
+                    >
+                        Yes
+                    </Button>
+                </div>
             </Modal>
         </div>
     );
