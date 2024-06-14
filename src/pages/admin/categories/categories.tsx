@@ -52,16 +52,16 @@ const CategoryCard: React.FC<{
     setEditModalVisible(false);
   };
 
-const handleEditConfirm = async () => {
-  if (editedCategoryName.trim() === "") {
-    message.error("Category name cannot be empty");
-    return;
-  }
+  const handleEditConfirm = async () => {
+    if (editedCategoryName.trim() === "") {
+      message.error("Category name cannot be empty");
+      return;
+    }
 
-  onEdit(category.id, editedCategoryName);
-  setEditModalVisible(false);
-};
-    const [form] = Form.useForm();
+    onEdit(category.id, editedCategoryName);
+    setEditModalVisible(false);
+  };
+  const [form] = Form.useForm();
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4 w-[240px] border border-gray-300 ">
@@ -159,6 +159,7 @@ const Categories: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCategoriesList());
@@ -178,12 +179,14 @@ const Categories: React.FC = () => {
   };
 
   const handleSubmit = async (values: { name: string }) => {
+    if (isSubmitting) return;
     try {
+
+      setIsModalVisible(false);
       const formData = new FormData();
       formData.append("name", values.name);
       await createCategory(formData);
       message.success("Category added successfully!");
-      setIsModalVisible(false);
       form.resetFields();
       dispatch(fetchCategoriesList());
     } catch (error) {
@@ -226,6 +229,7 @@ const Categories: React.FC = () => {
               className="bg-[#FB7E00] px-3 py-2 text-white rounded-lg mb-6"
               onClick={handleAddCategory}
               type="primary"
+              disabled={isSubmitting}
             >
               <FontAwesomeIcon
                 icon={faPlus}
