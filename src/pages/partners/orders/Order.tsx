@@ -207,6 +207,13 @@ export default function Orders() {
 
   const historyColumns = columns.filter((column) => column.key !== "action");
 
+  const paginationConfig = {
+    pageSize: 10,
+    showTotal: (total: any, range: any) => `Results ${range[0]}-${range[1]} of ${total}`,
+    showLessItems: true,
+    showSizeChanger: false,
+  };
+
   const tabItems = [
     {
       key: "1",
@@ -229,7 +236,7 @@ export default function Orders() {
       key: "2",
       label: "History",
       children: (
-        <Table columns={historyColumns} dataSource={orderHistory} pagination={{ pageSize: 10 }} rowKey="id" className="w-full h-full" />
+        <Table columns={historyColumns} dataSource={orderHistory} pagination={paginationConfig} rowKey="id" className="w-full h-full" />
       ),
     },
   ];

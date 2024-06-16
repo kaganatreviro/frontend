@@ -62,9 +62,6 @@ export default function Dashboard() {
   const hasValidData = orderStatistics && orderStatistics.orders_by_category && orderStatistics.orders_by_category.length === 4;
   const filledData = hasValidData ? orderStatistics.orders_by_category : fillMissingData(orderStatistics ? orderStatistics.orders_by_category : [], categories);
 
-  console.log("Order Statistics: ", orderStatistics);
-  console.log("Filled Data: ", filledData);
-
   return (
     <div className="flex-1 partner_dashboard flex bg-[#f4f4f4]">
       <div className="container justify-start items-start flex-1 p-10">

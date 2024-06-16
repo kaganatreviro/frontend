@@ -46,6 +46,8 @@ function Users() {
   const paginationConfig = {
     pageSize: 10,
     showTotal: (total: any, range: any) => `Results ${range[0]}-${range[1]} of ${total}`,
+    showLessItems: true,
+    showSizeChanger: false,
   };
 
   return (
