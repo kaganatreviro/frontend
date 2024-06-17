@@ -54,7 +54,6 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
       open={visible}
       onCancel={onClose}
       footer={null}
-      // centered
     >
       <Form
         form={form}
@@ -74,7 +73,7 @@ function ModalCreateOrder({ visible, onClose }: { visible: boolean; onClose: () 
             filterOption={(input, option) => (option?.children as unknown as string).toLowerCase().includes(input.toLowerCase())}
           >
             {users.map((user: any) => (
-              <Option key={user.id} value={user.email}>{user.name}</Option>
+              <Option key={user.id} value={user.email}>{user.email}</Option>
             ))}
           </Select>
         </Form.Item>

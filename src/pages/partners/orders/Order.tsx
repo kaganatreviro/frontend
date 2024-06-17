@@ -72,12 +72,6 @@ export default function Orders() {
       const message = JSON.parse(event.data);
       console.log("event", event);
       console.log("message", message);
-      // if (message) {
-      //   console.log("currentEstablishment?.id", currentEstablishment?.id);
-      //   // if (!currentEstablishment?.id) return;
-      //   console.log("currentEstablishment?.id 123", currentEstablishment?.id);
-      //   fetchData();
-      // }
       if (message && currentEstablishmentRef.current?.id) {
         fetchData();
       }

@@ -103,7 +103,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
           label="Item Name"
           rules={[
             { required: true, message: "Please input the name of the item!" },
-            { max: 30, message: "Item name cannot be longer than 99 characters!" },
+            { max: 30, message: "Item name cannot be longer than 30 characters!" },
           ]}
         >
           <Input placeholder="Enter item name" />
