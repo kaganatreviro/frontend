@@ -8,7 +8,7 @@ import { RootState } from "store/store";
 import { createSubscription, deleteSubscription, updateSubscription } from "../../../components/api/api";
 import SubscriptionCard from "./SubscriptionCard";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
-import { fetchSubscriptionsList } from "../../../store/actions/admin/subscriptions/subscription";
+import { fetchSubscriptionsList } from "../../../store/actions/admin/subscriptions/subscriptionActions";
 
 const Subscriptions: React.FC = () => {
     const dispatch = useAppDispatch();

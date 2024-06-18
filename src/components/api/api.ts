@@ -111,6 +111,9 @@ export const createCategory = async (data: any) => request("/api/v1/beverage/cat
 export const deleteCategory = async (id: number) => request(`/api/v1/beverage/categories/${id}/`, "DELETE");
 export const updateCategory = async (id: number, data: any) => request(`/api/v1/beverage/categories/${id}/`, "PUT", data);
 
+// admin statistics
+export const fetchSubscriptionStatistics = async () => request(`/api/v1/subscription/statistics/`, "GET");
+
 // Menu
 export const fetchAllMenu = async () => request("/api/v1/beverage/beverages/", "GET");
 export const fetchMenu = async (id: number) => request(`/api/v1/partner/menu/${id}/`, "GET");
