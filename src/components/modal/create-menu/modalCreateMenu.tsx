@@ -103,7 +103,7 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
           label="Item Name"
           rules={[
             { required: true, message: "Please input the name of the item!" },
-            { max: 99, message: "Item name cannot be longer than 99 characters!" },
+            { max: 30, message: "Item name cannot be longer than 30 characters!" },
           ]}
         >
           <Input placeholder="Enter item name" />
@@ -111,7 +111,9 @@ function ModalCreateMenu({ isVisible, onCancel, onSubmit, initialValues }: Modal
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: "Please input the description of the item!" }]}
+          rules={[{ required: true, message: "Please input the description of the item!" },
+            { max: 999, message: "Item name cannot be longer than 999 characters!" },
+          ]}
         >
           <Input.TextArea className="description" placeholder="Enter description" />
         </Form.Item>

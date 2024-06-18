@@ -1,10 +1,28 @@
 import axios from "axios";
 import { BASE_API_URL } from "../../helpers/constants/Constants";
-import { clearTokens } from "../../store/actions/token/tokenSlice";
-import { useAppDispatch } from "../../helpers/hooks/hook";
 
+let isRefreshing = false;
+const refreshSubscribers: ((token: string) => void)[] = [];
+
+function onRrefreshed(token: string) {
+  refreshSubscribers.map((cb) => cb(token));
+}
+
+function addRefreshSubscriber(cb: (token: string) => void) {
+  refreshSubscribers.push(cb);
+}
 export async function refreshToken() {
   const refreshToken = sessionStorage.getItem("refreshToken");
+
+  if (isRefreshing) {
+    return new Promise((resolve) => {
+      addRefreshSubscriber((token) => {
+        resolve(token);
+      });
+    });
+  }
+
+  isRefreshing = true;
   // console.log("api get refreshToken", refreshToken);
   try {
     const response = await axios.post(`${BASE_API_URL}/api/v1/user/auth/token/refresh/`, {
@@ -19,9 +37,11 @@ export async function refreshToken() {
     //   sessionStorage.setItem("accessToken", access);
     //   sessionStorage.setItem("refreshToken", refresh);
     // }
+    isRefreshing = false;
+    onRrefreshed(access);
     return access;
   } catch (error) {
-    console.error("Failed to refresh token:", error);
+    console.error("async function refreshToken failed to refresh token:", error);
     return null;
   }
 }
@@ -38,9 +58,11 @@ async function makeRequest(config: any) {
   }
 }
 
+type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
 export const request = async (
   url: string,
-  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
+  method: RequestMethod,
   payload?: any,
   formData?: boolean | null,
   params?: any,
@@ -60,8 +82,7 @@ export const request = async (
   try {
     return await makeRequest(config);
   } catch (error: any) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const dispatch = useAppDispatch();
+    console.log("error надо посмотреть тут что за response и статус", error);
     if (error.response?.status === 401 && !error.retryFlag) {
       const newToken = await refreshToken();
       console.log("newToken", newToken);
@@ -71,8 +92,6 @@ export const request = async (
         return result;
       }
     }
-
-    dispatch(clearTokens());
     throw error;
   }
 };

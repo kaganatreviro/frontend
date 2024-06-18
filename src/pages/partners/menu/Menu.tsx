@@ -43,7 +43,6 @@ function Menu() {
   const onChange = async (id: number, checked: boolean) => {
     try {
       const item = data.find((item) => item.id === id);
-      console.log("item", item);
       if (!item) throw new Error("Item not found");
 
       const updatedItem = {
@@ -152,7 +151,7 @@ function Menu() {
                     <span>
                       {Math.round(item.price)}
                       {" "}
-                      som
+                      kgs
                     </span>
                   </div>
                   <div className="content">
