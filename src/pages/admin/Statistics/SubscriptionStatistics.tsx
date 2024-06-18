@@ -85,8 +85,9 @@ export default function SubscriptionStatistics() {
       <div className="flex-1 admin_partners container">
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
           <div className="font-medium text-4xl mb-8">Subscription Statistics</div>
+          <div className="w-full">
           {subscriptionStatistics ? (
-            <div className="w-full">
+            <div>
               <div className="flex gap-4 mb-8">
               <div>
                 <div>Subscriptions starts range:</div>
@@ -232,6 +233,8 @@ export default function SubscriptionStatistics() {
               </div>
             </div>
           ): (<Skeleton active paragraph={{ rows: 4 }} />)}
+          </div>
+          
         </div>
       </div>
     </div>
