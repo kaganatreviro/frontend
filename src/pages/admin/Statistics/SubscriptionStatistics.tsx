@@ -5,7 +5,7 @@ import { RootState } from "store/store";
 import { fetchSubStatistics } from "../../../store/actions/admin/subscriptions/subscriptionActions";
 import { useAppDispatch } from "../../../helpers/hooks/hook";
 import { PieChart, Pie, Tooltip, Cell, Legend } from "recharts";
-import { DatePicker, Button, Space } from "antd";
+import { DatePicker, Button, Space, Skeleton } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
@@ -68,14 +68,11 @@ export default function SubscriptionStatistics() {
     setEndDateRangeEnd(null);
   };
 
-  if (!subscriptionStatistics) {
-    return <div>Loading...</div>;
-  }
 
 
   const colors = ["#ea25e7", "#01AFB0", "#589B34", "#F58726", "#FDF001", "#20429C", "#F4D03F", "#EB984E", "#7D3C98", "#AF7AC5"];
 
-  const pieChartData = subscriptionStatistics.most_popular_plans.map((plan, index) => ({
+  const pieChartData = subscriptionStatistics?.most_popular_plans.map((plan, index) => ({
     name: plan.plan__name || "Deleted",
     value: plan.count,
     color: colors[index % colors.length]
@@ -88,7 +85,7 @@ export default function SubscriptionStatistics() {
       <div className="flex-1 admin_partners container">
         <div className="flex flex-col h-full items-start p-12 bg-gray-100 flex-1">
           <div className="font-medium text-4xl mb-8">Subscription Statistics</div>
-          {subscriptionStatistics && (
+          {subscriptionStatistics ? (
             <div className="w-full">
               <div className="flex gap-4 mb-8">
               <div>
@@ -169,7 +166,7 @@ export default function SubscriptionStatistics() {
                       fill="#8884d8"
                       innerRadius={100}
                     >
-                      {pieChartData.map((entry, index) => (
+                      {pieChartData?.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -177,7 +174,7 @@ export default function SubscriptionStatistics() {
 
                   </PieChart>
                   <div className="absolute top-20 right-10  p-4">
-                    {pieChartData.map((entry, index) => (
+                    {pieChartData?.map((entry, index) => (
                       <div key={`legend-${index}`} className="flex items-center mb-2">
                         <div className="w-4 h-4 rounded-full mr-3 self-start" style={{ backgroundColor: entry.color }}></div>
                         <div>
@@ -234,7 +231,7 @@ export default function SubscriptionStatistics() {
                 </div>
               </div>
             </div>
-          )}
+          ): (<Skeleton active paragraph={{ rows: 4 }} />)}
         </div>
       </div>
     </div>
