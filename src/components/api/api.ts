@@ -131,7 +131,7 @@ export const deleteCategory = async (id: number) => request(`/api/v1/beverage/ca
 export const updateCategory = async (id: number, data: any) => request(`/api/v1/beverage/categories/${id}/`, "PUT", data);
 
 // admin statistics
-export const fetchSubscriptionStatistics = async () => request(`/api/v1/subscription/statistics/`, "GET");
+export const fetchSubscriptionStatistics = async (filter?: any) => request(`/api/v1/subscription/statistics/`, "GET", null, null, filter);
 
 // Menu
 export const fetchAllMenu = async () => request("/api/v1/beverage/beverages/", "GET");
